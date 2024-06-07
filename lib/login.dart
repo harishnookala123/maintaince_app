@@ -1,29 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/userscreen.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-      ),
-      home: HomePage(),
-    );
-  }
-}
 
 class HomePage extends StatelessWidget {
 
   var email = TextEditingController();
   var password = TextEditingController();
-  var formkey = GlobalKey<FormState>();
+  var formKey = GlobalKey<FormState>();
+
+  HomePage({super.key});
 
   String?validateEmail(String? value){
     if(value==null || value.isEmpty){
@@ -69,7 +54,7 @@ class HomePage extends StatelessWidget {
       body: Container(
           margin: const EdgeInsets.all(12.3),
           child:Form(
-            key: formkey,
+            key: formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -109,7 +94,7 @@ class HomePage extends StatelessWidget {
 
                     var name = email.text;
 
-                    if(formkey.currentState!.validate()){
+                    if(formKey.currentState!.validate()){
                       Navigator.push(
                           context,
                           MaterialPageRoute(

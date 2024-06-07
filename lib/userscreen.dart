@@ -8,7 +8,6 @@ class UserScreen  extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -16,7 +15,6 @@ class UserScreen  extends StatelessWidget {
             Center(child: Text(name!,style: TextStyle(fontSize: 40),),)
           ],
         )
-
     );
   }
 }
