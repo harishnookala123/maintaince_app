@@ -72,7 +72,8 @@ class SelectRegisterScreen extends State<SelectRegister> {
                           minimumSize: const Size(150,50),
                         ),
                         onPressed: (){
-                          var value = _options[0];
+                          var value = _options[selectedRadio];
+                          print(value);
                         },
                          child: const Text("Register",
                          style: TextStyle(fontSize: 18,
