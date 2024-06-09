@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:maintaince_app/Admin/Views/registration.dart';
+
 class SelectRegister extends StatefulWidget {
   @override
   SelectRegisterScreen createState() => SelectRegisterScreen();
@@ -14,7 +16,6 @@ class SelectRegisterScreen extends State<SelectRegister> {
   void _handleRadioValueChange(int? value) {
     setState(() {
       selectedRadio = value!;
-      print(selectedRadio);
     });
   }
 
@@ -24,7 +25,7 @@ class SelectRegisterScreen extends State<SelectRegister> {
       children: [
         // Background Image
         Image.asset(
-          'assets/Images/appartment.png', // Replace with your image URL
+          'assets/Images/apartment.png', // Replace with your image URL
           fit: BoxFit.cover,
           width: double.infinity,
           height: double.infinity,
@@ -37,7 +38,8 @@ class SelectRegisterScreen extends State<SelectRegister> {
             alignment: Alignment.center,
             child: Card(
               elevation: 2.0,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0)),
               margin: const EdgeInsets.all(16.0),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -48,7 +50,8 @@ class SelectRegisterScreen extends State<SelectRegister> {
                   children: [
                     const Text(
                       'Choose an Register option',
-                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20.0),
                     ..._options.map((option) {
@@ -60,29 +63,31 @@ class SelectRegisterScreen extends State<SelectRegister> {
                         onChanged: _handleRadioValueChange,
                       );
                     }),
-                    const SizedBox(height: 20,),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           elevation: 3.0,
                           backgroundColor: Colors.blue,
-                          shape:  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.4)
-                          ),
-                          minimumSize: const Size(150,50),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.4)),
+                          minimumSize: const Size(150, 50),
                         ),
-                        onPressed: (){
+                        onPressed: () {
                           var value = _options[selectedRadio];
-                          print(value);
+                          getNavigate(value);
                         },
-                         child: const Text("Register",
-                         style: TextStyle(fontSize: 18,
-                          color: Colors.white
-                         ),
-                         ),
+                        child: const Text(
+                          "Register",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 10,)
+                    const SizedBox(
+                      height: 10,
+                    )
                   ],
                 ),
               ),
@@ -91,5 +96,14 @@ class SelectRegisterScreen extends State<SelectRegister> {
         ),
       ],
     );
+  }
+
+  getNavigate(String value) {
+    if (value == "Admin") {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const AdminRegistration()));
+    } else if (value == "Co-Admin") {
+    } else if (value == "User") {
+    } else if (value == "Security") {}
   }
 }

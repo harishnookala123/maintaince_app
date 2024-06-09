@@ -1,10 +1,18 @@
 import 'dart:ui';
-
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/splashscreen.dart';
 
+import 'Admin/changeprovider/adminprovider.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => AdminRegistrationModel()),
+    ],
+   child: const MyApp(),
+  ),
+  );
 }
 
 class MyApp extends StatelessWidget {
