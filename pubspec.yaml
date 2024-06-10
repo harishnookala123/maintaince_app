@@ -36,7 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   group_radio_button: any
-  google_fonts: any
+  google_fonts: ^4.0.5
   path_provider: any
   provider: any
   email_validator: any

@@ -23,10 +23,11 @@ class _AdminPersonalState extends State<AdminPersonal> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   final GlobalKey<FormState> personalKey = GlobalKey<FormState>();
-
+  String? status;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           Image.asset(
@@ -84,7 +85,6 @@ class _AdminPersonalState extends State<AdminPersonal> {
   buildForm(AdminRegistrationModel registration) {
     return Form(
       key: personalKey,
-      autovalidateMode:AutovalidateMode.always,
       child: Column(
         children: [
           Container(
@@ -215,14 +215,10 @@ class _AdminPersonalState extends State<AdminPersonal> {
                         borderRadius: BorderRadius.circular(12.5),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if(personalKey.currentState!.validate()){
-                        registerPost(registration);
-                        Provider.of<AdminRegistrationModel>(
-                            context,
-                            listen: false);
-                       Navigator.of(context).push(MaterialPageRoute(
-                           builder: (context)=>const Homepage()));
+                        status = await registerPost(registration);
+                        navigateToNextPage(status);
                       }
                     },
                     child: BasicText(
@@ -232,6 +228,18 @@ class _AdminPersonalState extends State<AdminPersonal> {
                     ),
                   ),
                 ),
+                //Text(status!)
+                const SizedBox(height: 15,),
+
+                status!=null?Container(
+                    alignment: Alignment.center,
+                    child:Text(status!.toString(),
+                      style: const TextStyle(color: Colors.red,
+                        fontSize: 20
+                      ),
+                    )):Container(),
+
+
               ],
             ),
           ),
@@ -257,7 +265,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
      });
      var dio = Dio();
      var response = await dio.request(
-       'http://192.168.1.6:3000/register',
+       'http://192.168.29.69:3000/register',
        options: Options(
          method: 'POST',
          headers: headers,
@@ -266,10 +274,24 @@ class _AdminPersonalState extends State<AdminPersonal> {
      );
 
      if (response.statusCode == 200) {
-       print(json.encode(response.data));
+        setState(() {
+          print("${response.data["status"]} Data from server");
+          status = response.data["status"];
+        });
+        return status;
      }
      else {
        print(response.statusMessage);
      }
+  }
+
+   navigateToNextPage(String? status) {
+    if(status=="User registered successfully"){
+      Provider.of<AdminRegistrationModel>(
+          context,
+          listen: false);
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context)=>const Homepage()));
+    }
   }
 }

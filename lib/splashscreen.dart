@@ -26,12 +26,10 @@ class SplashScreenState extends State<SplashScreen>{
     // TODO: implement build
     return Scaffold(
       body: Container(
-        child: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/Images/apartment.png'),
-              fit: BoxFit.cover,
-            ),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/Images/apartment.png'),
+            fit: BoxFit.cover,
           ),
         ),
       ),

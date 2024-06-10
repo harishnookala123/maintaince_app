@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:maintaince_app/userscreen.dart';
 
 
-class HomePage extends StatelessWidget {
+class Login extends StatefulWidget {
+  Login({super.key});
 
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   var email = TextEditingController();
-  var password = TextEditingController();
-  var formKey = GlobalKey<FormState>();
 
-  HomePage({super.key});
+  var password = TextEditingController();
+
+  var formKey = GlobalKey<FormState>();
 
   String?validateEmail(String? value){
     if(value==null || value.isEmpty){
@@ -22,6 +28,7 @@ class HomePage extends StatelessWidget {
     }
     return null;
   }
+
   String? validatePassword(String? value){
     if(value==null || value.isEmpty){
       return'Please enter  email';
@@ -37,14 +44,11 @@ class HomePage extends StatelessWidget {
     return null; // Return null if the password is valid
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.indigo,
+        backgroundColor: Colors.blue,
         centerTitle: true,
         title: const Text(
           'Login Page',
@@ -91,16 +95,14 @@ class HomePage extends StatelessWidget {
 
                 ElevatedButton(
                   onPressed: () {
-
                     var name = email.text;
-
                     if(formKey.currentState!.validate()){
+                      getPost(name,password.text);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => UserScreen(name:name,)));
                     }
-
                     // onPressed handler
                   },
 
@@ -120,4 +122,11 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+   getPost(String name, String password) {
+    var data = {
+      "email":name,
+      "password":password
+    };
+   }
 }
