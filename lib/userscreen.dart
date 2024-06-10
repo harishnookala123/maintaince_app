@@ -9,8 +9,7 @@ class UserScreen  extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+
           children: [
             Center(child: Text(name!,style: TextStyle(fontSize: 40),),)
           ],

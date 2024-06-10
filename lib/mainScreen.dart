@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/Views/registration.dart';
 
+import 'Co_admin/Views/registration.dart';
+
 class SelectRegister extends StatefulWidget {
   @override
   SelectRegisterScreen createState() => SelectRegisterScreen();
@@ -103,6 +105,8 @@ class SelectRegisterScreen extends State<SelectRegister> {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const AdminRegistration()));
     } else if (value == "Co-Admin") {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const CoRegistration()));
     } else if (value == "User") {
     } else if (value == "Security") {}
   }

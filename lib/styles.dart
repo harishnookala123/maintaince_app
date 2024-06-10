@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 class BasicText extends StatelessWidget{
@@ -52,6 +54,43 @@ class Textfield extends StatelessWidget{
           ),
           border: const OutlineInputBorder())
     );
+  }
+}
+
+class BackGroundImage extends StatelessWidget{
+  Widget? child;
+  BackGroundImage({this.child});
+  @override
+  Widget build(BuildContext context) {
+     return Stack(
+       children: [
+       Image.asset(
+       'assets/Images/apartment.png', // Replace with your image URL
+       fit: BoxFit.cover,
+       width: double.infinity,
+       height: double.infinity,
+     ),
+    BackdropFilter(
+    filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+      child:Container(
+        color: Colors.black.withOpacity(0.2),
+       child: Center(
+         child: SingleChildScrollView(
+           child: SizedBox(
+             width: MediaQuery.of(context).size.width / 1.05,
+             child: Card(
+               elevation: 12.0,
+               shape: RoundedRectangleBorder(
+                 borderRadius: BorderRadius.circular(16.5),
+               ),
+               child: Padding(
+                 padding: const EdgeInsets.all(16.0),
+                 child:child ,
+               ),),),),),
+      ),
+    )
+       ]
+     );
   }
 
 }
