@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/Views/registration.dart';
 
@@ -89,7 +88,7 @@ class SelectRegisterScreen extends State<SelectRegister> {
                     ),
                     const SizedBox(
                       height: 10,
-                    )
+                    ),
                   ],
                 ),
               ),

@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:maintaince_app/styles.dart';
+import 'package:maintaince_app/styles/basicstyles.dart';
 
 class CoRegistration extends StatefulWidget {
   const CoRegistration({super.key});

@@ -1,27 +1,29 @@
+import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:maintaince_app/styles.dart';
+import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:maintaince_app/userscreen.dart';
 
 import 'mainScreen.dart';
 
 class Login extends StatefulWidget {
-  Login({super.key});
+  const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
-  var email = TextEditingController();
+  var emailController = TextEditingController();
 
-  var password = TextEditingController();
+  var passwordController = TextEditingController();
+  bool _obscureText = true;
 
   var formKey = GlobalKey<FormState>();
-
-  String? validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter  email';
+  String? status;
+  String?validateEmail(String? value){
+    if(value==null || value.isEmpty){
+      return'Please enter  email';
     }
     const String emailPattern =
         r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
@@ -34,7 +36,7 @@ class _LoginState extends State<Login> {
 
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter  email';
+      return 'Please enter  Password';
     }
     const String passwordPattern =
         r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$';
@@ -70,7 +72,7 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     TextFormField(
-                      controller: email,
+                      controller: emailController,
                       validator: validateEmail,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -83,30 +85,40 @@ class _LoginState extends State<Login> {
                       height: 20,
                     ),
                     TextFormField(
-                      obscureText: true,
-                      controller: password,
+                      obscureText: _obscureText,
+                      onChanged: (value){
+                        passwordController.value = passwordController.value.copyWith(
+                          text: value.replaceAll(' ', ''),
+                          selection: TextSelection.collapsed(offset: value.length),
+                        );
+                      },
+                      controller: passwordController,
                       validator: validatePassword,
                       decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            size: 20,
+                            _obscureText ? Icons.visibility_off : Icons.visibility
+                          ),
+                          onPressed: _toggleObscureText,
+                        ),
+                        isDense: true,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10)),
                         hintText: 'Password',
                         // prefixIcon:  const Icon(Icons.lock),
                       ),
+                      minLines: 1,
+                      maxLines: 1,
                     ),
                     const SizedBox(
                       height: 15,
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        var name = email.text;
                         if (formKey.currentState!.validate()) {
-                          getPost(name, password.text);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UserScreen(
-                                        name: name,
-                                      )));
+                          getPost(emailController.text,
+                              passwordController.text.replaceAll(' ', ''));
                         }
                         // onPressed handler
                       },
@@ -118,16 +130,16 @@ class _LoginState extends State<Login> {
                       child: BasicText(
                         title: "Login",
                         color: Colors.indigo.shade600,
-                        fontSize: 17,
+                        fontSize: 18,
                       ),
                     ),
-                    const SizedBox(
-                      height: 18,
+                    status!=null?getText():Container(
+                      margin: const EdgeInsets.only(top: 4.3),
                     ),
                     Row(
                       children: [
                         const Text(
-                          "Don't You Have an Account?",
+                          "Don't You have an Account?",
                           textAlign: TextAlign.left,
                           style: TextStyle(fontSize: 15),
                         ),
@@ -162,7 +174,58 @@ class _LoginState extends State<Login> {
     ));
   }
 
-  getPost(String name, String password) {
-    var data = {"email": name, "password": password};
+   getPost(String email, String password) async {
+     var headers = {
+       'Content-Type': 'application/json'
+     };
+     String passwordvalue = password.replaceAll(RegExp(r"\s\b|\b\s"), "");
+     var data = json.encode({
+       "email": email.trim(),
+       "password": passwordvalue,
+     });
+     var dio = Dio();
+     var response = await dio.request(
+       'http://192.168.29.231:3000/login',
+       options: Options(
+         method: 'POST',
+         headers: headers,
+       ),
+       data: data,
+     );
+
+     if (response.statusCode == 200) {
+       setState(() {
+         status = response.data;
+         if(status == "Login successful"){
+           emailController.clear();
+           passwordController.clear();
+           status = "";
+           Navigator.pushReplacement(context, MaterialPageRoute(
+               builder: (context) => UserScreen(name: email,)));
+         }
+       });
+     }
+     else {
+       setState(() {
+         status = response.data;
+       });
+     }
+  }
+
+  getText() {
+    return Container(
+      margin: const EdgeInsets.only(top: 12.3,bottom: 12.3),
+      child: Text(status!,
+        style: const TextStyle(color: Colors.red,
+            fontSize: 18
+        ),
+      ),
+    );
+  }
+
+  void _toggleObscureText() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
   }
 }

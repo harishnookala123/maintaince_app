@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/changeprovider/adminprovider.dart';
 import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
-import '../../styles.dart';
+import '../../styles/basicstyles.dart';
 import '../Model/adminRegistartion.dart';
 import 'homepage.dart';
 
@@ -265,7 +265,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
      });
      var dio = Dio();
      var response = await dio.request(
-       'http://192.168.29.69:3000/register',
+       'http://192.168.29.231:3000/register',
        options: Options(
          method: 'POST',
          headers: headers,

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/Views/registrationsecondpage.dart';
 import 'package:provider/provider.dart';
-import '../../styles.dart';
+import '../../styles/basicstyles.dart';
 import '../changeprovider/adminprovider.dart';
 
 class AdminRegistration extends StatefulWidget {
