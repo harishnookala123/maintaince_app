@@ -86,6 +86,7 @@ class BackGroundImage extends StatelessWidget {
               scrollDirection: Axis.vertical,
               child: SizedBox(
                 width: MediaQuery.of(context).size.width / 1.05,
+                height: MediaQuery.of(context).size.height /1.3,
                 child: Card(
                   elevation: 12.0,
                   shape: RoundedRectangleBorder(

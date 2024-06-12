@@ -2,17 +2,20 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/Views/registration.dart';
+import 'package:maintaince_app/User/Views/user_registration.dart';
 
 import 'Co_admin/Views/registration.dart';
 
 class SelectRegister extends StatefulWidget {
+  const SelectRegister({super.key});
+
   @override
   SelectRegisterScreen createState() => SelectRegisterScreen();
 }
 
 class SelectRegisterScreen extends State<SelectRegister> {
   int selectedRadio = 0;
-  final List<String> _options = ['Admin', 'Co-Admin', 'User', 'Security'];
+  final List<String> _options = ['Admin', 'User', 'Security'];
 
   void _handleRadioValueChange(int? value) {
     setState(() {
@@ -103,10 +106,9 @@ class SelectRegisterScreen extends State<SelectRegister> {
     if (value == "Admin") {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const AdminRegistration()));
-    } else if (value == "Co-Admin") {
+    }  else if (value == "User") {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const CoRegistration()));
-    } else if (value == "User") {
+          MaterialPageRoute(builder: (context) => const UserRegistration()));
     } else if (value == "Security") {}
   }
 }
