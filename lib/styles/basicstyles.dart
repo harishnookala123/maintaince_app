@@ -78,17 +78,16 @@ class BackGroundImage extends StatelessWidget {
         height: double.infinity,
       ),
       BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+        filter: ImageFilter.blur(sigmaX: 0.3, sigmaY: 0.3),
         child: Container(
-          color: Colors.black.withOpacity(0.2),
           child: Center(
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: SizedBox(
                 width: MediaQuery.of(context).size.width / 1.05,
-                height: MediaQuery.of(context).size.height /1.3,
                 child: Card(
-                  elevation: 12.0,
+                  //color: Colors.white.withOpacity(0.9),
+                  elevation: 15.0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.5),
                   ),

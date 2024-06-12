@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:maintaince_app/Admin/changeprovider/coadminprovider.dart';
 import 'package:maintaince_app/splashscreen.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,7 @@ void main() {
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => AdminRegistrationModel()),
+      ChangeNotifierProvider(create: (context)=>CoAdmin()),
     ],
    child: const MyApp(),
   ),

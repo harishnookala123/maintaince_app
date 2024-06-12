@@ -261,7 +261,8 @@ class _AdminPersonalState extends State<AdminPersonal> {
        "name": registration.name,
        "email": registration.email,
        "phonenumber": registration.phone.toString(),
-       "password": registration.password
+       "password": registration.password,
+       "user_type": "Admin"
      });
      var dio = Dio();
      var response = await dio.request(
@@ -275,8 +276,10 @@ class _AdminPersonalState extends State<AdminPersonal> {
 
      if (response.statusCode == 200) {
         setState(() {
+          print(response.data);
           print("${response.data["status"]} Data from server");
           status = response.data["status"];
+          print(response.data["id"]);
         });
         return status;
      }
@@ -287,11 +290,11 @@ class _AdminPersonalState extends State<AdminPersonal> {
 
    navigateToNextPage(String? status) {
     if(status=="User registered successfully"){
-      Provider.of<AdminRegistrationModel>(
+     /* Provider.of<AdminRegistrationModel>(
           context,
           listen: false);
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context)=>const Homepage()));
+          builder: (context)=>const Homepage()));*/
     }
   }
 }
