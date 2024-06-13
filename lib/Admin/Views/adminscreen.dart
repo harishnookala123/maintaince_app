@@ -7,15 +7,14 @@ class AdminScreen extends StatefulWidget {
 class _AdminScreenState extends State<AdminScreen> {
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height/6.2;
-      print(height);
+    var height = MediaQuery.of(context).size.height/7.0;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: ListView(
           shrinkWrap: true,
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
@@ -60,7 +59,16 @@ class _AdminScreenState extends State<AdminScreen> {
   }
 }
 
-class GridItem extends StatelessWidget {
+class GridItem extends StatefulWidget {
+  final int index;
+
+  GridItem({required this.index});
+
+  @override
+  State<GridItem> createState() => _GridItemState();
+}
+
+class _GridItemState extends State<GridItem> {
   final List<String> names = [
     'Flat List',
     'Co-Admin',
@@ -73,22 +81,22 @@ class GridItem extends StatelessWidget {
     'Announcements',
     'Emergency'
   ];
-  final int index;
-
-  GridItem({required this.index});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child:  Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Center(
-          child: Text(
-            names[index], // Display name based on index
-            style: const TextStyle(fontSize: 17),
+      child:  InkWell(
+        onTap: (){},
+        child: Card(
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Center(
+            child: Text(
+              names[widget.index], // Display name based on index
+              style: const TextStyle(fontSize: 17),
+            ),
           ),
         ),
       ),
