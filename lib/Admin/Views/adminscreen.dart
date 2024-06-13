@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maintaince_app/styles/basicstyles.dart';
 class AdminScreen extends StatefulWidget {
   @override
   State<AdminScreen> createState() => _AdminScreenState();
@@ -11,6 +12,7 @@ class _AdminScreenState extends State<AdminScreen> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Colors.white,
         body: ListView(
           shrinkWrap: true,
           children: [
@@ -62,7 +64,7 @@ class _AdminScreenState extends State<AdminScreen> {
 class GridItem extends StatefulWidget {
   final int index;
 
-  GridItem({required this.index});
+  const GridItem({super.key, required this.index});
 
   @override
   State<GridItem> createState() => _GridItemState();
@@ -88,15 +90,18 @@ class _GridItemState extends State<GridItem> {
       child:  InkWell(
         onTap: (){},
         child: Card(
-          elevation: 2,
+          shadowColor: Colors.orange,
+          surfaceTintColor: Colors.deepOrange.shade100,
+          // color: Colors.orange.shade300,
+          elevation: 1.5,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
           child: Center(
-            child: Text(
-              names[widget.index], // Display name based on index
-              style: const TextStyle(fontSize: 17),
-            ),
+            child: BasicText(
+              title: names[widget.index],
+              fontSize: 15,
+            )
           ),
         ),
       ),
