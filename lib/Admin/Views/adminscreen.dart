@@ -1,9 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(AdminScreen());
-}
-
 class AdminScreen extends StatefulWidget {
   @override
   State<AdminScreen> createState() => _AdminScreenState();
@@ -12,12 +8,13 @@ class AdminScreen extends StatefulWidget {
 class _AdminScreenState extends State<AdminScreen> {
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height/6.2;
+      print(height);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        body: ListView(
+          shrinkWrap: true,
           children: [
             const SizedBox(height: 20),
             const Padding(
@@ -37,19 +34,25 @@ class _AdminScreenState extends State<AdminScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Number of columns
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0,
+            Container(
+              margin: const EdgeInsets.all(15.3),
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, // Number of columns
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 13,
+                    mainAxisExtent: height,
+                    childAspectRatio: 12
+                  ),
+                  itemCount: 10, // Number of items in the grid
+                  itemBuilder: (context, index) {
+                    return GridItem(index: index);
+                  },
                 ),
-                itemCount: 10, // Number of items in the grid
-                itemBuilder: (context, index) {
-                  return GridItem(index: index);
-                },
-              ),
-            ),
+
+
+            )
           ],
         ),
       ),
@@ -76,15 +79,17 @@ class GridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Center(
-        child: Text(
-          names[index], // Display name based on index
-          style: TextStyle(fontSize: 17),
+    return SizedBox(
+      child:  Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Center(
+          child: Text(
+            names[index], // Display name based on index
+            style: const TextStyle(fontSize: 17),
+          ),
         ),
       ),
     );
