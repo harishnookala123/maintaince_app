@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 class AdminScreen extends StatefulWidget {
   @override
@@ -38,6 +37,7 @@ class _AdminScreenState extends State<AdminScreen> {
               margin: const EdgeInsets.all(15.3),
                 child: GridView.builder(
                   shrinkWrap: true,
+                  physics: const ScrollPhysics(),
                   gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2, // Number of columns
                     mainAxisSpacing: 10,
