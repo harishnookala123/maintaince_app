@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:maintaince_app/Admin/Views/adminscreen.dart';
 import 'package:maintaince_app/Admin/Views/registration.dart';
 import 'package:maintaince_app/User/Views/user_registration.dart';
 
@@ -107,8 +108,10 @@ class SelectRegisterScreen extends State<SelectRegister> {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const AdminRegistration()));
     }  else if (value == "User") {
+      // Navigator.push(context,
+      //     MaterialPageRoute(builder: (context) => const UserRegistration()));
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const UserRegistration()));
+          MaterialPageRoute(builder: (context) =>  AdminScreen()));
     } else if (value == "Security") {}
   }
 }
