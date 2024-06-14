@@ -1,15 +1,13 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/changeprovider/adminprovider.dart';
 import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
 import '../../styles/basicstyles.dart';
-import '../Model/adminRegistartion.dart';
-import 'homepage.dart';
+
 
 class AdminPersonal extends StatefulWidget {
   const AdminPersonal({super.key});
@@ -200,10 +198,8 @@ class _AdminPersonalState extends State<AdminPersonal> {
                       return 'capital letter, number, special character, 8 characters';
                     }
                     return null;
-
                   },
                 ),
-
                 const SizedBox(height: 20),
                 Center(
                   child: ElevatedButton(
@@ -262,9 +258,11 @@ class _AdminPersonalState extends State<AdminPersonal> {
        "email": registration.email,
        "phonenumber": registration.phone.toString(),
        "password": registration.password,
-       "user_type": "Admin"
+       "user_type": "Admin",
+       "userid" : "A${registration.name}",
      });
      var dio = Dio();
+     print(data);
      var response = await dio.request(
        'http://192.168.29.231:3000/register',
        options: Options(
@@ -284,6 +282,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
         return status;
      }
      else {
+       print("Har");
        print(response.statusMessage);
      }
   }

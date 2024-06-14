@@ -3,9 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/changeprovider/coadminprovider.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
-import 'package:maintaince_app/User/Views/userscreen.dart';
 import 'package:provider/provider.dart';
-
 import 'Co_admin/Views/registration.dart';
 import 'mainScreen.dart';
 
@@ -57,125 +55,130 @@ class _LoginState extends State<Login> {
     return Scaffold(
         body: BackGroundImage(
       child: SizedBox(
-         height: MediaQuery.of(context).size.height /2.3,
+         height: MediaQuery.of(context).size.height /2.5,
         child: Column(
           children: [
-            Container(
-              alignment: Alignment.topCenter,
-              margin: const EdgeInsets.only(bottom: 15.3),
-              child: BasicText(
-                title: "Login Page",
-                color: Colors.indigo.shade600,
-                fontSize: 19,
-              ),
-            ),
-            Container(
-                margin: const EdgeInsets.all(12.3),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      TextFormField(
-                        controller: emailController,
-                        validator: validateEmail,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          hintText: 'Email',
-                          // labelText: 'Enter UserName',
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      TextFormField(
-                        obscureText: _obscureText,
-                        onChanged: (value){
-                          passwordController.value = passwordController.value.copyWith(
-                            text: value.replaceAll(' ', ''),
-                            selection: TextSelection.collapsed(offset: value.length),
-                          );
-                        },
-                        controller: passwordController,
-                        validator: validatePassword,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                                size: 20,
-                                _obscureText ? Icons.visibility_off : Icons.visibility
+            Expanded(child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.topCenter,
+                  margin: const EdgeInsets.only(bottom: 15.3),
+                  child: BasicText(
+                    title: "Login Page",
+                    color: Colors.indigo.shade600,
+                    fontSize: 19,
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.all(12.3),
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          TextFormField(
+                            controller: emailController,
+                            validator: validateEmail,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              hintText: 'Email',
+                              // labelText: 'Enter UserName',
                             ),
-                            onPressed: _toggleObscureText,
                           ),
-                          isDense: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          hintText: 'Password',
-                          // prefixIcon:  const Icon(Icons.lock),
-                        ),
-                        minLines: 1,
-                        maxLines: 1,
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      SizedBox(
-                        child:ElevatedButton(
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              getPost(emailController.text,
-                                  passwordController.text.replaceAll(' ', ''));
-                            }
-                            // onPressed handler
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 37, vertical: 12),
-                            elevation: 2.5, // Adjust padding as needed
+                          const SizedBox(
+                            height: 20,
                           ),
-                          child: BasicText(
-                            title: "Login",
-                            color: Colors.indigo.shade600,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                      status!=null?getText():Container(
-                        margin: const EdgeInsets.only(top: 4.3),
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            "Don't You have an Account?",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(fontSize: 15),
-                          ),
-                          const SizedBox(width: 10),
-                          Container(
-                            alignment: Alignment.topRight,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SelectRegister()));
-                              },
-                              child: Text(
-                                'Register',
-                                style: TextStyle(
-                                  color: Colors.red.shade900,
-                                  fontSize: 18.0,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Colors.red.shade900,
+                          TextFormField(
+                            obscureText: _obscureText,
+                            onChanged: (value){
+                              passwordController.value = passwordController.value.copyWith(
+                                text: value.replaceAll(' ', ''),
+                                selection: TextSelection.collapsed(offset: value.length),
+                              );
+                            },
+                            controller: passwordController,
+                            validator: validatePassword,
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                    size: 20,
+                                    _obscureText ? Icons.visibility_off : Icons.visibility
                                 ),
+                                onPressed: _toggleObscureText,
+                              ),
+                              isDense: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              hintText: 'Password',
+                              // prefixIcon:  const Icon(Icons.lock),
+                            ),
+                            minLines: 1,
+                            maxLines: 1,
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          SizedBox(
+                            child:ElevatedButton(
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  getPost(emailController.text,
+                                      passwordController.text.replaceAll(' ', ''));
+                                }
+                                // onPressed handler
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 37, vertical: 12),
+                                elevation: 2.5, // Adjust padding as needed
+                              ),
+                              child: BasicText(
+                                title: "Login",
+                                color: Colors.indigo.shade600,
+                                fontSize: 18,
                               ),
                             ),
                           ),
+
+                          status!=null?getText():Container(
+                            margin: const EdgeInsets.only(top: 4.3),
+                          ),
+                          Row(
+                            children: [
+                              const Text(
+                                "Don't You have an Account?",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontSize: 15),
+                              ),
+                              const SizedBox(width: 10),
+                              Container(
+                                alignment: Alignment.topRight,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => const SelectRegister()));
+                                  },
+                                  child: Text(
+                                    'Register',
+                                    style: TextStyle(
+                                      color: Colors.red.shade900,
+                                      fontSize: 18.0,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: Colors.red.shade900,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
-                    ],
-                  ),
-                )),
+                    )),
+              ],
+            ) )
           ],
         ),
       )
