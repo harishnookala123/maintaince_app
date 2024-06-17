@@ -222,8 +222,9 @@ class SecurityRegistrationState extends State<SecurityRegistration> {
                               },
                               child: Text("Register",
                                   style: GoogleFonts.acme(
-                                      fontSize: 20, color: Colors.white)),
-                            ))
+                                      fontSize: 21, color: Colors.white)),
+                            )),
+                            const SizedBox(height: 10,),
                           ],
                         ),
                       )

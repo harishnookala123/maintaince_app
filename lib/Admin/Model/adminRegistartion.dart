@@ -1,14 +1,14 @@
-class AdminRegistration {
+class Admin {
   String? apartmentName;
   String? apartAddress;
-  String? noOfFlats;
+  int? noOfFlats;
   String? images;
   String? adminName;
   String? email;
   String? phonenumber;
   String? password;
 
-  AdminRegistration(
+  Admin(
       {this.apartmentName,
         this.apartAddress,
         this.noOfFlats,
@@ -18,7 +18,7 @@ class AdminRegistration {
         this.phonenumber,
         this.password});
 
-  AdminRegistration.fromJson(Map<String, dynamic> json) {
+  Admin.fromJson(Map<String, dynamic> json) {
     apartmentName = json['apartmentName'];
     apartAddress = json['apartAddress'];
     noOfFlats = json['noOfFlats'];

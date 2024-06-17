@@ -42,7 +42,7 @@ dependencies:
   email_validator: any
   http: any
   dio: any
-
+  shared_preferences: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -25,7 +25,7 @@ class CoRegistrationState extends State<CoRegistration> {
       resizeToAvoidBottomInset: true,
       body: BackGroundImage(
          child: SizedBox(
-           height: MediaQuery.of(context).size.height/1.3,
+           height: MediaQuery.of(context).size.height/1.4,
              child: Consumer<CoAdmin>(
                builder: (context,admin,child){
                  return ListView(
@@ -199,7 +199,8 @@ class CoRegistrationState extends State<CoRegistration> {
                                          fontSize: 20,color: Colors.white
                                      )
                                  ),
-                               ))
+                               )),
+                           const SizedBox(height: 10,),
                          ],
                        ),
 

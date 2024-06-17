@@ -11,7 +11,7 @@ class UserScreen  extends StatelessWidget {
         body: Column(
 
           children: [
-            Center(child: Text(name!,style: TextStyle(fontSize: 40),),)
+            Center(child: Text(name!,style: const TextStyle(fontSize: 40),),)
           ],
         )
     );

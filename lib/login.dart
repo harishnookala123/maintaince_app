@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/changeprovider/coadminprovider.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'Admin/Views/adminscreen.dart';
 import 'Co_admin/Views/registration.dart';
 import 'mainScreen.dart';
 
@@ -55,7 +57,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
         body: BackGroundImage(
       child: SizedBox(
-         height: MediaQuery.of(context).size.height /2.5,
+         height: MediaQuery.of(context).size.height /2.30,
         child: Column(
           children: [
             Expanded(child: Column(
@@ -186,6 +188,7 @@ class _LoginState extends State<Login> {
   }
 
    getPost(String email, String password) async {
+    SharedPreferences id = await SharedPreferences.getInstance();
      var headers = {
        'Content-Type': 'application/json'
      };
@@ -205,21 +208,20 @@ class _LoginState extends State<Login> {
      );
 
      if (response.statusCode == 200) {
-       var value = Provider.of<CoAdmin>(context, listen: false) ;
+     //  var value = Provider.of<CoAdmin>(context, listen: false) ;
        setState(() {
          Map<String,dynamic> res = response.data;
          var name = res["name"];
-         var id = res["idadmin"];
+         var userid = res["userid"];
          status =  res["status"];
-         print(status);
          if(status == "Login Successful"){
            emailController.clear();
            passwordController.clear();
-            value.setname(name);
-            value.setid(id);
+          print(res["name"]);
+          print(userid);
            status = "";
             Navigator.pushReplacement(context, MaterialPageRoute(
-               builder: (context) => const CoRegistration()));
+               builder: (context) => AdminScreen(userid:userid)));
          }
        });
      }
