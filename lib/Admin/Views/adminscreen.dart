@@ -6,6 +6,7 @@ import 'package:maintaince_app/Admin/Model/adminRegistartion.dart';
 import 'package:maintaince_app/Admin/changeprovider/adminprovider.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import '../changeprovider/api.dart';
+import 'coAdminDetails.dart';
 import 'flatlist.dart';
 class AdminScreen extends StatefulWidget {
   String? userid;
@@ -159,10 +160,11 @@ class _GridItemState extends State<GridItem> {
   getNavigate(int index, Admin? adminvalues) async {
    var flats = adminvalues!.noOfFlats;
    var admindetails = adminvalues;
-   print(admindetails.noOfFlats);
      if(index==0){
        Navigator.push(context, MaterialPageRoute(builder:
            (context)=> FlatList(noOfFlats: flats, adminvalues:admindetails)));
+     }else if(index==1){
+       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CoAdminDetails()));
      }
    }
 }

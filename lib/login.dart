@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/changeprovider/coadminprovider.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'Admin/Views/adminscreen.dart';
 import 'Co_admin/Views/registration.dart';
 import 'mainScreen.dart';
@@ -190,7 +189,6 @@ class _LoginState extends State<Login> {
   }
 
    getPost(String email, String password) async {
-    SharedPreferences id = await SharedPreferences.getInstance();
      var headers = {
        'Content-Type': 'application/json'
      };
