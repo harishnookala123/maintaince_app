@@ -1,9 +1,12 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/Model/adminRegistartion.dart';
 import 'package:maintaince_app/Admin/changeprovider/adminprovider.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import '../changeprovider/api.dart';
+import 'flatlist.dart';
 class AdminScreen extends StatefulWidget {
   String? userid;
   AdminScreen({super.key, this.userid});
@@ -21,7 +24,6 @@ class _AdminScreenState extends State<AdminScreen> {
 AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
   @override
   Widget build(BuildContext context) {
-
     var height = MediaQuery.of(context).size.height/7.0;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -77,7 +79,7 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
                      ),
                      itemCount: 10, // Number of items in the grid
                      itemBuilder: (context, index) {
-                       return GridItem(index: index,id:widget.userid);
+                       return GridItem(index: index,id:widget.userid,adminvalues:value);
                      },
                    ),
                  );
@@ -101,7 +103,8 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
 class GridItem extends StatefulWidget {
   final int index;
   String? id;
-   GridItem({super.key, required this.index,this.id});
+  Admin? adminvalues;
+   GridItem({super.key, required this.index,this.id,this.adminvalues });
 
   @override
   State<GridItem> createState() => _GridItemState();
@@ -130,7 +133,7 @@ class _GridItemState extends State<GridItem> {
     return SizedBox(
       child:  InkWell(
         onTap: (){
-         // getNavigate(widget.index);
+          getNavigate(widget.index,widget.adminvalues);
         },
         child: Card(
           color: Colors.white,
@@ -153,14 +156,13 @@ class _GridItemState extends State<GridItem> {
   }
 
 
-  /* getNavigate(int index) async {
-   var value = await getDetails();
-   Map<String,dynamic> json = value;
-   int noOfFlats = json["noOfFlats"];
-   print(noOfFlats);
+  getNavigate(int index, Admin? adminvalues) async {
+   var flats = adminvalues!.noOfFlats;
+   var admindetails = adminvalues;
+   print(admindetails.noOfFlats);
      if(index==0){
        Navigator.push(context, MaterialPageRoute(builder:
-           (context)=> FlatList(json:json)));
+           (context)=> FlatList(noOfFlats: flats, adminvalues:admindetails)));
      }
-   }*/
+   }
 }

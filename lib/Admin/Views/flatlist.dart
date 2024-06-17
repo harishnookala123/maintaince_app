@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:maintaince_app/Admin/Model/adminRegistartion.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 class FlatList extends StatefulWidget {
   int?noOfFlats;
-  Map<String,dynamic>?json;
-   FlatList({super.key,this.noOfFlats,this.json});
+  Admin? adminvalues;
+   FlatList({super.key,this.noOfFlats,this.adminvalues  });
 
   @override
   State<FlatList> createState() => _FlatListState();
@@ -12,21 +13,16 @@ class FlatList extends StatefulWidget {
 class _FlatListState extends State<FlatList> {
   @override
   Widget build(BuildContext context) {
-    var details = widget.json;
 
+    print("${widget.noOfFlats}Gawtwt");
     return Scaffold(
       body: Column(
         children: [
           const SizedBox(height: 40,),
-               BasicText(
-                title: details!["apartname"],
-                color: Colors.deepOrange,
-                fontSize: 16,
-              ),
 
           Expanded(child:GridView.builder(
               physics: const ScrollPhysics(),
-              itemCount: details["noOfFlats"],
+              itemCount: widget.noOfFlats,
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,

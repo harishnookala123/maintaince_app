@@ -57,14 +57,15 @@ class _LoginState extends State<Login> {
     return Scaffold(
         body: BackGroundImage(
       child: SizedBox(
-         height: MediaQuery.of(context).size.height /2.30,
-        child: Column(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
           children: [
-            Expanded(child: Column(
+             Column(
               children: [
                 Container(
                   alignment: Alignment.topCenter,
-                  margin: const EdgeInsets.only(bottom: 15.3),
+                  //margin: const EdgeInsets.only(bottom: 15.3),
                   child: BasicText(
                     title: "Login Page",
                     color: Colors.indigo.shade600,
@@ -146,6 +147,7 @@ class _LoginState extends State<Login> {
                           status!=null?getText():Container(
                             margin: const EdgeInsets.only(top: 4.3),
                           ),
+                          //const SizedBox(height: 20,),
                           Row(
                             children: [
                               const Text(
@@ -180,7 +182,7 @@ class _LoginState extends State<Login> {
                       ),
                     )),
               ],
-            ) )
+            )
           ],
         ),
       )
