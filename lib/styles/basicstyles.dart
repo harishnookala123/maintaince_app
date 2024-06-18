@@ -38,6 +38,7 @@ class Textfield extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+        textCapitalization: TextCapitalization.none,
         controller: controller,
         keyboardType: keyboardType,
         onChanged: onChanged,

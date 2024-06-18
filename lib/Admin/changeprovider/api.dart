@@ -11,7 +11,7 @@ class ApiService {
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
 
     if (response.statusCode == 200) {
-      print(response.body);
+
       var value = Admin.fromJson(json.decode(response.body));
        return value;
     } else {

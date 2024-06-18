@@ -1,6 +1,3 @@
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/Model/adminRegistartion.dart';
 import 'package:maintaince_app/Admin/changeprovider/adminprovider.dart';
@@ -8,6 +5,7 @@ import 'package:maintaince_app/styles/basicstyles.dart';
 import '../changeprovider/api.dart';
 import 'coAdminDetails.dart';
 import 'flatlist.dart';
+
 class AdminScreen extends StatefulWidget {
   String? userid;
   AdminScreen({super.key, this.userid});
@@ -19,7 +17,6 @@ class _AdminScreenState extends State<AdminScreen> {
   @override
    void initState() {
     getDetails();
-    // TODO: implement initState
     super.initState();
   }
 AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();

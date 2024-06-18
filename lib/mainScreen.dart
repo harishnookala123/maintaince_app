@@ -108,11 +108,9 @@ class SelectRegisterScreen extends State<SelectRegister> {
     if (value == "Admin") {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const AdminRegistration()));
-    }  else if (value == "User") {
-      // Navigator.push(context,
-      //     MaterialPageRoute(builder: (context) => const UserRegistration()));
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) =>  AdminScreen()));
+    } else if (value == "User") {
+       Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const UserRegistration()));
     } else if (value == "Security") {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const SecurityRegistration()));

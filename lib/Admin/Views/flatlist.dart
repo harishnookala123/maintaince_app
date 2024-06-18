@@ -5,7 +5,6 @@ class FlatList extends StatefulWidget {
   int?noOfFlats;
   Admin? adminvalues;
    FlatList({super.key,this.noOfFlats,this.adminvalues  });
-
   @override
   State<FlatList> createState() => _FlatListState();
 }
@@ -13,12 +12,13 @@ class FlatList extends StatefulWidget {
 class _FlatListState extends State<FlatList> {
   @override
   Widget build(BuildContext context) {
+    Admin?useradmin = widget.adminvalues;
     return Scaffold(
       body: Column(
         children: [
           const SizedBox(height: 40,),
           BasicText(
-            title: widget.adminvalues!.apartname,
+            title: useradmin!.apartname,
             color: Colors.purple,
             fontSize: 18,
           ),
@@ -45,6 +45,9 @@ class _FlatListState extends State<FlatList> {
                     borderRadius: BorderRadius.circular(15.0), // Optional: for rounded corners
                   ),
                 child: Center(child: TextButton(
+                  style: TextButton.styleFrom(
+
+                  ),
                   child: Text(index.toString()),
                   onPressed: (){
 
