@@ -13,13 +13,15 @@ class FlatList extends StatefulWidget {
 class _FlatListState extends State<FlatList> {
   @override
   Widget build(BuildContext context) {
-
-    print("${widget.noOfFlats}Gawtwt");
     return Scaffold(
       body: Column(
         children: [
           const SizedBox(height: 40,),
-
+          BasicText(
+            title: widget.adminvalues!.apartname,
+            color: Colors.purple,
+            fontSize: 18,
+          ),
           Expanded(child:GridView.builder(
               physics: const ScrollPhysics(),
               itemCount: widget.noOfFlats,
