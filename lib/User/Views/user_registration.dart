@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
+
 
 class UserRegistration extends StatefulWidget {
   const UserRegistration({super.key});
@@ -18,6 +21,51 @@ class UserRegistrationState extends State<UserRegistration> {
   var password = TextEditingController();
   var permanentAddress = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+
+  Future<void> _sendDataToServer(String jsonUserData) async {
+    const String url = 'http://192.168.29.92:3000/newuserdata'; // Local server URL
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonUserData,
+      );
+
+      if (response.statusCode == 200) {
+        // Successfully registered
+        print('User registered successfully.');
+      } else {
+        // Error
+        print('Error registering user: ${response.body}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  void _registerUser() {
+    if (formKey.currentState!.validate()) {
+
+      Map<String,dynamic> userData = {
+        'appart_name': apartmentName.text,
+        'user_name': userName.text,
+        'flat_no': flatNumber.text,
+        'mobile_num': mobileNumber.text,
+        'email_id': emailId.text,
+        'password': password.text,
+        'user_type': "user",
+        'permenant_address': permanentAddress.text,
+      };
+      final String jsonUserData = jsonEncode(userData);
+      _sendDataToServer(jsonUserData);
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +281,7 @@ class UserRegistrationState extends State<UserRegistration> {
                                      borderRadius: BorderRadius.circular(25.0))),
                              onPressed: () {
                                if (formKey.currentState!.validate()) {
-                                 const UserRegistration();
+                                 _registerUser();
                                }
                              },
                              child: Text("Register",
@@ -247,7 +295,10 @@ class UserRegistrationState extends State<UserRegistration> {
              ))
         ),
     );
+
+
   }
 
-  // getUserRegistration() {}
+
+
 }
