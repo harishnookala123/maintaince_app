@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
 import '../../styles/basicstyles.dart';
 
-
 class AdminPersonal extends StatefulWidget {
   const AdminPersonal({super.key});
   @override
@@ -26,6 +25,8 @@ class _AdminPersonalState extends State<AdminPersonal> {
   bool? messageId;
 
   bool? message;
+
+  bool? flag;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,43 +45,40 @@ class _AdminPersonalState extends State<AdminPersonal> {
                 color: Colors.black.withOpacity(0.2),
                 child: Consumer<AdminRegistrationModel>(
                     builder: (context, registration, child) {
-                      return Center(
-                        child: SingleChildScrollView(
-                          child: SizedBox(
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width / 1.05,
-                            child: Card(
-                              elevation: 12.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16.5),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                            top: 2.4, bottom: 15.3),
-                                        child: Text(
-                                          "Personal Details",
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 18,
-                                            color: Colors.indigo,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
+                  return Center(
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.05,
+                        child: Card(
+                          elevation: 12.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        top: 2.4, bottom: 15.3),
+                                    child: Text(
+                                      "Personal Details",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 18,
+                                        color: Colors.indigo,
+                                        fontWeight: FontWeight.w500,
                                       ),
-                                      buildForm(registration)
-                                    ]),
-                              ),
-                            ),
+                                    ),
+                                  ),
+                                  buildForm(registration)
+                                ]),
                           ),
                         ),
-                      );
-                    })),
+                      ),
+                    ),
+                  );
+                })),
           ),
         ],
       ),
@@ -199,7 +197,8 @@ class _AdminPersonalState extends State<AdminPersonal> {
                     if (value!.isEmpty) {
                       return "Please Enter Password";
                     }
-                    const passwordPattern = r'^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$&*~]).{8,}$';
+                    const passwordPattern =
+                        r'^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$&*~]).{8,}$';
                     final regex = RegExp(passwordPattern);
                     if (!regex.hasMatch(value)) {
                       return 'capital letter, number, special character, 8 characters';
@@ -215,73 +214,80 @@ class _AdminPersonalState extends State<AdminPersonal> {
                     fontSize: 15.5,
                   ),
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 SizedBox(
-                  //width: MediaQuery.of(context).size.width/2.0,
+                    //width: MediaQuery.of(context).size.width/2.0,
                     child: Row(
-                      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 12.4),
-                          child: SizedBox(
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width / 1.8,
-                            child: Textfield(
-                              controller: apartmentId,
-                              text: "Apartment Id",
-                              keyboardType: TextInputType.text,
-                              validator: (value) {
-
-                              },
-                            ),
-                          ),
+                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(right: 12.4),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.8,
+                        child: Textfield(
+                          controller: apartmentId,
+                          text: "Apartment Id",
+                          keyboardType: TextInputType.text,
+                          validator: (value) {},
                         ),
-                        messageId==true?const Row(
-                          children: [
-                            Icon(Icons.verified_user_rounded,color: Colors.green,
-                             size: 30,
-                            ),
-                            Text("Verified",style: TextStyle(color: Colors.green,
-                             fontSize: 16
-                            ),)
-                          ],
-                        ):
-                        Expanded(child: SizedBox(
-                          width: 280,
-                          height: 50,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green.shade500
-                            ),
-                            onPressed: () async {
-                              setState(() {
-                                var data = getVerify(apartmentId.text);
-                              });
-
-                              messageId =  await postAdminId(apartmentId.text);
-                              print(messageId);
-                            },
-                            child: const Text("Verify",
-                              style: TextStyle(fontSize: 17,
-                                  color: Colors.white
+                      ),
+                    ),
+                    messageId == true
+                        ? const Row(
+                            children: [
+                              Icon(
+                                Icons.verified_user_rounded,
+                                color: Colors.green,
+                                size: 30,
+                              ),
+                              Text(
+                                "Verified",
+                                style: TextStyle(
+                                    color: Colors.green, fontSize: 16),
+                              )
+                            ],
+                          )
+                        : Expanded(
+                            child: SizedBox(
+                              width: 280,
+                              height: 50,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green.shade500),
+                                onPressed: () async {
+                                  await getVerify();
+                                },
+                                child: const Text(
+                                  "Verify",
+                                  style: TextStyle(
+                                      fontSize: 17, color: Colors.white),
+                                ),
                               ),
                             ),
                           ),
-                        ),),
-                      ],
-                    )
+                  ],
+                )),
+                message == false
+                    ? Container(
+                        child: messageId == false
+                            ? const Text("Apartment Id already Present ")
+                            : Container(),
+                      )
+                    : Container(
+                        margin: const EdgeInsets.only(top: 3.4),
+                        child: Text(
+                          message == true
+                              ? "Id should be atleast 4 charcters and minimum One number"
+                              : "",
+                          style: const TextStyle(
+                              color: Colors.red, fontSize: 10.5),
+                        ),
+                      ),
+                const SizedBox(
+                  height: 20,
                 ),
-                message==false?Container(child: messageId==false?const Text("Apartment Id already Present "):Text(""),):Container(
-                  margin: const EdgeInsets.only(top: 3.4),
-                  child: Text(message==true?"Id should be atleast 4 charcters and minimum One number":"",
-                  style: const TextStyle(color: Colors.red,
-                   fontSize: 10.5
-                  ),
-                  ),
-                ),
-                const SizedBox(height: 20,),
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -306,21 +312,22 @@ class _AdminPersonalState extends State<AdminPersonal> {
                   ),
                 ),
                 //Text(status!)
-                const SizedBox(height: 15,),
+                const SizedBox(
+                  height: 15,
+                ),
 
-                status != null ? Container(
-                    alignment: Alignment.center,
-                    child: Text(status!.toString(),
-                      style: const TextStyle(color: Colors.red,
-                          fontSize: 20
-                      ),
-                    )) : Container(),
-
-
+                status != null
+                    ? Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          status!.toString(),
+                          style:
+                              const TextStyle(color: Colors.red, fontSize: 20),
+                        ))
+                    : Container(),
               ],
             ),
           ),
-
         ],
       ),
     );
@@ -328,9 +335,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
 
   registerPost(AdminRegistrationModel registration) async {
     //AdminRegistration adminRegistration = AdminRegistration();
-    var headers = {
-      'Content-Type': 'application/json'
-    };
+    var headers = {'Content-Type': 'application/json'};
     var data = json.encode({
       "apartname": registration.apartName,
       "address": registration.apartAddress,
@@ -345,7 +350,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
     var dio = Dio();
     print(data);
     var response = await dio.request(
-      'http://192.168.29.231:3000/register',
+      'http://192.168.1.6:3000/register',
       options: Options(
         method: 'POST',
         headers: headers,
@@ -361,8 +366,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
         print(response.data["id"]);
       });
       return status;
-    }
-    else {
+    } else {
       print("Har");
       print(response.statusMessage);
     }
@@ -379,31 +383,35 @@ class _AdminPersonalState extends State<AdminPersonal> {
   }
 
   postAdminId(String apartId) async {
-    var headers = {
-      'Content-Type': 'application/json'
-    };
+    var headers = {'Content-Type': 'application/json'};
     var data = json.encode({"adminId": apartId});
     var dio = Dio();
     var response = await dio.request(
-      'http://192.168.29.231:3000/checkAdminId',
+      'http://192.168.1.6:3000/checkAdminId',
       options: Options(
         method: 'POST',
         headers: headers,
       ),
       data: data,
     );
-    if(response.statusCode==200){
-      messageId = response.data["message"];
-      return messageId;
+    if (response.statusCode == 200) {
+      setState(() {
+        messageId = response.data["message"];
+      });
     }
   }
 
-   getVerify(String? data) {
-     final RegExp hasNumber = RegExp(r'\d');
-      if (data!.length >= 4 && hasNumber.hasMatch(data)) {
-          message = false;
-      }else{
+  getVerify() async {
+    final RegExp hasNumber = RegExp(r'\d');
+    if (apartmentId.text.length >= 4 && hasNumber.hasMatch(apartmentId.text)) {
+      await postAdminId(apartmentId.text);
+      setState(() {
+        message = false;
+      });
+    } else {
+      setState(() {
         message = true;
-      }
-   }
+      });
+    }
+  }
 }
