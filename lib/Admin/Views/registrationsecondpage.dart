@@ -4,9 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/changeprovider/adminprovider.dart';
+import 'package:maintaince_app/login.dart';
 import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
 import '../../styles/basicstyles.dart';
+import 'adminscreen.dart';
 
 class AdminPersonal extends StatefulWidget {
   const AdminPersonal({super.key});
@@ -271,18 +273,25 @@ class _AdminPersonalState extends State<AdminPersonal> {
                 )),
                 message == false
                     ? Container(
+                       margin: const EdgeInsets.only(top: 5.3),
                         child: messageId == false
-                            ? const Text("Apartment Id already Present ")
+                            ? const Text("Apartment Id already Present ",
+                         style: TextStyle(color: Colors.red,
+                          fontSize: 14.5
+                         ),
+                        )
                             : Container(),
                       )
                     : Container(
                         margin: const EdgeInsets.only(top: 3.4),
                         child: Text(
                           message == true
-                              ? "Id should be atleast 4 charcters and minimum One number"
+                              ? "Id should be atleast 4 charcters and minimum "
+                              "One number & "
+                              "One alphabet"
                               : "",
                           style: const TextStyle(
-                              color: Colors.red, fontSize: 10.5),
+                              color: Colors.red, fontSize: 11.5),
                         ),
                       ),
                 const SizedBox(
@@ -299,9 +308,13 @@ class _AdminPersonalState extends State<AdminPersonal> {
                       ),
                     ),
                     onPressed: () async {
-                      if (personalKey.currentState!.validate()) {
+                      if (personalKey.currentState!.validate()&&messageId==true) {
                         status = await registerPost(registration);
                         navigateToNextPage(status);
+                      }else{
+                        setState(() {
+                          message = true;
+                        });
                       }
                     },
                     child: BasicText(
@@ -345,12 +358,13 @@ class _AdminPersonalState extends State<AdminPersonal> {
       "phonenumber": registration.phone.toString(),
       "password": registration.password,
       "user_type": "admin",
-      "userid": "A${registration.name}",
+      "adminId": "A${registration.name}",
+      "apartId": apartmentId.text,
     });
     var dio = Dio();
-    print(data);
+
     var response = await dio.request(
-      'http://192.168.1.6:3000/register',
+      'http://192.168.29.231:3000/register',
       options: Options(
         method: 'POST',
         headers: headers,
@@ -373,12 +387,12 @@ class _AdminPersonalState extends State<AdminPersonal> {
   }
 
   navigateToNextPage(String? status) {
-    if (status == "User registered successfully") {
-      /* Provider.of<AdminRegistrationModel>(
+    if (status == "Admin is registered") {
+       Provider.of<AdminRegistrationModel>(
           context,
           listen: false);
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context)=>const Homepage()));*/
+          builder: (context)=> const Login()));
     }
   }
 
@@ -387,7 +401,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
     var data = json.encode({"adminId": apartId});
     var dio = Dio();
     var response = await dio.request(
-      'http://192.168.1.6:3000/checkAdminId',
+      'http://192.168.29.231:3000/checkAdminId',
       options: Options(
         method: 'POST',
         headers: headers,
@@ -402,13 +416,14 @@ class _AdminPersonalState extends State<AdminPersonal> {
   }
 
   getVerify() async {
-    final RegExp hasNumber = RegExp(r'\d');
-    if (apartmentId.text.length >= 4 && hasNumber.hasMatch(apartmentId.text)) {
+    const pattern = r'^(?=.*[a-zA-Z])(?=.*\d)(?=(?:[^a-zA-Z]*[a-zA-Z])).{1,}$';
+    final regExp = RegExp(pattern);
+    if (regExp.hasMatch(apartmentId.text)) {
       await postAdminId(apartmentId.text);
       setState(() {
         message = false;
       });
-    } else {
+    } else if(!regExp.hasMatch(apartmentId.text)) {
       setState(() {
         message = true;
       });

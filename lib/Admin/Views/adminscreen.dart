@@ -14,6 +14,7 @@ class AdminScreen extends StatefulWidget {
 }
 
 class _AdminScreenState extends State<AdminScreen> {
+  Map<String,dynamic>? data;
   @override
    void initState() {
     getDetails();
@@ -28,26 +29,33 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
       home: Scaffold(
         appBar: AppBar(
          centerTitle: true,
-          title: const Column(
+          title:  Column(
             children: [
              // SizedBox(height: 15),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'Apartment Name',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Text(
-                '20,000',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-                textAlign: TextAlign.center,
-              ),
+               FutureBuilder<Admin?>(
+                   future:ApiService().getUserById(widget.userid!) ,
+                   builder: (context,snap){
+                     if(snap.hasData){
+                       var data = snap.data;
+                       return Container(
+                         margin: const EdgeInsets.only(left: 14.3,),
+                         child: Row(
+                          // mainAxisAlignment: MainAxisAlignment.center,
+                           children: [
+                            BasicText(
+                              title: "Apartment Name: -  ",
+                              color: Colors.black,
+                              fontSize: 13.4,
+                            ),
+                           BasicText(
+                            title: data!.apartname,
+                            color: Colors.green,
+                          )
+                           ],
+                         ),
+                       );
+                     }return Container();
+                   }),
             ],
           ),
         ),
@@ -55,10 +63,7 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
             //backgroundColor: Colors.black,
         ),
        // backgroundColor: Colors.white,
-        body: ListView(
-          shrinkWrap: true,
-          children: [
-            FutureBuilder<Admin?>(
+        body: FutureBuilder<Admin?>(
                 future: ApiService().getUserById(widget.userid!),
                 builder:(context,snap){
                if(snap.hasData){
@@ -81,10 +86,16 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
                      },
                    ),
                  );
-               }return Container();
+               }return   const Column(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 //crossAxisAlignment: CrossAxisAlignment.center,
+                 children: [
+                   CircularProgressIndicator(
+                     color: Colors.green,
+                   )
+                 ],
+               );
             })
-          ],
-        ),
       ),
     );
   }
@@ -93,7 +104,12 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
     print("Harei");
     final apiService = ApiService();
     final fetchedUser = await apiService.getUserById(widget.userid!);
-    return fetchedUser;
+    print(fetchedUser!.apartname);
+    data = {
+      "apartname": fetchedUser.apartname
+    };
+
+
   }
 
 }
