@@ -5,6 +5,7 @@ import 'package:maintaince_app/Admin/changeprovider/adminprovider.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import '../changeprovider/api.dart';
 import 'coAdminDetails.dart';
+import 'drawerdetails.dart';
 import 'flatlist.dart';
 
 class AdminScreen extends StatefulWidget {
@@ -24,6 +25,7 @@ class _AdminScreenState extends State<AdminScreen> {
 AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
   @override
   Widget build(BuildContext context) {
+    print(widget.userid);
     var height = MediaQuery.of(context).size.height/7.0;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -39,19 +41,16 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
                      if(snap.hasData){
                        var data = snap.data;
                        return Container(
-                         margin: const EdgeInsets.only(left: 14.3,),
-                         child: Row(
+                         margin: const EdgeInsets.only(left: 12.3,),
+                         child: Column(
                           // mainAxisAlignment: MainAxisAlignment.center,
                            children: [
-                            BasicText(
-                              title: "Apartment Name: -  ",
-                              color: Colors.black,
-                              fontSize: 13.4,
-                            ),
-                           BasicText(
-                            title: data!.apartname,
-                            color: Colors.green,
-                          )
+                           SizedBox(
+                             child: BasicText(
+                               fontSize: 19.2,
+                              title: data!.apartname,
+                              color: Colors.green,),
+                           )
                            ],
                          ),
                        );
@@ -61,6 +60,7 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
           ),
         ),
         drawer: const Drawer(
+          child: DrawerDetails(),
             //backgroundColor: Colors.black,
         ),
        // backgroundColor: Colors.white,
@@ -87,7 +87,7 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
                      },
                    ),
                  );
-               }return   const Column(
+               }return const Column(
                  mainAxisAlignment: MainAxisAlignment.center,
                  //crossAxisAlignment: CrossAxisAlignment.center,
                  children: [
@@ -102,7 +102,6 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
   }
 
   getDetails() async {
-    print("Harei");
     final apiService = ApiService();
     final fetchedUser = await apiService.getUserById(widget.userid!);
     print(fetchedUser!.apartname);
@@ -180,7 +179,11 @@ class _GridItemState extends State<GridItem> {
      }else if(index==1){
        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CoAdminDetails()));
      }else if(index==2){
-       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserDetails()));
+       var adminvalues =  await ApiService().getUserById(widget.id!);
+        var apartid = adminvalues!.apartId;
+       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserDetails(
+         apartid:apartid
+       )));
      }
    }
 }

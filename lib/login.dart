@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/changeprovider/coadminprovider.dart';
+import 'package:maintaince_app/User/Views/userscreen.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
 import 'Admin/Views/adminscreen.dart';
@@ -217,11 +218,16 @@ class _LoginState extends State<Login> {
          if(status == "Login Successful"){
            emailController.clear();
            passwordController.clear();
-          print(res["name"]);
-          print(userid);
+           var usertype = res["usertype"];
            status = "";
+           if(usertype=="Owner"||usertype=="Tenant"){
+             Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=>UserScreen(
+               name: res["name"],
+             )));
+           }else if(usertype=="admin"){
             Navigator.pushReplacement(context, MaterialPageRoute(
                builder: (context) => AdminScreen(userid:userid)));
+           }
          }
        });
      }

@@ -5,8 +5,9 @@ class Admin {
   int? noOfFlats;
   String? mobilenumber;
   String? address;
-  String? userid;
-
+  String? adminId;
+  String? apartId;
+  bool?pressed;
   Admin(
       {this.id,
         this.apartname,
@@ -14,7 +15,10 @@ class Admin {
         this.noOfFlats,
         this.mobilenumber,
         this.address,
-        this.userid});
+        this.adminId,
+        this.apartId,
+        this.pressed,
+      });
 
   Admin.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -23,18 +27,22 @@ class Admin {
     noOfFlats = json['noOfFlats'];
     mobilenumber = json['mobilenumber'];
     address = json['address'];
-    userid = json['userid'];
+    adminId = json['userid'];
+    apartId = json["apartId"];
+    pressed = false;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['apartname'] = this.apartname;
-    data['adminname'] = this.adminname;
-    data['noOfFlats'] = this.noOfFlats;
-    data['mobilenumber'] = this.mobilenumber;
-    data['address'] = this.address;
-    data['userid'] = this.userid;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['apartname'] = apartname;
+    data['adminname'] = adminname;
+    data['noOfFlats'] = noOfFlats;
+    data['mobilenumber'] = mobilenumber;
+    data['address'] = address;
+    data['adminId'] = adminId;
+    data["apartId"] = apartId;
+    data["pressed"] = pressed;
     return data;
   }
 }

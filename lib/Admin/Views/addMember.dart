@@ -23,7 +23,7 @@ class AddMemberState extends State<AddMember> {
         resizeToAvoidBottomInset: true,
         body: BackGroundImage(
           child: SizedBox(
-              height: MediaQuery.of(context).size.height/1.5,
+              height: MediaQuery.of(context).size.height/1.75,
               child: Consumer<CoAdmin>(
                 builder: (context,admin,child){
                   return Column(
@@ -150,8 +150,7 @@ class AddMemberState extends State<AddMember> {
                                     child: TextButton(
                                       style: TextButton.styleFrom(),
                                       onPressed: () {
-                                        if(formKey.currentState!.validate()){
-                                        }
+
                                       },
                                       child:  Text(
                                           "Add Member",
