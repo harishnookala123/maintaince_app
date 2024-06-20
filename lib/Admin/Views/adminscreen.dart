@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/Model/adminRegistartion.dart';
+import 'package:maintaince_app/Admin/Views/userdetails.dart';
 import 'package:maintaince_app/Admin/changeprovider/adminprovider.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import '../changeprovider/api.dart';
@@ -178,6 +179,8 @@ class _GridItemState extends State<GridItem> {
            (context)=> FlatList(noOfFlats: flats, adminvalues:admindetails)));
      }else if(index==1){
        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CoAdminDetails()));
+     }else if(index==2){
+       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserDetails()));
      }
    }
 }

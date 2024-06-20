@@ -15,7 +15,7 @@ class BasicText extends StatelessWidget {
           color: color,
           letterSpacing: 0.5,
           fontSize: fontSize,
-          fontWeight: FontWeight.w400),
+          fontWeight: FontWeight.w500),
     );
   }
 }

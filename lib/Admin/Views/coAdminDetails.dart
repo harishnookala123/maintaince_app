@@ -32,13 +32,13 @@ class CoAdminDetails extends StatelessWidget {
                    ElevatedButton(
                      onPressed: () {},
                      style: ElevatedButton.styleFrom(
-                       side: BorderSide(color: Colors.black38, width: 1),
+                       side: const BorderSide(color: Colors.black38, width: 1),
                        elevation: 2,
                        shape: RoundedRectangleBorder(
                          borderRadius: BorderRadius.circular(14),
                        ),
                        backgroundColor: Colors.orange,
-                       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                      ),
                      child: BasicText(
                        title: 'Co-Admin info',

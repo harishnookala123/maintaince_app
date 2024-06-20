@@ -114,8 +114,8 @@ class _AdminPersonalState extends State<AdminPersonal> {
                   onChanged: (value) {
                     registration.setName(value);
                   },
-                  validator: (value) {
-                    if (value!.isEmpty) {
+                  validator: (value){
+                    if(value!.isEmpty){
                       return "Please Enter Name";
                     }
                     return null;
@@ -138,13 +138,13 @@ class _AdminPersonalState extends State<AdminPersonal> {
                   onChanged: (value) {
                     registration.setEmail(value);
                   },
-                  validator: (value) {
-                    if (value!.isEmpty) {
+                  validator: (value){
+                    if(value!.isEmpty){
                       return "Please Enter Email address";
                     }
-                    if (value.isNotEmpty) {
+                    if(value.isNotEmpty){
                       final bool isValid = EmailValidator.validate(email.text);
-                      if (isValid == false) {
+                      if(isValid==false){
                         return "Please Enter valid Email address";
                       }
                     }
@@ -308,7 +308,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
                       ),
                     ),
                     onPressed: () async {
-                      if (personalKey.currentState!.validate()&&messageId==true) {
+                      if(personalKey.currentState!.validate()){
                         status = await registerPost(registration);
                         navigateToNextPage(status);
                       }else{
@@ -341,6 +341,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
               ],
             ),
           ),
+
         ],
       ),
     );
@@ -364,7 +365,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
     var dio = Dio();
 
     var response = await dio.request(
-      'http://192.168.29.231:3000/register',
+      'http://192.168.29.92:3000/register',
       options: Options(
         method: 'POST',
         headers: headers,
@@ -401,7 +402,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
     var data = json.encode({"adminId": apartId});
     var dio = Dio();
     var response = await dio.request(
-      'http://192.168.29.231:3000/checkAdminId',
+      'http://192.168.29.92:3000/checkAdminId',
       options: Options(
         method: 'POST',
         headers: headers,
