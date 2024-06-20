@@ -169,7 +169,6 @@ class _GridItemState extends State<GridItem> {
     );
   }
 
-
   getNavigate(int index, Admin? adminvalues) async {
    var flats = adminvalues!.noOfFlats;
    var admindetails = adminvalues;
