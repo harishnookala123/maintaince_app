@@ -515,7 +515,7 @@ class UserRegistrationState extends State<UserRegistration> {
     var data = json.encode({"adminId": apartId});
     var dio = Dio();
     var response = await dio.request(
-      'http://192.168.29.231:3000/checkAdminId',
+      'http://192.168.1.6:3000/checkAdminId',
       options: Options(
         method: 'POST',
         headers: headers,

@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:maintaince_app/Admin/Views/pendingreq.dart';
+import 'package:maintaince_app/Admin/Views/rejectedinfo.dart';
+import 'package:maintaince_app/Admin/Views/userinfo.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 
@@ -25,6 +28,7 @@ class _UserDetailsState extends State<UserDetails>
 
   @override
   Widget build(BuildContext context) {
+    var id = widget.apartid;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
         home: DefaultTabController(
@@ -51,16 +55,20 @@ class _UserDetailsState extends State<UserDetails>
               ),
             ],
           ), // TabBar
-          title: const Text('User Details'),
+          title: BasicText(
+            title: "User Details",
+            fontSize: 16.4,
+            color: Colors.black,
+          ),
           backgroundColor: Colors.orangeAccent.shade100,
           centerTitle: true,
           //backgroundColor: Colors.green,
         ), // AppBar,
-        body: const TabBarView(
+        body:  TabBarView(
           children: [
-            Text("Hai"),
-            Text("dgd"),
-            Text("Rejected")
+            PendingRequests(apartid:id),
+            Userinfo(),
+            Rejectedinfo(),
           ],
         ),
 
