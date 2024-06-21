@@ -6,6 +6,7 @@ class BasicText extends StatelessWidget {
   String? title;
   Color? color;
   double? fontSize;
+
   BasicText({super.key, this.color, this.title, this.fontSize});
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class BasicText extends StatelessWidget {
           color: color,
           letterSpacing: 0.5,
           fontSize: fontSize,
-          fontWeight: FontWeight.w500),
+          fontWeight: FontWeight.w400),
     );
   }
 }

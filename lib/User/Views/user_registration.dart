@@ -480,6 +480,7 @@ class UserRegistrationState extends State<UserRegistration> {
           status = response.data["status"];
         });
         if (status == "User is registered") {
+          // ignore: use_build_context_synchronously
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(

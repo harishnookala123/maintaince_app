@@ -13,7 +13,8 @@ class Users {
   String? apartId;
   String? adminId;
   String? approval;
-
+  bool?ispressed;
+  String?remarks;
   Users(
       {this.id,
         this.appartName,
@@ -26,7 +27,10 @@ class Users {
         this.permenantAddress,
         this.apartId,
         this.adminId,
-        this.approval});
+        this.approval,
+        this.ispressed,
+        this.remarks
+      });
 
   Users.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -41,6 +45,9 @@ class Users {
     apartId = json['apartId'];
     adminId = json['adminId'];
     approval = json['approval'];
+    ispressed = false;
+    remarks = json['remarks'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -57,6 +64,8 @@ class Users {
     data['apartId'] = apartId;
     data['adminId'] = adminId;
     data['approval'] = approval;
+    data['ispressed'] = ispressed;
+    data['remarks'] = remarks;
     return data;
   }
 }

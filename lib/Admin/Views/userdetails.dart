@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:maintaince_app/Admin/Views/pendingreq.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:maintaince_app/Admin/Views/pendingrequests.dart';
 import 'package:maintaince_app/Admin/Views/rejectedinfo.dart';
 import 'package:maintaince_app/Admin/Views/userinfo.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
@@ -32,43 +33,47 @@ class _UserDetailsState extends State<UserDetails>
     return MaterialApp(
       debugShowCheckedModeBanner: false,
         home: DefaultTabController(
+          animationDuration: const Duration(seconds: 3),
       length: 3,
       child: Scaffold(
         appBar: AppBar(
           bottom:  TabBar(
+            unselectedLabelColor: Colors.white,
+            labelStyle: GoogleFonts.abel(
+              fontWeight: FontWeight.w900,
+              fontSize: 17
+            ),
+            labelColor: Colors.deepOrangeAccent,
+            indicatorColor: Colors.pink.shade200,
+            indicatorSize: TabBarIndicatorSize.label,
             tabs: [
               Tab(child: BasicText(
                 title: "Pending",
-                fontSize: 16,
+
               )),
               Tab(
                 child: BasicText(
                   title: "User info",
-                  fontSize: 16,
+
                 ),
               ),
               Tab(
                 child: BasicText(
-                  fontSize: 16,
+
                   title: "Rejected",
                 ),
               ),
             ],
           ), // TabBar
-          title: BasicText(
-            title: "User Details",
-            fontSize: 16.4,
-            color: Colors.black,
-          ),
-          backgroundColor: Colors.orangeAccent.shade100,
+          backgroundColor: Colors.blue.shade200,
           centerTitle: true,
           //backgroundColor: Colors.green,
         ), // AppBar,
         body:  TabBarView(
           children: [
             PendingRequests(apartid:id),
-            Userinfo(),
-            Rejectedinfo(),
+            Userinfo(apartid:id),
+            RejectedInfo(apartid:id),
           ],
         ),
 
@@ -76,3 +81,5 @@ class _UserDetailsState extends State<UserDetails>
     ));
   }
 }
+
+
