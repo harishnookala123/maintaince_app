@@ -22,6 +22,7 @@ class _PendingRequestsState extends State<PendingRequests> {
   void initState() {
     super.initState();
     futureUsers = ApiService().getUsers(widget.apartid!, "Pending");
+    print(futureUsers);
   }
 
   void refreshUsers() {
@@ -38,6 +39,7 @@ class _PendingRequestsState extends State<PendingRequests> {
         builder: (context, snap) {
           if (snap.hasData) {
             var users = snap.data;
+            print(users);
             return Container(
               margin: const EdgeInsets.all(12.3),
               child: users!.isNotEmpty
@@ -265,9 +267,8 @@ class _PendingRequestsState extends State<PendingRequests> {
     _listKey.currentState!.removeItem(
       index,
           (context, animation) => _buildListItem(context, index, [removedUser], animation),
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 2),
     );
-
     setState(() {
       users.removeAt(index);
     });

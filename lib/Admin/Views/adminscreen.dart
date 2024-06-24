@@ -63,7 +63,7 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
           child: DrawerDetails(),
             //backgroundColor: Colors.black,
         ),
-       // backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         body: FutureBuilder<Admin?>(
                 future: ApiService().getUserById(widget.userid!),
                 builder:(context,snap){
