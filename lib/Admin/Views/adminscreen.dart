@@ -59,8 +59,8 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
             ],
           ),
         ),
-        drawer: const Drawer(
-          child: DrawerDetails(),
+        drawer:  Drawer(
+          child: DrawerDetails(adminid:widget.userid),
             //backgroundColor: Colors.black,
         ),
         backgroundColor: Colors.white,

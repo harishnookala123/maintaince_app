@@ -264,7 +264,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
                                 child: const Text(
                                   "Verify",
                                   style: TextStyle(
-                                      fontSize: 17, color: Colors.white),
+                                      fontSize: 16, color: Colors.white),
                                 ),
                               ),
                             ),
