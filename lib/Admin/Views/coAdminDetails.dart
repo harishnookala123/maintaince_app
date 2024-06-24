@@ -25,61 +25,66 @@ class CoAdminDetails extends StatelessWidget {
                   fontSize: 20,
                   color: Colors.black,
                 ),
-                // Spacer(flex: 3), // Adds space between the text and button
-             Expanded(
-               child: Column(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 children: [
-                   ElevatedButton(
-                     onPressed: () {},
-                     style: ElevatedButton.styleFrom(
-                       side: const BorderSide(color: Colors.black38, width: 1),
-                       elevation: 2,
-                       shape: RoundedRectangleBorder(
-                         borderRadius: BorderRadius.circular(14),
-                       ),
-                       backgroundColor: Colors.orange,
-                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                     ),
-                     child: BasicText(
-                       title: 'Co-Admin info',
-                       fontSize: 16,
-                       color: Colors.white,
-               
-                     ),
-                   ),
-                   const SizedBox(
-                     height: 14,
-                   ),
-                   ElevatedButton(
-                     onPressed: () {
-                       Navigator.push(context,
-                           MaterialPageRoute(builder: (context) =>  const AddMember()));
-                     },
-                     style: ElevatedButton.styleFrom(
-                       side: const BorderSide(color: Colors.black38, width: 1),
-                       elevation: 2,
-                       shape: RoundedRectangleBorder(
-                         borderRadius: BorderRadius.circular(14),
+                const DataCard(
+                    title: 'Co_admin',
+                    subtitle: 'John Doe',
+                    description: 'contact me'
+                )
 
-                       ),
-                       backgroundColor: Colors.orange,
-                       padding: const EdgeInsets.symmetric(horizontal: 27, vertical: 12),
-                     ),
-                     child: BasicText(
-                       title: 'Add Member',
-                       fontSize: 16,
-                       color: Colors.white,
-               
-                     ),
-                   ),
-                 ],
-               ),
-             ),
-                // Spacer(flex: 3),
               ],
             ),
           ),
         ));
   }
 }
+
+class DataCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String description;
+
+  const DataCard({super.key,
+    required this.title,
+    required this.subtitle,
+    required this.description,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 3,
+      margin: const EdgeInsets.all(16),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          // mainAxisSize: MainAxisSize.min,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.grey[600],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              description,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    }
+  }
