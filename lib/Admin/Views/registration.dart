@@ -150,28 +150,7 @@ class _AdminRegistrationState extends State<AdminRegistration> {
                   },
                 ),
                 const SizedBox(height: 10),
-                Container(
-                  margin: const EdgeInsets.only(left: 15.3),
-                  child: BasicText(
-                    title: "No of Flats : - ",
-                    color: Colors.black,
-                    fontSize: 15.5,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Textfield(
-                  keyboardType: TextInputType.number,
-                  controller: noOfFlats,
-                  text: "Enter no Of Flats",
-                  onChanged: (value) {
-                    registration.setNoOfFlats(value);
-                  },
-                  validator: (value){
-                    if(value!.isEmpty){
-                      return "Please Enter no Of Flats";
-                    }return null;
-                  },
-                ),
+
                 const SizedBox(height: 20),
                 Center(
                   child: ElevatedButton(

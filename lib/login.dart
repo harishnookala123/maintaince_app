@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:maintaince_app/Admin/changeprovider/coadminprovider.dart';
 import 'package:maintaince_app/User/Views/userscreen.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
 import 'Admin/Views/adminscreen.dart';
+import 'Admin/apart_details.dart';
 import 'Co_admin/Views/registration.dart';
 import 'mainScreen.dart';
 
@@ -210,7 +212,7 @@ class _LoginState extends State<Login> {
 
      if (response.statusCode == 200) {
      //  var value = Provider.of<CoAdmin>(context, listen: false) ;
-       setState(() {
+       setState(() async {
          Map<String,dynamic> res = response.data;
          var name = res["name"];
          var userid = res["userid"];
@@ -225,8 +227,10 @@ class _LoginState extends State<Login> {
                name: res["name"],
              )));
            }else if(usertype=="admin"){
+             var value = await ApiService().getUserById(userid);
+             var apartId = value!.apartId;
             Navigator.pushReplacement(context, MaterialPageRoute(
-               builder: (context) => AdminScreen(userid:userid)));
+               builder: (context) => DynamicTextFieldsPage()));
            }
          }
        });

@@ -212,7 +212,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
                 Container(
                   margin: const EdgeInsets.only(left: 15.3),
                   child: BasicText(
-                    title: "Apartment Id (ex: SSA123)",
+                    title: " Set Apartment Id (ex: SSA123)",
                     fontSize: 15.5,
                   ),
                 ),
@@ -353,7 +353,6 @@ class _AdminPersonalState extends State<AdminPersonal> {
     var data = json.encode({
       "apartname": registration.apartName,
       "address": registration.apartAddress,
-      "noOfFlats": int.parse(registration.noOfFlats),
       "name": registration.name,
       "email": registration.email,
       "phonenumber": registration.phone.toString(),
@@ -402,7 +401,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
     var data = json.encode({"adminId": apartId});
     var dio = Dio();
     var response = await dio.request(
-      'http://192.168.29.92:3000/checkAdminId',
+      'http://192.168.29.231:3000/checkAdminId',
       options: Options(
         method: 'POST',
         headers: headers,
