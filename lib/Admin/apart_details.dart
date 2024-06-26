@@ -11,6 +11,10 @@ class _DynamicTextFieldsPageState extends State<DynamicTextFieldsPage> {
   final List<Map<String, dynamic>> _textFieldControllers = [];
   String? selectBlock;
   List blocks= ["Multiple Blocks","Single Block"];
+  TextEditingController numberOfblocks = TextEditingController();
+  TextEditingController nameOfblock = TextEditingController();
+  TextEditingController floors = TextEditingController();
+  TextEditingController flatrange = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -141,37 +145,46 @@ class _DynamicTextFieldsPageState extends State<DynamicTextFieldsPage> {
                 child: ListView.builder(
                   itemCount: _textFieldControllers.length,
                   itemBuilder: (context, index) {
-                    return Row(
+                    return Column(
                       children: [
-                        Expanded(
-                          child: TextField(
-                            keyboardType: TextInputType.number,
-                            controller: _textFieldControllers[index]['from'],
-                            decoration: const InputDecoration(labelText: 'From'),
-                          ),
+                        const SizedBox(height: 15),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          child: Text(index==0?"1 Floor": "${index+1} Floor"),
                         ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: TextField(
-                            keyboardType: TextInputType.number,
-                            controller: _textFieldControllers[index]['to'],
-                            decoration: const InputDecoration(labelText: 'To'),
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            _textFieldControllers[index]['isAddButton']
-                                ? Icons.add
-                                : Icons.remove,
-                            color: _textFieldControllers[index]['isAddButton']
-                                ? Colors.green
-                                : Colors.red,
-                          ),
-                          onPressed: () {
-                            _textFieldControllers[index]['isAddButton']
-                                ? _toggleButton(index)
-                                : _removeTextFields(index);
-                          },
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                keyboardType: TextInputType.number,
+                                controller: _textFieldControllers[index]['from'],
+                                decoration: const InputDecoration(labelText: 'From'),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: TextField(
+                                keyboardType: TextInputType.number,
+                                controller: _textFieldControllers[index]['to'],
+                                decoration: const InputDecoration(labelText: 'To'),
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                _textFieldControllers[index]['isAddButton']
+                                    ? Icons.add
+                                    : Icons.remove,
+                                color: _textFieldControllers[index]['isAddButton']
+                                    ? Colors.green
+                                    : Colors.red,
+                              ),
+                              onPressed: () {
+                                _textFieldControllers[index]['isAddButton']
+                                    ? _toggleButton(index)
+                                    : _removeTextFields(index);
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     );
