@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
-import 'package:maintaince_app/Admin/Views/registration.dart';
-
 import '../Model/adminRegistartion.dart';
 import '../Model/usermodel.dart';
 
@@ -14,6 +12,7 @@ class ApiService {
 
     if (response.statusCode == 200) {
       var value = Admin.fromJson(json.decode(response.body));
+      print(response.body);
       return value;
     } else {
       return null;
@@ -65,6 +64,19 @@ class ApiService {
       return value;
     } else {
       return null;
+    }
+  }
+  static addingBlocks(String apartname, data) async {
+    final Dio dio = Dio();
+    final response = await dio.post(
+      'http://192.168.29.231:3000/approval/admin/apartments',
+      data: data,
+    );
+    if (response.statusCode == 200) {
+      var status = response.data["status"];
+      return status;
+    }else{
+
     }
   }
 }

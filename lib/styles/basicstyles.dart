@@ -109,6 +109,34 @@ class BackGroundImage extends StatelessWidget {
   }
 }
 
+class Blocks extends StatelessWidget{
+  TextEditingController? noOfFloors = TextEditingController();
+  TextEditingController? blockname = TextEditingController();
+  Blocks({super.key, this.noOfFloors,this.blockname});
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+      child: Column(
+        children: [
+          const SizedBox(height: 20,),
+          Textfield(
+            controller: noOfFloors,
+            text: "Enter no of Floors",
+            keyboardType: TextInputType.number,
+            validator: (value){
+              if(value!.isNotEmpty){
+                return "please enter no of blocks";
+              }
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+}
+
 
 class CommonTextField extends StatelessWidget {
   TextEditingController? firstName = TextEditingController();

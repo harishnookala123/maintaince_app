@@ -212,7 +212,7 @@ class _LoginState extends State<Login> {
 
      if (response.statusCode == 200) {
      //  var value = Provider.of<CoAdmin>(context, listen: false) ;
-       setState(() async {
+
          Map<String,dynamic> res = response.data;
          var name = res["name"];
          var userid = res["userid"];
@@ -229,11 +229,12 @@ class _LoginState extends State<Login> {
            }else if(usertype=="admin"){
              var value = await ApiService().getUserById(userid);
              var apartId = value!.apartId;
+             var adminId = value.adminId;
+             var apartname = value.apartname;
             Navigator.pushReplacement(context, MaterialPageRoute(
                builder: (context) => DynamicTextFieldsPage()));
            }
          }
-       });
      }
      else {
        setState(() {

@@ -10,7 +10,6 @@ import 'package:email_validator/email_validator.dart';
 import '../../styles/basicstyles.dart';
 import 'adminscreen.dart';
 
-
 class AdminPersonal extends StatefulWidget {
   const AdminPersonal({super.key});
   @override
@@ -153,8 +152,9 @@ class _AdminPersonalState extends State<AdminPersonal> {
                             child: SizedBox(
                               // width: 280,
                               // height: 50,
+                              height: MediaQuery.of(context).size.height/16.3,
                               child: Container(
-                                margin: EdgeInsets.only(left:6),
+                                margin: const EdgeInsets.only(left:6),
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.green.shade500),
@@ -164,7 +164,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
                                   child: const Text(
                                     "Verify",
                                     style: TextStyle(
-                                        fontSize: 16, color: Colors.white),
+                                        fontSize: 17, color: Colors.white),
                                   ),
                                 ),
                               ),
@@ -265,7 +265,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
     var dio = Dio();
 
     var response = await dio.request(
-      'http://192.168.29.92:3000/register',
+      'http://192.168.29.231:3000/register',
       options: Options(
         method: 'POST',
         headers: headers,
