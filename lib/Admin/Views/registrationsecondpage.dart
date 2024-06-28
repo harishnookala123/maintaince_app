@@ -10,6 +10,7 @@ import 'package:email_validator/email_validator.dart';
 import '../../styles/basicstyles.dart';
 import 'adminscreen.dart';
 
+
 class AdminPersonal extends StatefulWidget {
   const AdminPersonal({super.key});
   @override
@@ -17,7 +18,8 @@ class AdminPersonal extends StatefulWidget {
 }
 
 class _AdminPersonalState extends State<AdminPersonal> {
-  TextEditingController name = TextEditingController();
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -57,7 +59,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
                             borderRadius: BorderRadius.circular(16.5),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.all(12.0),
                             child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -98,124 +100,15 @@ class _AdminPersonalState extends State<AdminPersonal> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  margin: const EdgeInsets.only(left: 15.3),
-                  child: BasicText(
-                    title: "Admin Name : - ",
-                    color: Colors.black,
-                    fontSize: 15.5,
-                  ),
+                CommonTextField(
+                 firstName: firstName,
+                  lastName: lastName,
+                  email: email,
+                  phone: phone,
+                  password: password,
                 ),
                 const SizedBox(height: 10),
-                Textfield(
-                  keyboardType: TextInputType.text,
-                  controller: name,
-                  text: "Enter Your Name",
-                  onChanged: (value) {
-                    registration.setName(value);
-                  },
-                  validator: (value){
-                    if(value!.isEmpty){
-                      return "Please Enter Name";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  margin: const EdgeInsets.only(left: 15.3),
-                  child: BasicText(
-                    title: "Email : - ",
-                    color: Colors.black,
-                    fontSize: 15.5,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Textfield(
-                  keyboardType: TextInputType.text,
-                  controller: email,
-                  text: "Enter address",
-                  onChanged: (value) {
-                    registration.setEmail(value);
-                  },
-                  validator: (value){
-                    if(value!.isEmpty){
-                      return "Please Enter Email address";
-                    }
-                    if(value.isNotEmpty){
-                      final bool isValid = EmailValidator.validate(email.text);
-                      if(isValid==false){
-                        return "Please Enter valid Email address";
-                      }
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  margin: const EdgeInsets.only(left: 15.3),
-                  child: BasicText(
-                    title: "Phone number : - ",
-                    color: Colors.black,
-                    fontSize: 15.5,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Textfield(
-                  keyboardType: TextInputType.number,
-                  controller: phone,
-                  text: "Enter Phone number",
-                  onChanged: (value) {
-                    registration.setPhone(value);
-                  },
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please Enter phone number";
-                    }
-                    if (value.length != 10) {
-                      return "Enter Valid Phone number";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  margin: const EdgeInsets.only(left: 15.3),
-                  child: BasicText(
-                    title: "Password : - ",
-                    color: Colors.black,
-                    fontSize: 15.5,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Textfield(
-                  keyboardType: TextInputType.text,
-                  controller: password,
-                  text: "Enter Password",
-                  onChanged: (value) {
-                    registration.setPassword(value);
-                  },
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please Enter Password";
-                    }
-                    const passwordPattern =
-                        r'^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$&*~]).{8,}$';
-                    final regex = RegExp(passwordPattern);
-                    if (!regex.hasMatch(value)) {
-                      return 'capital letter, number, special character, 8 characters';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  margin: const EdgeInsets.only(left: 15.3),
-                  child: BasicText(
-                    title: " Set Apartment Id (ex: SSA123)",
-                    fontSize: 15.5,
-                  ),
-                ),
+
                 const SizedBox(
                   height: 10,
                 ),
@@ -225,7 +118,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
                   //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(right: 12.4),
+                     // margin: const EdgeInsets.only(left: 12.4),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width / 1.8,
                         child: Textfield(
@@ -237,34 +130,42 @@ class _AdminPersonalState extends State<AdminPersonal> {
                       ),
                     ),
                     messageId == true
-                        ? const Row(
-                            children: [
-                              Icon(
-                                Icons.verified_user_rounded,
-                                color: Colors.green,
-                                size: 30,
+                        ? Container(
+                      // margin: const EdgeInsets.only(left: 5),
+                          child:  const SizedBox(
+                            child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.verified_user_rounded,
+                                    color: Colors.green,
+                                    size: 25,
+                                  ),
+                                  Text(
+                                    "Verified",
+                                    style: TextStyle(
+                                        color: Colors.green, fontSize: 14),
+                                  )
+                                ],
                               ),
-                              Text(
-                                "Verified",
-                                style: TextStyle(
-                                    color: Colors.green, fontSize: 16),
-                              )
-                            ],
-                          )
+                          ),
+                        )
                         : Expanded(
                             child: SizedBox(
-                              width: 280,
-                              height: 50,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green.shade500),
-                                onPressed: () async {
-                                  await getVerify();
-                                },
-                                child: const Text(
-                                  "Verify",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.white),
+                              // width: 280,
+                              // height: 50,
+                              child: Container(
+                                margin: EdgeInsets.only(left:6),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.green.shade500),
+                                  onPressed: () async {
+                                    await getVerify();
+                                  },
+                                  child: const Text(
+                                    "Verify",
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ),
@@ -364,7 +265,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
     var dio = Dio();
 
     var response = await dio.request(
-      'http://192.168.29.231:3000/register',
+      'http://192.168.29.92:3000/register',
       options: Options(
         method: 'POST',
         headers: headers,

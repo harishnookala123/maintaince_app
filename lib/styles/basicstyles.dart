@@ -1,5 +1,7 @@
 import 'dart:ui';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BasicText extends StatelessWidget {
@@ -106,3 +108,166 @@ class BackGroundImage extends StatelessWidget {
     ]);
   }
 }
+
+
+class CommonTextField extends StatelessWidget {
+  TextEditingController? firstName = TextEditingController();
+  TextEditingController? lastName = TextEditingController();
+  TextEditingController? phone = TextEditingController();
+  TextEditingController? email = TextEditingController();
+  TextEditingController? password = TextEditingController();
+
+  CommonTextField ({super.key,
+    this.firstName,this.lastName,this.phone,this.email,this.password
+});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(left: 15.3),
+            child: BasicText(
+              title: "First Name : - ",
+              color: Colors.black,
+              fontSize: 15.5,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Textfield(
+            controller: firstName,
+            text: 'Enter First Name',
+            keyboardType: TextInputType.text,
+            validator: (value){
+              if(value!.isEmpty){
+                return "Please Enter First_Name";
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 10),
+          Container(
+            margin: const EdgeInsets.only(left: 15.3),
+            child: BasicText(
+              title: "Last Name : - ",
+              color: Colors.black,
+              fontSize: 15.5,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Textfield(
+            keyboardType: TextInputType.text,
+            controller: lastName,
+            text: "Enter Your Last_Name",
+            onChanged: (value) {
+            },
+            validator: (value){
+              if(value!.isEmpty){
+                return "Please Enter Last_Name";
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 10),
+          Container(
+            margin: const EdgeInsets.only(left: 15.3),
+            child: BasicText(
+              title: "Email : - ",
+              color: Colors.black,
+              fontSize: 15.5,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Textfield(
+            keyboardType: TextInputType.text,
+            controller: email,
+            text: "Enter address",
+            onChanged: (value) {
+            },
+            validator: (value){
+              if(value!.isEmpty){
+                return "Please Enter Email address";
+              }
+              if(value.isNotEmpty){
+                final bool isValid = EmailValidator.validate(email!.text);
+                if(isValid==false){
+                  return "Please Enter valid Email address";
+                }
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 10),
+          Container(
+            margin: const EdgeInsets.only(left: 15.3),
+            child: BasicText(
+              title: "Phone number : - ",
+              color: Colors.black,
+              fontSize: 15.5,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Textfield(
+            keyboardType: TextInputType.number,
+            controller: phone,
+            text: "Enter Phone number",
+            onChanged: (value) {
+            },
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Please Enter phone number";
+              }
+              if (value.length != 10) {
+                return "Enter Valid Phone number";
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 10),
+          Container(
+            margin: const EdgeInsets.only(left: 15.3),
+            child: BasicText(
+              title: "Password : - ",
+              color: Colors.black,
+              fontSize: 15.5,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Textfield(
+            keyboardType: TextInputType.text,
+            controller: password,
+            text: "Enter Password",
+            onChanged: (value) {
+            },
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Please Enter Password";
+              }
+              const passwordPattern =
+                  r'^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$&*~]).{8,}$';
+              final regex = RegExp(passwordPattern);
+              if (!regex.hasMatch(value)) {
+                return 'capital letter, number, special character, 8 characters';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 20),
+          Container(
+            margin: const EdgeInsets.only(left: 15.3),
+            child: BasicText(
+              title: " Set Apartment Id (ex: SSA123)",
+              fontSize: 15.5,
+            ),
+          ),
+        ],
+      ),
+
+    );
+  }
+}
+
