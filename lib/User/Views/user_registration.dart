@@ -339,6 +339,65 @@ class UserRegistrationState extends State<UserRegistration> {
     // print('Address: $address');
     // print('Type: $type');
   }
+
+  _registerUser() {
+    if (formKey.currentState!.validate()) {
+      Map<String, dynamic> userData = {
+        'appart_name': apartmentName.text,
+        'user_name': userName.text,
+        'flat_no': flatNumber.text,
+        'mobile_num': mobileNumber.text,
+        'email_id': emailId.text,
+        'password': password.text,
+        'user_type': selectedValue,
+        "apartId": apartmentId.text,
+        "userid": 'U${userName.text}',
+        'permenant_address': permanentAddress.text,
+        "approval": "Pending"
+      };
+
+      final String jsonUserData = json.encode(userData);
+      _sendDataToServer(jsonUserData);
+    }
+
+  }
+
+  Future<void> _sendDataToServer(String jsonUserData) async {
+    var headers = {'Content-Type': 'application/json'};
+    print(jsonUserData);
+
+    const String url =
+        'http://192.168.29.92:3000/registerUser'; // Local server URL
+    var dio = Dio();
+
+    try {
+      final response = await dio.request(url,
+          options: Options(
+            method: 'POST',
+            headers: headers,
+          ),
+          data: jsonUserData);
+
+      if (response.statusCode == 200) {
+        setState(() {
+          status = response.data["status"];
+        });
+        if (status == "User is registered") {
+          // ignore: use_build_context_synchronously
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => UserScreen(
+                    name: userName.text,
+                  )));
+        }
+      } else {
+        // Error
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
   getVerify() async {
     const pattern = r'^(?=.*[a-zA-Z])(?=.*\d)(?=(?:[^a-zA-Z]*[a-zA-Z])).{1,}$';
     final regExp = RegExp(pattern);
