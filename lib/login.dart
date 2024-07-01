@@ -7,7 +7,7 @@ import 'package:maintaince_app/User/Views/userscreen.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
 import 'Admin/Views/adminscreen.dart';
-import 'Admin/apart_details.dart';
+import 'Admin/Views/apart_details.dart';
 import 'Co_admin/Views/registration.dart';
 import 'mainScreen.dart';
 
@@ -136,7 +136,7 @@ class _LoginState extends State<Login> {
                               style: ElevatedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 37, vertical: 12),
-                                elevation: 2.5, // Adjust padding as needed
+                                elevation: 4.0, // Adjust padding as needed
                               ),
                               child: BasicText(
                                 title: "Login",
@@ -202,7 +202,7 @@ class _LoginState extends State<Login> {
      });
      var dio = Dio();
      var response = await dio.request(
-       'http://192.168.29.231:3000/login',
+       'http://192.168.1.6:3000/login',
        options: Options(
          method: 'POST',
          headers: headers,
@@ -214,8 +214,10 @@ class _LoginState extends State<Login> {
      //  var value = Provider.of<CoAdmin>(context, listen: false) ;
 
          Map<String,dynamic> res = response.data;
+         print(res);
          var name = res["name"];
          var userid = res["userid"];
+         print(userid);
          status =  res["status"];
          if(status == "Login Successful"){
            emailController.clear();
@@ -231,8 +233,9 @@ class _LoginState extends State<Login> {
              var apartId = value!.apartId;
              var adminId = value.adminId;
              var apartname = value.apartname;
+             print(apartname);
             Navigator.pushReplacement(context, MaterialPageRoute(
-               builder: (context) => DynamicTextFieldsPage()));
+               builder: (context) =>   const ApartmentDetails()));
            }
          }
      }

@@ -19,7 +19,7 @@ class _AdminScreenState extends State<AdminScreen> {
   Map<String,dynamic>? data;
   @override
    void initState() {
-    getDetails();
+   // getDetails();
     super.initState();
   }
 AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
@@ -34,7 +34,6 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
          centerTitle: true,
           title:  Column(
             children: [
-             // SizedBox(height: 15),
                FutureBuilder<Admin?>(
                    future:ApiService().getUserById(widget.userid!) ,
                    builder: (context,snap){
@@ -43,14 +42,12 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
                        return Container(
                          margin: const EdgeInsets.only(left: 12.3,),
                          child: Column(
-                          // mainAxisAlignment: MainAxisAlignment.center,
                            children: [
                            SizedBox(
                              child: BasicText(
                                fontSize: 19.2,
                               title: data!.apartname,
-                              color: Colors.green,),
-                           )
+                              color: Colors.green,),),
                            ],
                          ),
                        );
@@ -101,16 +98,6 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
     );
   }
 
-  getDetails() async {
-    final apiService = ApiService();
-    final fetchedUser = await apiService.getUserById(widget.userid!);
-    print(fetchedUser!.apartname);
-    data = {
-      "apartname": fetchedUser.apartname
-    };
-
-
-  }
 
 }
 

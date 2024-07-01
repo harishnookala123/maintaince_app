@@ -294,7 +294,6 @@ class CommonTextField extends StatelessWidget {
           ),
         ],
       ),
-
     );
   }
 }

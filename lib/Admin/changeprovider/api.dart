@@ -5,14 +5,15 @@ import '../Model/adminRegistartion.dart';
 import '../Model/usermodel.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.29.231:3000';
+  static const String baseUrl = 'http://192.168.1.6:3000';
 
   Future<Admin?> getUserById(String id) async {
+    var dio = Dio();
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
-
+    print(response);
     if (response.statusCode == 200) {
-      var value = Admin.fromJson(json.decode(response.body));
       print(response.body);
+      var value = Admin.fromJson(json.decode(response.body));
       return value;
     } else {
       return null;
@@ -23,7 +24,7 @@ class ApiService {
     var data = {"apartId": apartId};
     var dio = Dio();
     var response = await dio.request(
-      'http://192.168.29.231:3000/user/$apartId/$requests',
+      'http://192.168.1.6:3000/user/$apartId/$requests',
       options: Options(
         method: 'GET',
       ),
@@ -32,6 +33,7 @@ class ApiService {
 
     if (response.statusCode == 200) {
       List data = response.data['Users'];
+      print(data);
       return data.map((json) => Users.fromJson(json)).toList();
     } else {
       print(response.statusMessage);
@@ -39,12 +41,12 @@ class ApiService {
     return null;
   }
 
-  updateApproval(int userId, String approvalStatus, String text) async {
+   updateApproval(int userId, String approvalStatus, String text) async {
     print(text);
     try {
       final dio = Dio();
       final response = await dio.put(
-        'http://192.168.29.231:3000/approval/$userId',
+        'http://192.168.1.6:3000/approval/$userId',
         data: {'approval': approvalStatus,'remarks': text},
       );
 
@@ -57,7 +59,7 @@ class ApiService {
       print('Error: $e');
     }
   }
-  static userData(int userid) async {
+  static  userData(int userid) async {
     final response = await http.get(Uri.parse('$baseUrl/user/$userid'));
     if (response.statusCode == 200) {
       var value =  Users.fromJson(json.decode(response.body));

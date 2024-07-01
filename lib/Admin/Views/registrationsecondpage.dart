@@ -6,9 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/changeprovider/adminprovider.dart';
 import 'package:maintaince_app/login.dart';
 import 'package:provider/provider.dart';
-import 'package:email_validator/email_validator.dart';
 import '../../styles/basicstyles.dart';
-import 'adminscreen.dart';
 
 class AdminPersonal extends StatefulWidget {
   const AdminPersonal({super.key});
@@ -116,37 +114,31 @@ class _AdminPersonalState extends State<AdminPersonal> {
                     child: Row(
                   //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
-                     // margin: const EdgeInsets.only(left: 12.4),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width / 1.8,
-                        child: Textfield(
-                          controller: apartmentId,
-                          text: "Apartment Id",
-                          keyboardType: TextInputType.text,
-                          validator: (value) {},
-                        ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 1.8,
+                      child: Textfield(
+                        controller: apartmentId,
+                        text: "Apartment Id",
+                        keyboardType: TextInputType.text,
+                        validator: (value) {},
                       ),
                     ),
                     messageId == true
-                        ? Container(
-                      // margin: const EdgeInsets.only(left: 5),
-                          child:  const SizedBox(
-                            child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.verified_user_rounded,
-                                    color: Colors.green,
-                                    size: 25,
-                                  ),
-                                  Text(
-                                    "Verified",
-                                    style: TextStyle(
-                                        color: Colors.green, fontSize: 14),
-                                  )
-                                ],
-                              ),
-                          ),
+                        ? const SizedBox(
+                          child: Row(
+                              children: [
+                                Icon(
+                                  Icons.verified_user_rounded,
+                                  color: Colors.green,
+                                  size: 25,
+                                ),
+                                Text(
+                                  "Verified",
+                                  style: TextStyle(
+                                      color: Colors.green, fontSize: 14),
+                                )
+                              ],
+                            ),
                         )
                         : Expanded(
                             child: SizedBox(
@@ -254,18 +246,20 @@ class _AdminPersonalState extends State<AdminPersonal> {
     var data = json.encode({
       "apartname": registration.apartName,
       "address": registration.apartAddress,
-      "name": registration.name,
-      "email": registration.email,
-      "phonenumber": registration.phone.toString(),
-      "password": registration.password,
-      "user_type": "admin",
-      "adminId": "A${registration.name}",
+      "firstname": firstName.text,
+      "lastname": lastName.text,
+      "email": email.text,
+      "phonenumber": phone.text,
+      "password": password.text,
+      "admin_type": "admin",
+      "adminId": "A${firstName.text}",
       "apartId": apartmentId.text,
+      "user_id": "A${firstName.text}"
     });
     var dio = Dio();
 
     var response = await dio.request(
-      'http://192.168.29.231:3000/register',
+      'http://192.168.1.6:3000/registerAdmin',
       options: Options(
         method: 'POST',
         headers: headers,
@@ -282,8 +276,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
       });
       return status;
     } else {
-      print("Har");
-      print(response.statusMessage);
+       print("hai");
     }
   }
 
@@ -299,10 +292,10 @@ class _AdminPersonalState extends State<AdminPersonal> {
 
   postAdminId(String apartId) async {
     var headers = {'Content-Type': 'application/json'};
-    var data = json.encode({"adminId": apartId});
+    var data = json.encode({"apartment_code": apartId});
     var dio = Dio();
     var response = await dio.request(
-      'http://192.168.29.231:3000/checkAdminId',
+      'http://192.168.1.6:3000/checkAdminId',
       options: Options(
         method: 'POST',
         headers: headers,
@@ -312,6 +305,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
     if (response.statusCode == 200) {
       setState(() {
         messageId = response.data["message"];
+        print(messageId);
       });
     }
   }
