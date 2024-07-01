@@ -263,7 +263,7 @@ class UserRegistrationState extends State<UserRegistration> {
         DropdownButtonFormField<String>(
           isExpanded: true,
           decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 16),
+            contentPadding:  const EdgeInsets.only(left: 10),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
             ),
@@ -296,7 +296,7 @@ class UserRegistrationState extends State<UserRegistration> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: const EdgeInsets.only(left: 15.3, bottom: 8),
+          margin: const EdgeInsets.only(left: 15.3, bottom: 6),
           child: BasicText(
             title: "User Details : - ",
             color: Colors.black,
