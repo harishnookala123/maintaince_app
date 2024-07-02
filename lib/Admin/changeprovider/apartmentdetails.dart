@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class Details with ChangeNotifier {
+class ApartDetails with ChangeNotifier {
   String? _apartname;
 
   String? get apartName => _apartname;

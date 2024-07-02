@@ -12,7 +12,7 @@ void main() {
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => AdminRegistrationModel()),
       ChangeNotifierProvider(create: (context)=> CoAdmin()),
-      ChangeNotifierProvider(create: (context)=> Details())
+      ChangeNotifierProvider(create: (context)=> ApartDetails())
     ],
    child: const MyApp(),
   ),

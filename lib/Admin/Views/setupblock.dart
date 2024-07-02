@@ -33,9 +33,10 @@ class _SetUpblocksState extends State<SetUpblocks> {
   }
 
   void _toggleButton(int index) {
+
     setState(() {
       _textFieldControllers[index]['isAddButton'] = false; // Change "+" to "-"
-      _addNewTextFields(); // Add a new row of text fields
+      index+2<=int.parse(nooffloors.text)?_addNewTextFields():""; // Add a new row of text fields
     });
   }
 

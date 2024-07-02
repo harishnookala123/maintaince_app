@@ -1,13 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/Views/setupblock.dart';
-import 'package:maintaince_app/styles/basicstyles.dart';
-
+import 'package:provider/provider.dart';
+import '../changeprovider/apartmentdetails.dart';
 
 class BlockName extends StatefulWidget {
-  String? apartName;
-  int? noOfBlocks;
-  BlockName({super.key, this.apartName, this.noOfBlocks});
+  const BlockName({super.key});
 
   @override
   State<BlockName> createState() => _BlockNameState();
@@ -18,7 +16,8 @@ class _BlockNameState extends State<BlockName> {
   var nooffloors = TextEditingController();
   int? blocks;
   final List<Map<String, dynamic>> _textFieldControllers = [];
- List value = [];
+  List value = [];
+
   @override
   void initState() {
     super.initState();
@@ -62,10 +61,16 @@ class _BlockNameState extends State<BlockName> {
 
   @override
   Widget build(BuildContext context) {
-    int? numberofblocks = widget.noOfBlocks;
+    print("Hreg");
+    // int? numberofblocks = widget.noOfBlocks;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Apartment Information"),
+        centerTitle: true,
+        backgroundColor: Colors.orangeAccent,
+        title: const Text(
+          "Block Set up",
+          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+        ),
       ),
       body: Container(
         margin: const EdgeInsets.all(20),
@@ -73,33 +78,52 @@ class _BlockNameState extends State<BlockName> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 30),
-            GridView.builder(
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+            Consumer<ApartDetails>(
+              builder: (context, details, child) {
+                return GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
                     crossAxisSpacing: 16.0,
-                    childAspectRatio: 1.8,
-                    mainAxisSpacing: 12.0,
-                ),
-                itemCount: numberofblocks,
-                itemBuilder: (context, index) {
-                  value.insert(index, 'Setup ${String.fromCharCode(65 + index)}');
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 12.3),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 4.0,
+                    mainAxisSpacing: 6.0,
+                    childAspectRatio: 12.0 / 5.0,
+                  ),
+                  itemCount: details.block,
+                  itemBuilder: (context, index) {
+                    //value.insert(index, 'Setup ${String.fromCharCode(65 + index)}');
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 12.3),
+                      child: SizedBox(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 4.0,
+                            backgroundColor: const Color(0xff78d0f6),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SetUpblocks(
+                                  index: index,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'Setup ${String.fromCharCode(65 + index)}',
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
                       ),
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                              SetUpblocks(
-                                index: index,
-                              )));
-                        },
-                        child: Text('Setup ${String.fromCharCode(65 + index)}')),
-                  );
-                })
+                    );
+                  },
+                );
+              },
+            ),
           ],
         ),
       ),

@@ -1,11 +1,10 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:maintaince_app/Admin/Views/registration.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
+
 import '../changeprovider/apartmentdetails.dart';
 import 'blocknames.dart';
 
@@ -37,7 +36,8 @@ class _ApartmentDetailsState extends State<ApartmentDetails> {
   @override
   void initState() {
     super.initState();
-    _addNewTextFields(); // Add initial text fields
+    _addNewTextFields();// Add initial text fields
+
   }
 
   void _addNewTextFields() {
@@ -49,7 +49,6 @@ class _ApartmentDetailsState extends State<ApartmentDetails> {
       });
     });
   }
-
   void _toggleButton(int index) {
     setState(() {
       _textFieldControllers[index]['isAddButton'] = false; // Change "+" to "-"
@@ -75,214 +74,212 @@ class _ApartmentDetailsState extends State<ApartmentDetails> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.deepOrangeAccent.shade200,
-          centerTitle: true,
-          title: BasicText(
-            color: Colors.white,
-            title: "Apartment Details",
-            fontSize: 16.5,
-          ),
+      appBar: AppBar(
+        backgroundColor: Colors.deepOrangeAccent.shade200,
+        centerTitle: true,
+        title: BasicText(
+          color: Colors.white,
+          title: "Apartment Details",
+          fontSize: 16.5,
         ),
-        body: Container(
-          margin: const EdgeInsets.all(15.3),
-
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                Form(
-                  key: formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            BasicText(
-                              title: "Enter apartment name",
-                              fontSize: 15,
-                              color: Colors.black,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width / 1.25,
-                              child: Textfield(
-                                controller: apartname,
-                                keyboardType: TextInputType.text,
-                                text: "Enter apartment name",
-                                onChanged: (value) {
-                                 // apartment.setApartname(value);
-                                },
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter apartname";
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 7,
-                            ),
-                            BasicText(
-                              title: "Enter no of Blocks",
-                              fontSize: 15,
-                              color: Colors.black,
-                            ),
-                            const SizedBox(height: 7),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width / 1.25,
-                              child: Textfield(
-                                controller: noofblocks,
-                                keyboardType: TextInputType.number,
-                                text: "Enter no of Blocks",
-                                onChanged: (value) {
-                                  //apartment.setBlocks(int.parse(value));
-                                },
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter blocks";
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      BasicText(
-                        title: "Set Apartment Code (Ex : SS123) ",
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 1.6,
-                            child: Textfield(
-                              controller: apartmentcode,
-                              keyboardType: TextInputType.text,
-                              text: "Set Apartment Code",
-                              onChanged: (value) {
-                                setState(() {
-                                  //apartment.setApartmentCode(value);
-                                });
-                              },
-                            ),
-                          ),
-                          messageId == true
-                              ? const SizedBox(
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.verified_user_rounded,
-                                        color: Colors.green,
-                                        size: 25,
-                                      ),
-                                      Text(
-                                        "Verified",
-                                        style: TextStyle(
-                                            color: Colors.green, fontSize: 14),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              : Expanded(
-                                  child: SizedBox(
-                                    // width: 280,
-                                    // height: 50,
-                                    height:
-                                        MediaQuery.of(context).size.height / 16.3,
-                                    child: Container(
-                                      margin: const EdgeInsets.only(left: 6),
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                Colors.green.shade500),
-                                        onPressed: () async {
-                                         bool message =  await getVerify();
-                                         print(message.toString()+ "Values of verify");
-
-                                        },
-                                        child: const Text(
-                                          "Verify",
-                                          style: TextStyle(
-                                              fontSize: 17, color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                        ],
-                      ),
-                      message == false
-                          ? Container(
-                              margin: const EdgeInsets.only(top: 5.3),
-                              child: messageId == false
-                                  ? const Text(
-                                      "Apartment Id already Present ",
-                                      style: TextStyle(
-                                          color: Colors.red, fontSize: 14.5),
-                                    )
-                                  : Container(),
-                            )
-                          : Container(
-                              margin: const EdgeInsets.only(top: 3.4),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 1.5,
-                                child: Text(
-                                  message == true
-                                      ? "Id should be atleast 4 charcters and minimum "
-                                          "One number & "
-                                          "One alphabet"
-                                      : "",
-                                  style: const TextStyle(
-                                      color: Colors.red, fontSize: 11.5),
-                                ),
-                              )),
-
-                      Center(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            elevation: 3.0,
-                            minimumSize: const Size(120, 50),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context)=>BlockName()));
-                          },
-                          child: BasicText(
-                            title: "Continue",
-                            fontSize: 17,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-
-                    ],
-                  ),
-                )
-              ],
-            )
-          ),
+      ),
+      body: Consumer<ApartDetails>(
+      builder: (context,apartment,child) {
+        return Container(
+          margin: EdgeInsets.all(12.3),
+          child: ListView(
+                 shrinkWrap: true,
+                 children: [
+           Form(
+             key: formKey,
+             child: Column(
+               crossAxisAlignment: CrossAxisAlignment.start,
+               children: [
+                 SizedBox(
+                   //width: MediaQuery.of(context).size.width / 1.4,
+                   child: Column(
+                     mainAxisAlignment: MainAxisAlignment.start,
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       BasicText(
+                         title: "Enter apartment name",
+                         fontSize: 15,
+                         color: Colors.black,
+                       ),
+                       const SizedBox(
+                         height: 10,
+                       ),
+                       SizedBox(
+                         width: MediaQuery.of(context).size.width/1.3,
+                         child: Textfield(
+                           controller: apartname,
+                           keyboardType: TextInputType.text,
+                           text: "Enter apartment name",
+                           onChanged: (value){
+                             apartment.setApartname(value);
+                           },
+                           validator: (value){
+                             if(value!.isEmpty){
+                               return "Please Enter apartname";
+                             }return null;
+                           },
+                         ),
+                       ),
+                       const SizedBox(
+                         height: 7,
+                       ),
+                       BasicText(
+                         title: "Enter no of Blocks",
+                         fontSize: 15,
+                         color: Colors.black,
+                       ),
+                       const SizedBox(height: 7),
+                       SizedBox(
+                         width: MediaQuery.of(context).size.width/1.3,
+                         child: Textfield(
+                           controller: noofblocks,
+                           keyboardType: TextInputType.number,
+                           text: "Enter no of Blocks",
+                           onChanged: (value){
+                             apartment.setBlocks(int.parse(value));
+                           },
+                           validator: (value){
+                             if(value!.isEmpty){
+                               return "Please Enter blocks";
+                             }return null;
+                           },
+                         ),
+                       ),
+                     ],
+                   ),
+                 ),
+                 const SizedBox(
+                   height: 10,
+                 ),
+                 BasicText(
+                   title: "Set Apartment Code (Ex : SS123) ",
+                   fontSize: 15,
+                   color: Colors.black,
+                 ),
+                 const SizedBox(
+                   height: 10,
+                 ),
+                 Row(
+                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                   children: [
+                     SizedBox(
+                       width: MediaQuery.of(context).size.width / 1.6,
+                       child: Textfield(
+                         controller: apartmentcode,
+                         keyboardType: TextInputType.text,
+                         text: "Set Apartment Code",
+                         onChanged: (value){
+                           setState(() {
+                             apartment.setApartmentCode(value);
+                           });
+                         },
+                       ),
+                     ),
+                     messageId == true
+                         ? const SizedBox(
+                       child: Row(
+                         children: [
+                           Icon(
+                             Icons.verified_user_rounded,
+                             color: Colors.green,
+                             size: 25,
+                           ),
+                           Text(
+                             "Verified",
+                             style: TextStyle(
+                                 color: Colors.green, fontSize: 14),
+                           )
+                         ],
+                       ),
+                     )
+                         : Expanded(
+                       child: SizedBox(
+                         // width: 280,
+                         // height: 50,
+                         height: MediaQuery.of(context).size.height/16.3,
+                         child: Container(
+                           margin: const EdgeInsets.only(left:6),
+                           child: ElevatedButton(
+                             style: ElevatedButton.styleFrom(
+                                 backgroundColor: Colors.green.shade500),
+                             onPressed: () async {
+                               await getVerify();
+                             },
+                             child: const Text(
+                               "Verify",
+                               style: TextStyle(
+                                   fontSize: 17, color: Colors.white),
+                             ),
+                           ),
+                         ),
+                       ),
+                     ),                    ],
+                 ),
+                 message == false
+                     ? Container(
+                   margin: const EdgeInsets.only(top: 5.3),
+                   child: messageId == false
+                       ? const Text(
+                     "Apartment Id already Present ",
+                     style: TextStyle(
+                         color: Colors.red, fontSize: 14.5),
+                   )
+                       : Container(),
+                 )
+                     : Container(
+                     margin: const EdgeInsets.only(top: 3.4),
+                     child: SizedBox(
+                       width: MediaQuery.of(context).size.width / 1.5,
+                       child: Text(
+                         message == true
+                             ? "Id should be atleast 4 charcters and minimum "
+                             "One number & "
+                             "One alphabet"
+                             : "",
+                         style: const TextStyle(
+                             color: Colors.red, fontSize: 11.5),
+                       ),
+                     )),
+                 Center(
+                   child: ElevatedButton(
+                     style: ElevatedButton.styleFrom(
+                       backgroundColor: Colors.green,
+                       elevation: 3.0,
+                       minimumSize: const Size(120, 50),
+                     ),
+                     onPressed: (){
+                       if(formKey.currentState!.validate()){
+                         Navigator.of(context).push(MaterialPageRoute(
+                             builder: (context)=>BlockName(
+                             )));
+                       }
+                     },
+                     child: BasicText(
+                       title: "Continue",
+                       fontSize: 17,
+                       color: Colors.white,
+                     ),
+                   ),
+                 ),
+               ],
+             ),
+           )
+          
+                 ],
+                 ),
         );
+          }
+            ));
   }
-
   getVerify() async {
     const pattern = r'^(?=.*[a-zA-Z])(?=.*\d)(?=(?:[^a-zA-Z]*[a-zA-Z])).{1,}$';
     final regExp = RegExp(pattern);
@@ -313,10 +310,8 @@ class _ApartmentDetailsState extends State<ApartmentDetails> {
     if (response.statusCode == 200) {
       setState(() {
         messageId = response.data["message"];
-        if(messageId==true){
-          //Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BlockName()));
-        }
       });
     }
   }
+
 }
