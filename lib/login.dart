@@ -202,7 +202,7 @@ class _LoginState extends State<Login> {
      });
      var dio = Dio();
      var response = await dio.request(
-       'http://192.168.1.6:3000/login',
+       'http://192.168.29.231:3000/login',
        options: Options(
          method: 'POST',
          headers: headers,
@@ -229,13 +229,9 @@ class _LoginState extends State<Login> {
                name: res["name"],
              )));
            }else if(usertype=="admin"){
-             var value = await ApiService().getUserById(userid);
-             var apartId = value!.apartId;
-             var adminId = value.adminId;
-             var apartname = value.apartname;
-             print(apartname);
+
             Navigator.pushReplacement(context, MaterialPageRoute(
-               builder: (context) =>   const ApartmentDetails()));
+               builder: (context) => ApartmentDetails(userid: userid)));
            }
          }
      }

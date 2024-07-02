@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/changeprovider/coadminprovider.dart';
 import 'package:maintaince_app/splashscreen.dart';
 import 'package:provider/provider.dart';
-
 import 'Admin/changeprovider/adminprovider.dart';
+import 'Admin/changeprovider/apartmentdetails.dart';
 
 void main() {
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => AdminRegistrationModel()),
-      ChangeNotifierProvider(create: (context)=>CoAdmin()),
+      ChangeNotifierProvider(create: (context)=> CoAdmin()),
+      ChangeNotifierProvider(create: (context)=> Details())
     ],
    child: const MyApp(),
   ),

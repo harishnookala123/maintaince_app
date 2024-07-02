@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/Views/setupblock.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 
-import '../../styles/apart_basic.dart';
 
 class BlockName extends StatefulWidget {
   String? apartName;
