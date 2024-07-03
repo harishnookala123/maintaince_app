@@ -62,7 +62,6 @@ class _BlockNameState extends State<BlockName> {
   @override
   Widget build(BuildContext context) {
     print("Hreg");
-    // int? numberofblocks = widget.noOfBlocks;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -97,7 +96,7 @@ class _BlockNameState extends State<BlockName> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             elevation: 4.0,
-                            backgroundColor: const Color(0xff78d0f6),
+                            backgroundColor: const Color(0xff91d797),
                           ),
                           onPressed: () {
                             Navigator.push(

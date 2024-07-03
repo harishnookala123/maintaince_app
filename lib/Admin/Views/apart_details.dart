@@ -210,7 +210,7 @@ class _ApartmentDetailsState extends State<ApartmentDetails> {
                            margin: const EdgeInsets.only(left:6),
                            child: ElevatedButton(
                              style: ElevatedButton.styleFrom(
-                                 backgroundColor: Colors.green.shade500),
+                                 backgroundColor: Colors.orange.shade500),
                              onPressed: () async {
                                await getVerify();
                              },
@@ -300,7 +300,7 @@ class _ApartmentDetailsState extends State<ApartmentDetails> {
     var data = json.encode({"apartment_code": apartId});
     var dio = Dio();
     var response = await dio.request(
-      'http://192.168.29.231:3000/checkAdminId',
+      'http://192.168.1.6:3000/checkAdminId',
       options: Options(
         method: 'POST',
         headers: headers,

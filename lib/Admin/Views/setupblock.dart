@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 
+import 'blockshow.dart';
+
 class SetUpblocks extends StatefulWidget {
   int? index;
   SetUpblocks({super.key, this.index});
@@ -16,6 +18,8 @@ class _SetUpblocksState extends State<SetUpblocks> {
   final List<Map<String, dynamic>> _textFieldControllers = [];
   var floors;
 
+  List<String> rangeValues  = [];
+  List<String> allvalues = [];
   @override
   void initState() {
     super.initState();
@@ -162,8 +166,12 @@ class _SetUpblocksState extends State<SetUpblocks> {
                         ),
                         onPressed: () {
                           _submitData();
+                          Navigator.push(context, MaterialPageRoute(builder:
+                              (context)=>Blockshow(blocks:allvalues,
+                               blockname: blockname.text
+                              )));
                         },
-                        child: const Text("Save",
+                        child: const Text("Continue",
                          style: TextStyle(color: Colors.white,
                            fontSize: 18
                          ),
@@ -179,16 +187,6 @@ class _SetUpblocksState extends State<SetUpblocks> {
     );
   }
 
-
-  void _submitData() {
-    for (var controllers in _textFieldControllers) {
-      String from = controllers['from']?.text ?? '';
-      String to = controllers['to']?.text ?? '';
-      List<String> rangeValues = _getValuesInRange(from, to);
-      print(rangeValues);
-      print('From: $from, To: $to, Range: $rangeValues');
-    }
-  }
 
   Widget basicText(int index, List<Map<String, dynamic>> textFieldControllers) {
     return Row(
@@ -228,7 +226,18 @@ class _SetUpblocksState extends State<SetUpblocks> {
       ],
     );
   }
+  void _submitData() {
+    allvalues.clear(); // Clear the list to avoid duplicate values
+    for (var controllers in _textFieldControllers) {
+      String from = controllers['from']?.text ?? '';
+      String to = controllers['to']?.text ?? '';
+      List<String> range = _getValuesInRange(from, to);
+      allvalues.addAll(range);
+    }
+  }
+
   List<String> _getValuesInRange(String from, String to) {
+    List<String> rangeValues = [];
     final fromAlphaMatch = RegExp(r'^[a-zA-Z]+').firstMatch(from);
     final toAlphaMatch = RegExp(r'^[a-zA-Z]+').firstMatch(to);
 
@@ -238,10 +247,11 @@ class _SetUpblocksState extends State<SetUpblocks> {
     final fromNum = int.parse(from.substring(fromAlpha!.length));
     final toNum = int.parse(to.substring(toAlpha!.length));
 
-    List<String> rangeValues = [];
     for (int i = fromNum; i <= toNum; i++) {
-      rangeValues.add('${fromAlpha}${i.toString().padLeft(from.length - fromAlpha.length, '0')}');
+      rangeValues.add('$fromAlpha${i.toString().padLeft(from.length - fromAlpha.length, '0')}');
     }
     return rangeValues;
   }
+
+
 }
