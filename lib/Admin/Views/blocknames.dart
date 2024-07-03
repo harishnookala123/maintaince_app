@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/Views/setupblock.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../changeprovider/apartmentdetails.dart';
 
 class BlockName extends StatefulWidget {
-  const BlockName({super.key});
+   const BlockName({super.key});
 
   @override
   State<BlockName> createState() => _BlockNameState();
@@ -15,53 +16,17 @@ class _BlockNameState extends State<BlockName> {
   var blockname = TextEditingController();
   var nooffloors = TextEditingController();
   int? blocks;
-  final List<Map<String, dynamic>> _textFieldControllers = [];
-  List value = [];
+//  List blocknames = [];
 
   @override
   void initState() {
     super.initState();
-    _addNewTextFields(); // Add initial text fields
   }
 
-  void _addNewTextFields() {
-    setState(() {
-      _textFieldControllers.add({
-        'from': TextEditingController(),
-        'to': TextEditingController(),
-        'isAddButton': true, // Initially, the button is the "+" button
-      });
-    });
-  }
 
-  void _toggleButton(int index) {
-    setState(() {
-      _textFieldControllers[index]['isAddButton'] = false; // Change "+" to "-"
-      _addNewTextFields(); // Add a new row of text fields
-    });
-  }
-
-  void _removeTextFields(int index) {
-    setState(() {
-      _textFieldControllers[index]['from']?.dispose();
-      _textFieldControllers[index]['to']?.dispose();
-      _textFieldControllers.removeAt(index);
-    });
-  }
-
-  @override
-  void dispose() {
-    // Dispose of all the controllers when the widget is disposed
-    for (var controllers in _textFieldControllers) {
-      controllers['from']?.dispose();
-      controllers['to']?.dispose();
-    }
-    super.dispose();
-  }
-
+List value = [];
   @override
   Widget build(BuildContext context) {
-    print("Hreg");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -96,7 +61,7 @@ class _BlockNameState extends State<BlockName> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             elevation: 4.0,
-                            backgroundColor: const Color(0xff91d797),
+                            backgroundColor: Colors.white
                           ),
                           onPressed: () {
                             Navigator.push(
@@ -108,14 +73,45 @@ class _BlockNameState extends State<BlockName> {
                               ),
                             );
                           },
-                          child: Text(
-                            'Setup ${String.fromCharCode(65 + index)}',
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                            ),
-                          ),
+                          child: FutureBuilder(
+                             future: loadData(index),
+                            builder: (context,snap){
+                               if(snap.hasData){
+                                 var  data = snap.data;
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(child:Container(
+                                        child: Text(data.toString(),
+                                          style: GoogleFonts.poppins(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 17,
+                                              letterSpacing: 0.7
+                                          ),
+                                        ),
+                                      ),
+                                      ),
+                                      Container(
+                                        child: const Icon(Icons.check_circle,
+                                          color: Colors.green,
+                                          size: 27,
+                                        ),
+                                      )
+                                    ],
+                                  );
+                               }else{
+                                 return Text(
+                                   'Setup ${String.fromCharCode(65 + index)}',
+                                   style: GoogleFonts.poppins(
+                                     color: Colors.black,
+                                     fontWeight: FontWeight.w500,
+                                     fontSize: 16,
+                                   ),
+                                 );
+                               }return Container();
+                            },
+                          )
                         ),
                       ),
                     );
@@ -127,5 +123,13 @@ class _BlockNameState extends State<BlockName> {
         ),
       ),
     );
+  }
+
+  loadData(int index) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var data = preferences.getStringList("blockname");
+    print(data);
+    var value = data![index];
+    return value;
   }
 }

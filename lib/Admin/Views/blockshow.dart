@@ -1,18 +1,26 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/changeprovider/apartmentdetails.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'blocknames.dart';
 class Blockshow extends StatefulWidget {
   List<String>? blocks;
   String? blockname;
-   Blockshow({super.key, this.blocks,this.blockname });
+  int? index;
+   Blockshow({super.key, this.blocks,this.blockname,this.index});
 
   @override
   State<Blockshow> createState() => _BlockshowState();
 }
 
 class _BlockshowState extends State<Blockshow> {
+  List<String> list = [];
   @override
   Widget build(BuildContext context) {
     var blocks = widget.blocks;
@@ -58,13 +66,15 @@ class _BlockshowState extends State<Blockshow> {
                            minimumSize: Size(120, 45)
                        ),
                        onPressed: (){
-                          print(apart.apartCode);
+                          print(blocks);
+                          postApartmentDetails(blocks,apart);
                        },
                        child: BasicText(
                          title: "Save",
                          fontSize: 17,
                          color: Colors.white,
-                       ))
+                       )),
+                   const SizedBox(height: 20,),
                  ],
                )
            );
@@ -72,4 +82,51 @@ class _BlockshowState extends State<Blockshow> {
       )
     );
   }
+
+   postApartmentDetails(List<String> blocks, ApartDetails apart) async {
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+     final encodedList = json.encode(widget.blockname);
+      var data = prefs.getStringList("blockname");
+      if(data!=null){
+        for(int i=0;i<data.length;i++){
+          list.insert(i, data[i]);
+        }
+        list.add(widget.blockname!);
+      }else{
+        list.insert(widget.index!, widget.blockname!);
+        print(list);
+      }
+     await prefs.setStringList("blockname",list);
+      var remain = prefs.getStringList("blockname");
+      Dio dio = Dio();
+     var headers = {
+       'Content-Type': 'application/json'
+     };
+     for(int i=0;i<blocks.length;i++){
+      Map<String,dynamic> data = {
+        "apartment_code":apart.apartCode,
+        "apartment_name" :apart.apartName,
+        'block_name' : widget.blockname,
+        'flat_no' : blocks[i].toString(),
+      };
+      try {
+        var response = await dio.request(
+          'http://192.168.29.231:3000/saveBlockName',
+          options: Options(
+            method: 'POST',
+            headers: headers,
+          ),
+          data: data,
+        );
+        print('Response status: ${response.statusCode}');
+        print('Response data: ${response.data}');
+      } catch (e) {
+        print('Error: $e');
+      }
+    }
+     Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BlockName()));
+   }
+
+
 }

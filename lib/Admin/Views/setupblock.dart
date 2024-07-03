@@ -18,7 +18,7 @@ class _SetUpblocksState extends State<SetUpblocks> {
   final List<Map<String, dynamic>> _textFieldControllers = [];
   var floors;
 
-  List<String> rangeValues  = [];
+  List<String> rangeValues = [];
   List<String> allvalues = [];
   @override
   void initState() {
@@ -37,10 +37,11 @@ class _SetUpblocksState extends State<SetUpblocks> {
   }
 
   void _toggleButton(int index) {
-
     setState(() {
       _textFieldControllers[index]['isAddButton'] = false; // Change "+" to "-"
-      index+2<=int.parse(nooffloors.text)?_addNewTextFields():""; // Add a new row of text fields
+      index + 2 <= int.parse(nooffloors.text)
+          ? _addNewTextFields()
+          : ""; // Add a new row of text fields
     });
   }
 
@@ -92,7 +93,7 @@ class _SetUpblocksState extends State<SetUpblocks> {
                 height: 6,
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width/1.3,
+                width: MediaQuery.of(context).size.width / 1.3,
                 child: Textfield(
                   controller: blockname,
                   keyboardType: TextInputType.text,
@@ -110,7 +111,7 @@ class _SetUpblocksState extends State<SetUpblocks> {
                 height: 6,
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width/1.3,
+                width: MediaQuery.of(context).size.width / 1.3,
                 child: Textfield(
                   controller: nooffloors,
                   keyboardType: TextInputType.number,
@@ -128,57 +129,59 @@ class _SetUpblocksState extends State<SetUpblocks> {
               ),
               floors != null
                   ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  BasicText(
-                    title: "Enter Range of Floor Details",
-                  ),
-                  Container(
-                    alignment: Alignment.topLeft,
-                   // height: 300, // Constrain the height of the ListView
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      physics: const ScrollPhysics(),
-                      itemCount: _textFieldControllers.length,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 15),
-                            BasicText(
-                                title: "${index + 1} Floor"),
-                            const SizedBox(height: 3),
-                            basicText(index, _textFieldControllers),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                 const SizedBox(height: 20),
-                  Center(
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                          minimumSize: const Size(140, 50),
-                          elevation: 8.0,
-                          backgroundColor: Colors.purple
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        BasicText(
+                          title: "Enter Range of Floor Details",
                         ),
-                        onPressed: () {
-                          _submitData();
-                          Navigator.push(context, MaterialPageRoute(builder:
-                              (context)=>Blockshow(blocks:allvalues,
-                               blockname: blockname.text
-                              )));
-                        },
-                        child: const Text("Continue",
-                         style: TextStyle(color: Colors.white,
-                           fontSize: 18
-                         ),
-                        )),
-                  ),
-                ],
-              )
+                        Container(
+                          alignment: Alignment.topLeft,
+                          // height: 300, // Constrain the height of the ListView
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            physics: const ScrollPhysics(),
+                            itemCount: _textFieldControllers.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 15),
+                                  BasicText(title: "${index + 1} Floor"),
+                                  const SizedBox(height: 3),
+                                  basicText(index, _textFieldControllers),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Center(
+                          child: TextButton(
+                              style: TextButton.styleFrom(
+                                  minimumSize: const Size(140, 50),
+                                  elevation: 8.0,
+                                  backgroundColor: Colors.purple),
+                              onPressed: () {
+                                _submitData();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Blockshow(
+                                              blocks: allvalues,
+                                              blockname: blockname.text,
+                                              index : widget.index
+                                            )));
+                              },
+                              child: const Text(
+                                "Continue",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              )),
+                        ),
+                      ],
+                    )
                   : Container()
             ],
           ),
@@ -187,7 +190,6 @@ class _SetUpblocksState extends State<SetUpblocks> {
     );
   }
 
-
   Widget basicText(int index, List<Map<String, dynamic>> textFieldControllers) {
     return Row(
       children: [
@@ -195,8 +197,7 @@ class _SetUpblocksState extends State<SetUpblocks> {
           child: TextField(
             keyboardType: TextInputType.text,
             controller: _textFieldControllers[index]['from'],
-            decoration: const InputDecoration(
-                labelText: 'From'),
+            decoration: const InputDecoration(labelText: 'From'),
           ),
         ),
         const SizedBox(width: 16),
@@ -204,8 +205,7 @@ class _SetUpblocksState extends State<SetUpblocks> {
           child: TextField(
             keyboardType: TextInputType.text,
             controller: _textFieldControllers[index]['to'],
-            decoration: const InputDecoration(
-                labelText: 'To'),
+            decoration: const InputDecoration(labelText: 'To'),
           ),
         ),
         IconButton(
@@ -226,6 +226,7 @@ class _SetUpblocksState extends State<SetUpblocks> {
       ],
     );
   }
+
   void _submitData() {
     allvalues.clear(); // Clear the list to avoid duplicate values
     for (var controllers in _textFieldControllers) {
@@ -248,10 +249,9 @@ class _SetUpblocksState extends State<SetUpblocks> {
     final toNum = int.parse(to.substring(toAlpha!.length));
 
     for (int i = fromNum; i <= toNum; i++) {
-      rangeValues.add('$fromAlpha${i.toString().padLeft(from.length - fromAlpha.length, '0')}');
+      rangeValues.add(
+          '$fromAlpha${i.toString().padLeft(from.length - fromAlpha.length, '0')}');
     }
     return rangeValues;
   }
-
-
 }

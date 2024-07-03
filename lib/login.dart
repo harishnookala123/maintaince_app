@@ -202,7 +202,7 @@ class _LoginState extends State<Login> {
      });
      var dio = Dio();
      var response = await dio.request(
-       'http://192.168.1.6:3000/login',
+       'http://192.168.29.231:3000/login',
        options: Options(
          method: 'POST',
          headers: headers,

@@ -10,7 +10,6 @@ import '../changeprovider/adminprovider.dart';
 
 class AdminRegistration extends StatefulWidget {
   const AdminRegistration({super.key});
-
   @override
   State<AdminRegistration> createState() => _AdminRegistrationState();
 }

@@ -259,8 +259,7 @@ class _ApartmentDetailsState extends State<ApartmentDetails> {
                      onPressed: (){
                        if(formKey.currentState!.validate()){
                          Navigator.of(context).push(MaterialPageRoute(
-                             builder: (context)=>BlockName(
-                             )));
+                             builder: (context)=> BlockName()));
                        }
                      },
                      child: BasicText(
@@ -300,7 +299,7 @@ class _ApartmentDetailsState extends State<ApartmentDetails> {
     var data = json.encode({"apartment_code": apartId});
     var dio = Dio();
     var response = await dio.request(
-      'http://192.168.1.6:3000/checkAdminId',
+      'http://192.168.29.231:3000/checkAdminId',
       options: Options(
         method: 'POST',
         headers: headers,
