@@ -3,10 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/Views/setupblock.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../login.dart';
 import '../changeprovider/apartmentdetails.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class BlockName extends StatefulWidget {
-   const BlockName({super.key});
+  String? noOfblocks;
+  String?apartname;
+  BlockName({super.key,  this.noOfblocks,this.apartname});
 
   @override
   State<BlockName> createState() => _BlockNameState();
@@ -16,15 +20,7 @@ class _BlockNameState extends State<BlockName> {
   var blockname = TextEditingController();
   var nooffloors = TextEditingController();
   int? blocks;
-//  List blocknames = [];
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-
-List value = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,14 +50,13 @@ List value = [];
                   ),
                   itemCount: details.block,
                   itemBuilder: (context, index) {
-                    //value.insert(index, 'Setup ${String.fromCharCode(65 + index)}');
                     return Container(
                       margin: const EdgeInsets.only(bottom: 12.3),
                       child: SizedBox(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             elevation: 4.0,
-                            backgroundColor: Colors.white
+                            backgroundColor: Colors.white,
                           ),
                           onPressed: () {
                             Navigator.push(
@@ -74,44 +69,43 @@ List value = [];
                             );
                           },
                           child: FutureBuilder(
-                             future: loadData(index),
-                            builder: (context,snap){
-                               if(snap.hasData){
-                                 var  data = snap.data;
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(child:Container(
-                                        child: Text(data.toString(),
-                                          style: GoogleFonts.poppins(
-                                              color: Colors.green,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 17,
-                                              letterSpacing: 0.7
-                                          ),
-                                        ),
-                                      ),
-                                      ),
-                                      Container(
-                                        child: const Icon(Icons.check_circle,
+                            future: loadData(index),
+                            builder: (context, snap) {
+                              if (snap.hasData) {
+                                var data = snap.data;
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        data.toString(),
+                                        style: GoogleFonts.poppins(
                                           color: Colors.green,
-                                          size: 27,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 17,
+                                          letterSpacing: 0.7,
                                         ),
-                                      )
-                                    ],
-                                  );
-                               }else{
-                                 return Text(
-                                   'Setup ${String.fromCharCode(65 + index)}',
-                                   style: GoogleFonts.poppins(
-                                     color: Colors.black,
-                                     fontWeight: FontWeight.w500,
-                                     fontSize: 16,
-                                   ),
-                                 );
-                               }return Container();
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.check_circle,
+                                      color: Colors.green,
+                                      size: 27,
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                return Text(
+                                  'Setup ${String.fromCharCode(65 + index)}',
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                  ),
+                                );
+                              }
                             },
-                          )
+                          ),
                         ),
                       ),
                     );
@@ -119,17 +113,52 @@ List value = [];
                 );
               },
             ),
+            const SizedBox(height: 30),
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(120, 45),
+                  elevation: 6.0,
+                  backgroundColor: Colors.purple,
+                ),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const Login()));
+                },
+                child: Text(
+                  "Save",
+                  style: GoogleFonts.actor(
+                    letterSpacing: 0.5,
+                    fontSize: 19.5,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  loadData(int index) async {
+  Future<String?> loadData(int index) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var data = preferences.getStringList("blockname");
-    print(data);
-    var value = data![index];
-    return value;
+    if (data != null && data.length > index) {
+      return data[index];
+    }
+    return null;
+  }
+
+  void showToast() {
+    Fluttertoast.showToast(
+      msg: "Please setup remaining blocks also",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
   }
 }

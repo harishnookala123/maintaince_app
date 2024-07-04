@@ -13,7 +13,8 @@ class Blockshow extends StatefulWidget {
   List<String>? blocks;
   String? blockname;
   int? index;
-   Blockshow({super.key, this.blocks,this.blockname,this.index});
+   Blockshow({super.key, this.blocks,this.blockname,this.index,
+   });
 
   @override
   State<Blockshow> createState() => _BlockshowState();
@@ -83,8 +84,7 @@ class _BlockshowState extends State<Blockshow> {
     );
   }
 
-   postApartmentDetails(List<String> blocks, ApartDetails apart) async {
-
+   postApartmentDetails(List<String> blocks, ApartDetails apart,) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
      final encodedList = json.encode(widget.blockname);
       var data = prefs.getStringList("blockname");
@@ -125,8 +125,11 @@ class _BlockshowState extends State<Blockshow> {
         print('Error: $e');
       }
     }
-     Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BlockName()));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>BlockName()));
+
    }
+
+
 
 
 }

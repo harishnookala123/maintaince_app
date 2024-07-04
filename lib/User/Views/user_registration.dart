@@ -25,9 +25,7 @@ class UserRegistrationState extends State<UserRegistration> {
   String? status;
   bool? messageId;
   bool? message;
-
   bool? flag;
-
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +59,7 @@ class UserRegistrationState extends State<UserRegistration> {
                mainAxisAlignment: MainAxisAlignment.start,
                crossAxisAlignment: CrossAxisAlignment.start,
                children: [
-                 // Apartment Name
                  const SizedBox(height: 8),
-
                  CommonTextField(
                    firstName: firstName,
                    lastName: lastName,
@@ -72,8 +68,12 @@ class UserRegistrationState extends State<UserRegistration> {
                    phone: phone,
                    address: address,
                  ),
-                 const SizedBox(height: 10),
-
+                 Container(
+                   margin: const EdgeInsets.only(bottom: 3.4),
+                   child:  BasicText(
+                     title: "Enter Apartment Code",
+                   ),
+                 ),
                  SizedBox(
                    //width: MediaQuery.of(context).size.width/2.0,
                      child: Row(
@@ -156,8 +156,6 @@ class UserRegistrationState extends State<UserRegistration> {
                  // Submit Button
                  Center(
                    child: SizedBox(
-                       width: MediaQuery.of(context).size.width / 1.5,
-                       height: 45,
                        child: ElevatedButton(
                          style: ElevatedButton.styleFrom(
                              elevation: 4.0,
@@ -177,6 +175,7 @@ class UserRegistrationState extends State<UserRegistration> {
                                  fontSize: 20, color: Colors.white)),
                        )),
                  ),
+                 const SizedBox(height: 10,),
                ],
              ),)
 

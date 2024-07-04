@@ -3,6 +3,9 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+import '../Admin/changeprovider/adminprovider.dart';
 
 class BasicText extends StatelessWidget {
   String? title;
@@ -144,16 +147,19 @@ class CommonTextField extends StatelessWidget {
   TextEditingController? phone = TextEditingController();
   TextEditingController? email = TextEditingController();
   TextEditingController? password = TextEditingController();
+  TextEditingController? address = TextEditingController();
 
   CommonTextField ({super.key,
-    this.firstName,this.lastName,this.phone,this.email,this.password
+    this.firstName,this.lastName,this.phone,this.email,this.password,this.address
 });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Column(
+      child: Consumer<AdminRegistrationModel>(
+    builder: (context, registration, child){
+      return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -165,11 +171,14 @@ class CommonTextField extends StatelessWidget {
               fontSize: 15.5,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Textfield(
             controller: firstName,
             text: 'Enter First Name',
             keyboardType: TextInputType.text,
+            onChanged: (value){
+              registration.setfirstname(value);
+            },
             validator: (value){
               if(value!.isEmpty){
                 return "Please Enter First_Name";
@@ -186,12 +195,13 @@ class CommonTextField extends StatelessWidget {
               fontSize: 15.5,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Textfield(
             keyboardType: TextInputType.text,
             controller: lastName,
             text: "Enter Your Last_Name",
             onChanged: (value) {
+                registration.setlastname(value);
             },
             validator: (value){
               if(value!.isEmpty){
@@ -209,12 +219,13 @@ class CommonTextField extends StatelessWidget {
               fontSize: 15.5,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Textfield(
             keyboardType: TextInputType.text,
             controller: email,
-            text: "Enter address",
+            text: "Enter email",
             onChanged: (value) {
+              registration.setEmail(value);
             },
             validator: (value){
               if(value!.isEmpty){
@@ -238,12 +249,13 @@ class CommonTextField extends StatelessWidget {
               fontSize: 15.5,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Textfield(
             keyboardType: TextInputType.number,
             controller: phone,
             text: "Enter Phone number",
             onChanged: (value) {
+              registration.setPhone(value);
             },
             validator: (value) {
               if (value!.isEmpty) {
@@ -264,12 +276,13 @@ class CommonTextField extends StatelessWidget {
               fontSize: 15.5,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Textfield(
             keyboardType: TextInputType.text,
             controller: password,
             text: "Enter Password",
             onChanged: (value) {
+              registration.setPassword(value);
             },
             validator: (value) {
               if (value!.isEmpty) {
@@ -284,16 +297,38 @@ class CommonTextField extends StatelessWidget {
               return null;
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10,),
           Container(
             margin: const EdgeInsets.only(left: 15.3),
             child: BasicText(
-              title: " Set Apartment Id (ex: SSA123)",
+              title: "Address : - ",
+              color: Colors.black,
               fontSize: 15.5,
             ),
           ),
+          const SizedBox(height: 5),
+          Textfield(
+            keyboardType: TextInputType.text,
+            maxlines: null,
+            controller: address,
+            text: "Enter Address",
+            onChanged: (value) {
+              registration.setaddress(value);
+            },
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Please Enter address";
+              }
+
+              return null;
+            },
+          ),
+
         ],
-      ),
+      );
+
+
+    }),
     );
   }
 }

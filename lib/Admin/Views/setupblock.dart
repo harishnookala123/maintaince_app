@@ -6,7 +6,7 @@ import 'blockshow.dart';
 
 class SetUpblocks extends StatefulWidget {
   int? index;
-  SetUpblocks({super.key, this.index});
+  SetUpblocks({super.key, this.index,});
 
   @override
   State<SetUpblocks> createState() => _SetUpblocksState();
@@ -65,6 +65,7 @@ class _SetUpblocksState extends State<SetUpblocks> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -171,7 +172,7 @@ class _SetUpblocksState extends State<SetUpblocks> {
                                         builder: (context) => Blockshow(
                                               blocks: allvalues,
                                               blockname: blockname.text,
-                                              index : widget.index
+                                              index : widget.index,
                                             )));
                               },
                               child: const Text(

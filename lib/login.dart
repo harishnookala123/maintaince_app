@@ -8,6 +8,7 @@ import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
 import 'Admin/Views/adminscreen.dart';
 import 'Admin/Views/apart_details.dart';
+import 'Admin/Views/registrationsecondpage.dart';
 import 'Co_admin/Views/registration.dart';
 import 'mainScreen.dart';
 

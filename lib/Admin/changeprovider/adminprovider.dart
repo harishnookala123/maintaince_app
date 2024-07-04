@@ -5,7 +5,22 @@ class AdminRegistrationModel with ChangeNotifier {
   String _apartAddress = '';
   String _noOfFlats = '';
   String _images = '';
-  String _name = "";
+  String _firstname  = '';
+  String _address = '';
+
+  String get address => _address;
+
+  setaddress(String value) {
+    _address = value;
+  }
+
+  String get firstname => _firstname;
+
+  setfirstname(String value) {
+    _firstname = value;
+  }
+
+  String _lastname = "";
   String _email = "";
   String _phone = "";
   String _password = "";
@@ -51,10 +66,11 @@ class AdminRegistrationModel with ChangeNotifier {
   void setPassword(String value) {
     _password = value;
   }
-  String get name => _name;
 
-  void setName(String value) {
-    _name = value;
+
+  String get lastname => _lastname;
+
+  setlastname(String value) {
+    _lastname = value;
   }
-
 }

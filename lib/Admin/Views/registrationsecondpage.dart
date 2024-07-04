@@ -7,6 +7,7 @@ import 'package:maintaince_app/Admin/changeprovider/adminprovider.dart';
 import 'package:maintaince_app/login.dart';
 import 'package:provider/provider.dart';
 import '../../styles/basicstyles.dart';
+import 'apart_details.dart';
 
 class AdminPersonal extends StatefulWidget {
   const AdminPersonal({super.key});
@@ -26,7 +27,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
   bool? messageId;
 
   bool? message;
-
+  String? userid;
   bool? flag;
   @override
   Widget build(BuildContext context) {
@@ -104,92 +105,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
                   phone: phone,
                   password: password,
                 ),
-                const SizedBox(height: 10),
 
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                    //width: MediaQuery.of(context).size.width/2.0,
-                    child: Row(
-                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.8,
-                      child: Textfield(
-                        controller: apartmentId,
-                        text: "Apartment Id",
-                        keyboardType: TextInputType.text,
-                        validator: (value) {},
-                      ),
-                    ),
-                    messageId == true
-                        ? const SizedBox(
-                          child: Row(
-                              children: [
-                                Icon(
-                                  Icons.verified_user_rounded,
-                                  color: Colors.green,
-                                  size: 25,
-                                ),
-                                Text(
-                                  "Verified",
-                                  style: TextStyle(
-                                      color: Colors.green, fontSize: 14),
-                                )
-                              ],
-                            ),
-                        )
-                        : Expanded(
-                            child: SizedBox(
-                              // width: 280,
-                              // height: 50,
-                              height: MediaQuery.of(context).size.height/16.3,
-                              child: Container(
-                                margin: const EdgeInsets.only(left:6),
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.green.shade500),
-                                  onPressed: () async {
-                                    await getVerify();
-                                  },
-                                  child: const Text(
-                                    "Verify",
-                                    style: TextStyle(
-                                        fontSize: 17, color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                  ],
-                )),
-                message == false
-                    ? Container(
-                       margin: const EdgeInsets.only(top: 5.3),
-                        child: messageId == false
-                            ? const Text("Apartment Id already Present ",
-                         style: TextStyle(color: Colors.red,
-                          fontSize: 14.5
-                         ),
-                        )
-                            : Container(),
-                      )
-                    : Container(
-                        margin: const EdgeInsets.only(top: 3.4),
-                        child: Text(
-                          message == true
-                              ? "Id should be atleast 4 charcters and minimum "
-                              "One number & "
-                              "One alphabet"
-                              : "",
-                          style: const TextStyle(
-                              color: Colors.red, fontSize: 11.5),
-                        ),
-                      ),
-                const SizedBox(
-                  height: 20,
-                ),
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -203,16 +119,14 @@ class _AdminPersonalState extends State<AdminPersonal> {
                     onPressed: () async {
                       if(personalKey.currentState!.validate()){
                         status = await registerPost(registration);
-                        navigateToNextPage(status);
-                      }else{
-                        setState(() {
-                          message = true;
-                        });
+                        if(status=="Admin is registered"){
+                          navigateToNextPage(registration);
+                        }
                       }
                     },
                     child: BasicText(
                       fontSize: 20,
-                      title: "Register",
+                      title: "Next",
                       color: Colors.white,
                     ),
                   ),
@@ -244,22 +158,15 @@ class _AdminPersonalState extends State<AdminPersonal> {
     //AdminRegistration adminRegistration = AdminRegistration();
     var headers = {'Content-Type': 'application/json'};
     var data = json.encode({
-      "apartname": registration.apartName,
-      "address": registration.apartAddress,
-      "firstname": firstName.text,
-      "lastname": lastName.text,
       "email": email.text,
-      "phonenumber": phone.text,
       "password": password.text,
-      "admin_type": "admin",
-      "adminId": "A${firstName.text}",
-      "apartId": apartmentId.text,
+      "user_type": "admin",
       "user_id": "A${firstName.text}"
     });
     var dio = Dio();
 
     var response = await dio.request(
-      'http://192.168.1.6:3000/registerAdmin',
+      'http://192.168.29.231:3000/registerAdmin',
       options: Options(
         method: 'POST',
         headers: headers,
@@ -270,8 +177,9 @@ class _AdminPersonalState extends State<AdminPersonal> {
     if (response.statusCode == 200) {
       setState(() {
         print(response.data);
-        print("${response.data["status"]} Data from server");
+        print("${response.data["status"]}");
         status = response.data["status"];
+        userid = response.data["userid"];
         print(response.data["id"]);
       });
       return status;
@@ -280,14 +188,16 @@ class _AdminPersonalState extends State<AdminPersonal> {
     }
   }
 
-  navigateToNextPage(String? status) {
-    if (status == "Admin is registered") {
+  navigateToNextPage(AdminRegistrationModel registration) {
        Provider.of<AdminRegistrationModel>(
           context,
           listen: false);
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context)=> const Login()));
-    }
+          builder: (context)=> ApartmentDetails(
+            userid: userid,registration:registration
+          )));
+
+
   }
 
   postAdminId(String apartId) async {
