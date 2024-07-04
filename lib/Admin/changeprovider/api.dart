@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintaince_app/Admin/Model/apartmentdetails.dart';
 import '../Model/adminRegistartion.dart';
 import '../Model/usermodel.dart';
 
@@ -14,10 +15,33 @@ class ApiService {
     if (response.statusCode == 200) {
       print(response.body);
       var value = Admin.fromJson(json.decode(response.body));
+
       return value;
     } else {
       return null;
     }
+  }
+  Future<List<ApartmentDetails>?> getApartmentDetails(String? apartmentCode) async {
+    var headers = {'Content-Type': 'application/json'};
+    var dio = Dio();
+
+    try {
+      var response = await dio.get(
+        'http://192.168.1.6:3000/userregister/$apartmentCode',
+        options: Options(
+          headers: headers,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        List data = response.data["apartmentDetails"];
+        return data.map((json) => ApartmentDetails.fromJson(json)).toList();
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
+
+    return null;
   }
 
   Future<List<Users>?> getUsers(String apartId, String requests) async {
@@ -38,7 +62,6 @@ class ApiService {
     } else {
       print(response.statusMessage);
     }
-    return null;
   }
 
    updateApproval(int userId, String approvalStatus, String text) async {

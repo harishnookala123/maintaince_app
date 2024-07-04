@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../login.dart';
 import '../changeprovider/apartmentdetails.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class BlockName extends StatefulWidget {
   String? noOfblocks;
@@ -150,15 +149,5 @@ class _BlockNameState extends State<BlockName> {
     return null;
   }
 
-  void showToast() {
-    Fluttertoast.showToast(
-      msg: "Please setup remaining blocks also",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
-  }
+
 }

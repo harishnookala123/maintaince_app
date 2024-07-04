@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:maintaince_app/Admin/Model/apartmentdetails.dart';
 import 'package:maintaince_app/User/Views/userscreen.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 
 class UserSecondRegistration extends StatefulWidget {
-  const UserSecondRegistration({super.key});
+  List<ApartmentDetails>? apartmentDetails;
+   UserSecondRegistration({super.key, this.apartmentDetails});
 
   @override
   State<UserSecondRegistration> createState() => UserSecondRegistrationState();
