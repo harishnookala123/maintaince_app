@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:maintaince_app/Admin/Model/blocks.dart';
 import 'package:maintaince_app/Admin/changeprovider/adminprovider.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:maintaince_app/User/Views/user_registrationseccondscreen.dart';
@@ -12,7 +14,11 @@ import 'package:provider/provider.dart';
 import '../../Admin/Model/apartmentdetails.dart';
 
 class UserRegistration extends StatefulWidget {
-  const UserRegistration({super.key});
+  List<String>? blocknames;
+  List<ApartmentDetails>? apartmentDetails;
+  String? apartmentcode;
+
+  UserRegistration({super.key, this.blocknames, this.apartmentDetails, this.apartmentcode});
 
   @override
   State<UserRegistration> createState() => UserRegistrationState();
@@ -30,19 +36,20 @@ class UserRegistrationState extends State<UserRegistration> {
   String? status;
   bool? messageId;
   bool? message;
-
+  List<String>? blocknames = [];
   bool? flag;
 
+  var selectedValue;
+  String? selectedflat;
 
   @override
   Widget build(BuildContext context) {
+    print(widget.apartmentcode);
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       body: BackGroundImage(
         child: Consumer<AdminRegistrationModel>(
-          builder: (context,registration,child){
+          builder: (context, registration, child) {
             return SizedBox(
-              height: MediaQuery.of(context).size.height / 1.3,
               child: ListView(
                 padding: EdgeInsets.zero,
                 scrollDirection: Axis.vertical,
@@ -51,7 +58,6 @@ class UserRegistrationState extends State<UserRegistration> {
                 children: [
                   Container(
                     alignment: Alignment.topCenter,
-                    //margin: const EdgeInsets.only(bottom: 15.3),
                     child: Text(
                       "User Registration",
                       style: GoogleFonts.poppins(
@@ -75,39 +81,199 @@ class UserRegistrationState extends State<UserRegistration> {
                           email: email,
                           password: password,
                           phone: phone,
-                          address: address,
                         ),
-
-                        const SizedBox(height: 10,),
+                        BasicText(
+                          title: "Select block name",
+                          fontSize: 15.5,
+                        ),
+                        DropdownButtonFormField2<String>(
+                          isExpanded: true,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.black, width: 1.0),
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            enabled: true,
+                            contentPadding: const EdgeInsets.symmetric(vertical: 18),
+                            border: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.black),
+                              borderRadius: BorderRadius.circular(15.4),
+                            ),
+                          ),
+                          hint: const Text(
+                            'Select Your Gender',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          items: widget.blocknames!
+                              .map((item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(
+                               item.toUpperCase(),
+                              style: GoogleFonts.poppins(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400
+                              ),
+                            ),
+                          ))
+                              .toList(),
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Please select block.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValue = value.toString();
+                              selectedflat = null; // Reset the selected flat value
+                            });
+                          },
+                          onSaved: (value) {
+                            selectedValue = value.toString();
+                          },
+                          buttonStyleData: const ButtonStyleData(
+                            padding: EdgeInsets.only(right: 8),
+                          ),
+                          iconStyleData: const IconStyleData(
+                            icon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Colors.black,
+                            ),
+                            iconSize: 25,
+                          ),
+                          dropdownStyleData: DropdownStyleData(
+                            elevation: 12,
+                            maxHeight: MediaQuery.of(context).size.height/2.7,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          menuItemStyleData: const MenuItemStyleData(
+                            padding: EdgeInsets.symmetric(horizontal: 25),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        const SizedBox(height: 5),
+                        FutureBuilder<List<String>?>(
+                          future: ApiService().getFlats(widget.apartmentcode, selectedValue),
+                          builder: (context, snap) {
+                            if (snap.hasData) {
+                              List<String> flatno = snap.data!;
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  BasicText(
+                                    title: "Select Flat",
+                                    fontSize: 15.5,
+                                    color: Colors.black,
+                                  ),
+                                  Container(
+                                    child: getDropdown(flatno),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Center(
+                                    child: ElevatedButton(
+                                        onPressed: (){},
+                                     style: ElevatedButton.styleFrom(
+                                       minimumSize: const Size(130, 50),
+                                       backgroundColor: Colors.orangeAccent.shade400
+                                     ),
+                                        child:  Text("Register",
+                                         style: GoogleFonts.poppins(
+                                           color: Colors.white,
+                                           fontSize: 18,
+                                           fontWeight: FontWeight.w600
+                                         )
+                                        ),
+                                    ),
+                                  )
+                                ],
+                              );
+                            }
+                            return Container();
+                          },
+                        ),
                       ],
-                    ),)
-
+                    ),
+                  ),
                 ],
               ),
             );
-          }
-        )
+          },
+        ),
       ),
     );
   }
 
-/*
-  Future<List<ApartmentDetails>?> getApartmentDetails(String? apartmentCode) async {
-    var headers = {'Content-Type': 'application/json'};
-    var dio = Dio();
-
-    try {
-      final response = await http.get(Uri.parse(''
-          'http://192.168.1.6:3000/userregister/$apartmentCode'));
-      print(response.body);
-      if (response.statusCode == 200) {
-      }
-    } catch (e) {
-      print("Error: $e");
-    }
-
-    return null;
+  getDropdown(List<String> flatno) {
+    return DropdownButtonFormField2<String>(
+      isDense: true,
+      isExpanded: true,
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.black, width: 1.0),
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        enabled: true,
+        contentPadding: const EdgeInsets.symmetric(vertical: 22),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.black),
+          borderRadius: BorderRadius.circular(15.4),
+        ),
+      ),
+      hint: const Text(
+        'Select Your Flat no',
+        style: TextStyle(fontSize: 14),
+      ),
+      value: selectedflat, // Use the selected flat value
+      items: flatno
+          .map((item) => DropdownMenuItem<String>(
+        value: item,
+        child: Text(
+          item.toString(),
+          style: GoogleFonts.poppins(fontWeight: FontWeight.w400,
+           fontSize: 18
+          ),
+        ),
+      ))
+          .toList(),
+      validator: (value) {
+        if (value == null) {
+          return 'Please select block.';
+        }
+        return null;
+      },
+      onChanged: (value) {
+        setState(() {
+          selectedflat = value.toString();
+          print(selectedflat);
+        });
+      },
+      onSaved: (value) {
+        selectedflat = value.toString();
+        print(selectedflat);
+      },
+      buttonStyleData: const ButtonStyleData(
+        padding: EdgeInsets.only(right: 8),
+      ),
+      iconStyleData: const IconStyleData(
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: Colors.black,
+        ),
+        iconSize: 25,
+      ),
+      dropdownStyleData: DropdownStyleData(
+        elevation: 12,
+        maxHeight: MediaQuery.of(context).size.height/2.7,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
+      menuItemStyleData: const MenuItemStyleData(
+        padding: EdgeInsets.symmetric(horizontal: 25),
+      ),
+    );
   }
-*/
-
 }

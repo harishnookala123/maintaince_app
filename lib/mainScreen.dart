@@ -7,6 +7,7 @@ import 'package:maintaince_app/User/Views/user_registration.dart';
 
 import 'Co_admin/Views/registration.dart';
 import 'Security/Views/securityregistration.dart';
+import 'apartcode.dart';
 
 class SelectRegister extends StatefulWidget {
   const SelectRegister({super.key});
@@ -110,7 +111,7 @@ class SelectRegisterScreen extends State<SelectRegister> {
           MaterialPageRoute(builder: (context) => const AdminRegistration()));
     } else if (value == "User") {
        Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const UserRegistration()));
+          MaterialPageRoute(builder: (context) =>  ApartCode()));
     } else if (value == "Security") {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const SecurityRegistration()));

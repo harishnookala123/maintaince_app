@@ -22,6 +22,7 @@ class ApartmentDetailsState extends State<ApartmentDetails> {
   final TextEditingController apartname = TextEditingController();
   final TextEditingController noofblocks = TextEditingController();
   final TextEditingController apartmentcode = TextEditingController();
+  final TextEditingController address = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final List<Map<String, dynamic>> _textFieldControllers = [];
   final TextEditingController blockname = TextEditingController();
@@ -162,6 +163,33 @@ class ApartmentDetailsState extends State<ApartmentDetails> {
                                     },
                                   ),
                                 ),
+                                const SizedBox(height: 7,),
+                                BasicText(
+                                  title: "Address",
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(height: 7,),
+                                SizedBox(
+                                  width:
+                                  MediaQuery.of(context).size.width / 1.3,
+                                  child: Textfield(
+                                    controller: address,
+                                    keyboardType: TextInputType.text,
+                                    maxlines: null,
+                                    text: "Enter address",
+                                    onChanged: (value) {
+                                      apartment.setaddress(value);
+                                    },
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "Please Enter Address";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+
                               ],
                             ),
                           ),

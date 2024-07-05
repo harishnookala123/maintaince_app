@@ -2,6 +2,13 @@ import 'package:flutter/cupertino.dart';
 
 class ApartDetails with ChangeNotifier {
   String? _apartname;
+  String?_address;
+
+  String? get Address => _address;
+
+  setaddress(String value) {
+    _address = value;
+  }
 
   String? get apartName => _apartname;
 

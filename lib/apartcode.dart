@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:maintaince_app/Admin/Model/apartmentdetails.dart';
+import 'package:maintaince_app/Admin/Model/blocks.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
 
@@ -20,11 +22,13 @@ class ApartCode extends StatefulWidget {
 class _ApartCodeState extends State<ApartCode> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController apartmentId = TextEditingController();
-
+  List<ApartmentDetails>? apartmentDetails;
   String? status;
   bool? messageId;
   bool? message;
   bool? flag;
+
+  List<String>? blocknames = [];
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +62,7 @@ class _ApartCodeState extends State<ApartCode> {
                       margin: const EdgeInsets.only(bottom: 3.4),
                       child: BasicText(title: "Enter Apartment Code"),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     SizedBox(
                       child: Row(
                         children: [
@@ -104,7 +108,9 @@ class _ApartCodeState extends State<ApartCode> {
                                       Colors.green.shade500),
                                   onPressed: () async {
                                     await getVerify();
-
+                                    if(messageId==true){
+                                      apartmentDetails = await ApiService().getApartmentDetails(apartmentId.text);
+                                    }
                                   },
                                   child: const Text(
                                     "Verify",
@@ -152,18 +158,10 @@ class _ApartCodeState extends State<ApartCode> {
                             ),
                           ),
                           onPressed: () async {
-                            if (formKey.currentState!.validate() &&
-                                messageId == true) {
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => UserRegistration(),
-
-                                ),
-                              );
-                              var apartmentdetails = await ApiService()
-                                  .getApartmentDetails(apartmentId.text);
+                            if (formKey.currentState!.validate() && messageId == true) {
+                              var blocks = await ApiService()
+                                  .getBlocks(apartmentId.text);
+                              getNavigate(blocks,apartmentDetails);
                             }
                           },
                           child: Text(
@@ -204,7 +202,7 @@ class _ApartCodeState extends State<ApartCode> {
     var data = json.encode({"adminId": apartId});
     var dio = Dio();
     var response = await dio.post(
-      'http://192.168.29.92:3000/checkAdminId',
+      'http://192.168.29.231:3000/checkAdminId',
       options: Options(headers: headers),
       data: data,
     );
@@ -213,5 +211,25 @@ class _ApartCodeState extends State<ApartCode> {
         messageId = response.data["message"];
       });
     }
+  }
+
+   getNavigate(List<BlockNames>? blocks, apartmentdetails) {
+     List<String>? blocknames = getlistofStrings(blocks);
+
+     Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserRegistration(
+         blocknames:blocknames, apartmentDetails:apartmentdetails,
+       apartmentcode:apartmentId.text
+     )));
+   }
+  List<String> getlistofStrings(List<BlockNames>? blocks) {
+    List<String> blocknames = [];
+    if (blocks != null) {
+      for (var block in blocks) {
+        if (block.blockName != null) {
+          blocknames.add(block.blockName!);
+        }
+      }
+    }
+    return blocknames;
   }
 }

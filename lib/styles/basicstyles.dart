@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/changeprovider/userregistration.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +12,7 @@ class BasicText extends StatelessWidget {
   Color? color;
   double? fontSize;
 
-  BasicText({super.key, this.color, this.title, this.fontSize});
+  BasicText({this.color, this.title, this.fontSize});
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -87,22 +86,20 @@ class BackGroundImage extends StatelessWidget {
       ),
       BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 0.3, sigmaY: 0.3),
-        child: Container(
-          child: Center(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width / 1.05,
-                child: Card(
-                  //color: Colors.white.withOpacity(0.9),
-                  elevation: 15.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.5),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: child,
-                  ),
+        child: Center(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width / 1.05,
+              child: Card(
+                //color: Colors.white.withOpacity(0.9),
+                elevation: 15.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.5),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: child,
                 ),
               ),
             ),
@@ -120,22 +117,21 @@ class Blocks extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Container(
-      child: Column(
-        children: [
-          const SizedBox(height: 20,),
-          Textfield(
-            controller: noOfFloors,
-            text: "Enter no of Floors",
-            keyboardType: TextInputType.number,
-            validator: (value){
-              if(value!.isNotEmpty){
-                return "please enter no of blocks";
-              }
-            },
-          )
-        ],
-      ),
+    return Column(
+      children: [
+        const SizedBox(height: 20,),
+        Textfield(
+          controller: noOfFloors,
+          text: "Enter no of Floors",
+          keyboardType: TextInputType.number,
+          validator: (value){
+            if(value!.isNotEmpty){
+              return "please enter no of blocks";
+            }
+            return null;
+          },
+        )
+      ],
     );
   }
 
@@ -298,32 +294,7 @@ class CommonTextField extends StatelessWidget {
               return null;
             },
           ),
-          const SizedBox(height: 10,),
-          Container(
-            margin: const EdgeInsets.only(left: 15.3),
-            child: BasicText(
-              title: "Address : - ",
-              color: Colors.black,
-              fontSize: 15.5,
-            ),
-          ),
-          const SizedBox(height: 5),
-          Textfield(
-            keyboardType: TextInputType.text,
-            maxlines: null,
-            controller: address,
-            text: "Enter Address",
-            onChanged: (value) {
-              registration.setaddress(value);
-            },
-            validator: (value) {
-              if (value!.isEmpty) {
-                return "Please Enter address";
-              }
-
-              return null;
-            },
-          ),
+          const SizedBox(height: 10,)
 
         ],
       );
