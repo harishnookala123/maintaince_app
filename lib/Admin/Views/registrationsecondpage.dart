@@ -166,7 +166,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
     var dio = Dio();
 
     var response = await dio.request(
-      'http://192.168.29.231:3000/registerAdmin',
+      'http://192.168.1.6:3000/registerAdmin',
       options: Options(
         method: 'POST',
         headers: headers,

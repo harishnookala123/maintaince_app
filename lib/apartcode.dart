@@ -27,7 +27,7 @@ class _ApartCodeState extends State<ApartCode> {
   bool? messageId;
   bool? message;
   bool? flag;
-
+ String? adminId;
   List<String>? blocknames = [];
 
   @override
@@ -76,10 +76,18 @@ class _ApartCodeState extends State<ApartCode> {
                                 if(value!.isEmpty){
                                   return "Please Enter Apartment Code";
                                 }
+                                return null;
+                              },
+                              onChanged: (value){
+                              /*  apartmentId.value = apartmentId.value.copyWith(
+                                  text: value.replaceAll(' ', ''),
+                                  selection: TextSelection.collapsed(offset: value.length),
+                                );*/
+
                               },
                             ),
                           ),
-                          messageId == true
+                          messageId == false
                               ? const SizedBox(
                             child: Row(
                               children: [
@@ -108,7 +116,7 @@ class _ApartCodeState extends State<ApartCode> {
                                       Colors.green.shade500),
                                   onPressed: () async {
                                     await getVerify();
-                                    if(messageId==true){
+                                    if(messageId==false){
                                       apartmentDetails = await ApiService().getApartmentDetails(apartmentId.text);
                                     }
                                   },
@@ -127,7 +135,7 @@ class _ApartCodeState extends State<ApartCode> {
                     if (message == false)
                       Container(
                         margin: const EdgeInsets.only(top: 5.3),
-                        child: messageId == false
+                        child: messageId == true
                             ? const Text(
                           "Apartment Id already Present",
                           style:
@@ -158,11 +166,14 @@ class _ApartCodeState extends State<ApartCode> {
                             ),
                           ),
                           onPressed: () async {
-                            if (formKey.currentState!.validate() && messageId == true) {
+                            print(messageId);
                               var blocks = await ApiService()
                                   .getBlocks(apartmentId.text);
-                              getNavigate(blocks,apartmentDetails);
-                            }
+                              print(blocks);
+                              getNavigate(blocks,apartmentDetails,
+                                  adminId
+                              );
+
                           },
                           child: Text(
                             "Next",
@@ -197,31 +208,33 @@ class _ApartCodeState extends State<ApartCode> {
     }
   }
 
-  Future<void> postAdminId(String apartId) async {
+  Future<void> postAdminId(String apartment_code) async {
     var headers = {'Content-Type': 'application/json'};
-    var data = json.encode({"adminId": apartId});
+    var data = json.encode({"apartment_code": apartment_code});
     var dio = Dio();
-    var response = await dio.post(
-      'http://192.168.29.231:3000/checkAdminId',
+    var response = await dio.get(
+      'http://192.168.1.6:3000/checkAdminId/$apartment_code',
       options: Options(headers: headers),
       data: data,
     );
     if (response.statusCode == 200) {
       setState(() {
         messageId = response.data["message"];
+        adminId = response.data["admin_id"];
       });
     }
   }
 
-   getNavigate(List<BlockNames>? blocks, apartmentdetails) {
+   getNavigate(List<BlockNames>? blocks, apartmentdetails, String? adminId) {
      List<String>? blocknames = getlistofStrings(blocks);
-
+     print(apartmentdetails);
      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserRegistration(
          blocknames:blocknames, apartmentDetails:apartmentdetails,
-       apartmentcode:apartmentId.text
+       apartmentcode:apartmentId.text,adminId:adminId
      )));
    }
   List<String> getlistofStrings(List<BlockNames>? blocks) {
+    print(blocks);
     List<String> blocknames = [];
     if (blocks != null) {
       for (var block in blocks) {

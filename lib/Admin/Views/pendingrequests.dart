@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
@@ -17,61 +17,191 @@ class _PendingRequestsState extends State<PendingRequests> {
   Future<List<Users>?>? futureUsers;
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   TextEditingController? remarks = TextEditingController();
+  String? selectedvalue;
+
+  int? itemcount;
+
+  List<Users>? users;
 
   @override
   void initState() {
+    print(widget.apartid);
+    futureUsers = ApiService().getUsers(widget.apartid!, "Pending", selectedvalue);
     super.initState();
-    futureUsers = ApiService().getUsers(widget.apartid!, "Pending");
-    print(futureUsers);
   }
 
-  void refreshUsers() {
+  refreshUsers() {
     setState(() {
-      futureUsers = ApiService().getUsers(widget.apartid!, "Pending");
+      futureUsers = ApiService().getUsers(widget.apartid!,"Pending",selectedvalue);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print(widget.apartid);
     return Scaffold(
-      body: FutureBuilder<List<Users>?>(
-        future: futureUsers,
-        builder: (context, snap) {
-          if (snap.hasData) {
-            var users = snap.data;
-            print(users);
-            return Container(
-              margin: const EdgeInsets.all(12.3),
-              child: users!.isNotEmpty
-                  ? AnimatedList(
-                  shrinkWrap: true,
-                  physics: const ScrollPhysics(),
-                  key: _listKey,
-                  initialItemCount: users.length,
-                  itemBuilder: (context, index, animation) {
-                    return _buildListItem(context, index, users, animation);
-                  })
-                  : Center(
-                child: BasicText(
-                  title: "No Pending Requests",
-                  color: Colors.black,
-                  fontSize: 14.5,
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 8,
+          ),
+          FutureBuilder<List<String>?>(
+            future: ApiService().getBlockName(widget.apartid),
+            builder: (context, snap) {
+              if (snap.hasData) {
+                List<String>? blocknames = snap.data;
+                return Container(
+                  margin: const EdgeInsets.only(left: 25.5, top: 12.3),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        alignment: Alignment.topLeft,
+                        child: BasicText(
+                          title: "Select Block",
+                          fontSize: 16.5,
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.4,
+                        child: DropdownButtonFormField2<String>(
+                          isDense: true,
+                          isExpanded: true,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.black, width: 1.0),
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            enabled: true,
+                            contentPadding: const EdgeInsets.symmetric(vertical: 22),
+                            border: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.black),
+                              borderRadius: BorderRadius.circular(15.4),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.4)),
+                          ),
+                          hint: const Text(
+                            'Select Block',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          value: selectedvalue,
+                          items: blocknames!
+                              .map((item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(
+                              item.toString(),
+                              style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w400, fontSize: 18),
+                            ),
+                          ))
+                              .toList(),
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Please select block.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              selectedvalue = value.toString();
+                              print("Selected block: $selectedvalue");
+                              if(selectedvalue!=null){
+                                print("dgd");
+                                itemcount = 0;
+                              }
+                            });
+                          },
+                          onSaved: (value) {
+                            selectedvalue = value.toString();
+                          },
+                          buttonStyleData: const ButtonStyleData(
+                            padding: EdgeInsets.only(right: 8),
+                          ),
+                          iconStyleData: const IconStyleData(
+                            icon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Colors.black,
+                            ),
+                            iconSize: 25,
+                          ),
+                          dropdownStyleData: DropdownStyleData(
+                            elevation: 12,
+                            maxHeight: MediaQuery.of(context).size.height / 2.7,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          menuItemStyleData: const MenuItemStyleData(
+                            padding: EdgeInsets.symmetric(horizontal: 25),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }
+              return Container();
+            },
+          ),
+          selectedvalue != null
+              ? Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              physics: const ScrollPhysics(),
+              children: [
+                FutureBuilder<List<Users>?>(
+                  future: ApiService().getUsers(widget.apartid!, "Pending", selectedvalue),
+                  builder: (context, snap) {
+                    if (snap.hasData) {
+                       users = snap.data;
+                       itemcount = users!.length;
+                      print("Number of users: $itemcount");
+                      return Container(
+                        margin: const EdgeInsets.all(12.3),
+                        child: users!.isNotEmpty
+                            ? AnimatedList(
+                            shrinkWrap: true,
+                            physics: const ScrollPhysics(),
+                            key: _listKey,
+                            initialItemCount: itemcount!,
+                            itemBuilder: (context, index, animation) {
+                              return _buildListItem(
+                                  context, index, users!, animation);
+                            })
+                            : Center(
+                          child: BasicText(
+                            title: "No Pending Requests",
+                            color: Colors.black,
+                            fontSize: 14.5,
+                          ),
+                        ),
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.green,
+                      ),
+                    );
+                  },
                 ),
-              ),
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(
-              color: Colors.green,
+              ],
             ),
-          );
-        },
+          )
+              : Container()
+        ],
       ),
     );
   }
 
   Widget _buildListItem(BuildContext context, int index, List<Users> users,
       Animation<double> animation) {
+    if (index >= users.length) {
+      return Container(); // Return an empty container if the index is out of bounds
+    }
+
     return FadeTransition(
       opacity: animation,
       child: Column(
@@ -88,8 +218,8 @@ class _PendingRequestsState extends State<PendingRequests> {
                   alignment: Alignment.topRight,
                   child: IconButton(
                     onPressed: () async {
-                      Users user = await ApiService.userData(users[index].id!);
-                      userPop(user);
+                      Users? user = await ApiService.userData(users[index].uid!);
+                      userPop(user!);
                     },
                     icon: const Icon(
                       Icons.info,
@@ -110,7 +240,28 @@ class _PendingRequestsState extends State<PendingRequests> {
                       ),
                     ),
                     BasicText(
-                      title: users[index].userName!,
+                      title: users[index].first_name!,
+                      color: Colors.black,
+                      fontSize: 15.5,
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 12.4),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: BasicText(
+                        title: "Block : -",
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
+                    ),
+                    BasicText(
+                      title: users[index].block_name!.toUpperCase(),
                       color: Colors.black,
                       fontSize: 15.5,
                     ),
@@ -128,7 +279,7 @@ class _PendingRequestsState extends State<PendingRequests> {
                       fontSize: 16,
                     ),
                     BasicText(
-                      title: users[index].flatNo!,
+                      title: users[index].flat_no!,
                       color: Colors.black,
                       fontSize: 15.5,
                     ),
@@ -145,9 +296,9 @@ class _PendingRequestsState extends State<PendingRequests> {
                         fontSize: 16,
                       ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width / 2.2,
+                        width: MediaQuery.of(context).size.width / 2.4,
                         child: BasicText(
-                          title: users[index].appartName!,
+                          title: users[index].apartment_name!,
                           color: Colors.black,
                           fontSize: 15.5,
                         ),
@@ -168,7 +319,7 @@ class _PendingRequestsState extends State<PendingRequests> {
                       ),
                       onPressed: () async {
                         await ApiService().updateApproval(
-                          users[index].id!,
+                          users[index].uid!,
                           "Approved",
                           "",
                         );
@@ -216,6 +367,7 @@ class _PendingRequestsState extends State<PendingRequests> {
                           if (value!.isEmpty) {
                             return "Please enter Remarks";
                           }
+                          return null;
                         },
                       ),
                     ),
@@ -230,7 +382,7 @@ class _PendingRequestsState extends State<PendingRequests> {
                         ),
                         onPressed: () async {
                           await ApiService().updateApproval(
-                            users[index].id!,
+                            users[index].uid!,
                             "Decline",
                             remarks!.text,
                           );
@@ -260,22 +412,6 @@ class _PendingRequestsState extends State<PendingRequests> {
         ],
       ),
     );
-  }
-
-  void _removeItem(int index, List<Users> users) {
-    final removedUser = users[index];
-    _listKey.currentState!.removeItem(
-      index,
-          (context, animation) => _buildListItem(context, index, [removedUser], animation),
-      duration: const Duration(milliseconds: 2),
-    );
-    setState(() {
-      users.removeAt(index);
-    });
-
-    if (users.isEmpty) {
-      refreshUsers();
-    }
   }
 
   userPop(Users user) {
@@ -308,14 +444,15 @@ class _PendingRequestsState extends State<PendingRequests> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildDetailRow("User Name: ", user.userName!),
-                _buildDetailRow("Phone Number:", user.mobileNum!),
-                _buildDetailRow("Apart Name:", user.appartName!),
-                _buildDetailRow("Flat No:", user.flatNo!),
-                _buildDetailRow("Email:", user.emailId!),
-                _buildDetailRow("User Type:", user.userType!),
-                _buildDetailRow("Address:", user.permenantAddress!),
-                _buildDetailRow("Apart ID:", user.apartId!),
+                _buildDetailRow("User Name: ", user.first_name!),
+                _buildDetailRow("Phone Number:", user.phone!),
+                _buildDetailRow("Apart Name:", user.apartment_name!),
+                _buildDetailRow("Block Name", user.block_name!),
+                _buildDetailRow("Flat No:", user.flat_no!),
+                _buildDetailRow("Email:", user.email!),
+                _buildDetailRow("User Type:", user.user_type!),
+                _buildDetailRow("Address:", user.address!),
+                _buildDetailRow("Apart ID:", user.apartment_code!),
               ],
             ),
           ),
@@ -347,5 +484,24 @@ class _PendingRequestsState extends State<PendingRequests> {
         ],
       ),
     );
+  }
+
+  void _removeItem(int index, List<Users> users) {
+    final removedUser = users[index];
+    _listKey.currentState!.removeItem(
+      index,
+          (context, animation) => SizeTransition(
+        sizeFactor: animation,
+        child: _buildListItem(context, index, [removedUser], animation),
+      ),
+      duration: const Duration(milliseconds: 300),
+    );
+    setState(() {
+      users.removeAt(index);
+    });
+
+    if (users.isEmpty) {
+      refreshUsers();
+    }
   }
 }

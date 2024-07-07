@@ -167,9 +167,9 @@ class _GridItemState extends State<GridItem> {
      }else if(index==2){
        var adminvalues =  await ApiService().getUserById(widget.id!);
         var apartid = adminvalues!.apartId;
-       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserDetails(
+      /* Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserDetails(
          apartid:apartid
-       )));
+       )));*/
      }
    }
 }

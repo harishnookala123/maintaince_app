@@ -6,6 +6,8 @@ import 'package:maintaince_app/Admin/Model/apartmentdetails.dart';
 import 'package:maintaince_app/User/Views/userscreen.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 
+import '../../login.dart';
+
 class UserSecondRegistration extends StatefulWidget {
   List<ApartmentDetails>? apartmentDetails;
    UserSecondRegistration({super.key, this.apartmentDetails});
@@ -282,7 +284,7 @@ class UserSecondRegistrationState extends State<UserSecondRegistration> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => UserScreen(
+                  builder: (context) => Login(
                       // name: userName.text,
                       )));
         }

@@ -1,31 +1,57 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:maintaince_app/Admin/changeprovider/api.dart';
 
+import '../../Admin/Model/usermodel.dart';
 import '../../login.dart';
-class UserScreen  extends StatelessWidget {
 
-  String? name;
+class Userscreen extends StatefulWidget {
+  String?user_id;
+   Userscreen({super.key,this.user_id});
 
-  UserScreen({super.key, this.name});
+  @override
+  State<Userscreen> createState() => _UserscreenState();
+}
+
+class _UserscreenState extends State<Userscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
+      body: Container(
+        alignment: Alignment.center,
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment:CrossAxisAlignment.center,
           children: [
-            Center(child: Text(name!,style: const TextStyle(fontSize: 40),),),
-            Text("Your Status is Pending ",
-             style: TextStyle(color: Colors.pink.shade300),
-            ),
-            const SizedBox(height: 20,),
-            TextButton(onPressed: (){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder:
-                  (context)=>const Login()));
-            }, child: const Text("Logout",
-              style: TextStyle(color: Colors.blue,fontSize: 18),
-            ))
+            const SizedBox(height: 30,),
+            FutureBuilder<Users?>(
+                future: ApiService.userData(widget.user_id!), 
+                builder: (context,snap){
+                  if(snap.hasData){
+                    var users = snap.data;
+                    return users!.status=="Pending"?Column(
+                      children: [
+                        Text(users.first_name!),
+                        Text("Your status is ${users.status!}"),
+                        Text(users.apartment_name!),
+                        Text(users.block_name.toString().toUpperCase()),
+                        Text(users.flat_no!),
+                        Text(users.user_type!)
+                      ],
+                    ):Column(
+                      children: [
+                        Text("ddg"),
+                      ],
+                    );
+                  }return const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.pinkAccent,
+                    ),
+                  );
+                })
           ],
-        )
+        ),
+      ),
     );
   }
 }

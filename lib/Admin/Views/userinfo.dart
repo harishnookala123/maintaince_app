@@ -18,7 +18,7 @@ class _UserinfoState extends State<Userinfo> {
   Future<List<Users>?>? futureUsers;
   @override
   void initState() {
-    futureUsers = ApiService().getUsers(widget.apartid!, "Approved");
+    futureUsers = ApiService().getUsers(widget.apartid!, "Approved","");
     // TODO: implement initState
     super.initState();
   }
@@ -102,14 +102,14 @@ class _UserinfoState extends State<Userinfo> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildDetailRow("User Name: ", user.userName!),
-                _buildDetailRow("Phone Number:", user.mobileNum!),
-                _buildDetailRow("Apart Name:", user.appartName!),
-                _buildDetailRow("Flat No:", user.flatNo!),
-                _buildDetailRow("Email:", user.emailId!),
-                _buildDetailRow("User Type:", user.userType!),
-                _buildDetailRow("Address:", user.permenantAddress!),
-                _buildDetailRow("Apart ID:", user.apartId!),
+                _buildDetailRow("User Name: ", user.first_name!),
+                _buildDetailRow("Phone Number:", user.phone!),
+                _buildDetailRow("Apart Name:", user.apartment_name!),
+                _buildDetailRow("Flat No:", user.flat_no!),
+                _buildDetailRow("Email:", user.email!),
+                _buildDetailRow("User Type:", user.user_type!),
+                _buildDetailRow("Address:", user.address!),
+                _buildDetailRow("Apart ID:", user.apartment_code!),
               ],
             ),
           ),
@@ -156,8 +156,8 @@ class _UserinfoState extends State<Userinfo> {
             alignment: Alignment.topRight,
             child: IconButton(
               onPressed: () async {
-                Users user = await ApiService.userData(users[index].id!);
-                userPop(user);
+                Users? user = await ApiService.userData(users[index].uid!);
+                userPop(user!);
               },
               icon: const Icon(
                 Icons.info,
@@ -178,7 +178,7 @@ class _UserinfoState extends State<Userinfo> {
                 ),
               ),
               BasicText(
-                title: users[index].userName!,
+                title: users[index].first_name!,
                 color: Colors.black,
                 fontSize: 15.5,
               ),
@@ -196,7 +196,7 @@ class _UserinfoState extends State<Userinfo> {
                 fontSize: 16,
               ),
               BasicText(
-                title: users[index].flatNo!,
+                title: users[index].flat_no!,
                 color: Colors.black,
                 fontSize: 15.5,
               ),
@@ -215,7 +215,7 @@ class _UserinfoState extends State<Userinfo> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 2.2,
                   child: BasicText(
-                    title: users[index].appartName!,
+                    title: users[index].apartment_name!,
                     color: Colors.black,
                     fontSize: 15.5,
                   ),

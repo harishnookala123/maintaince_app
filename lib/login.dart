@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'Admin/Views/adminscreen.dart';
 import 'Admin/Views/apart_details.dart';
 import 'Admin/Views/registrationsecondpage.dart';
+import 'Admin/Views/userdetails.dart';
 import 'Co_admin/Views/registration.dart';
 import 'mainScreen.dart';
 
@@ -203,7 +204,7 @@ class _LoginState extends State<Login> {
      });
      var dio = Dio();
      var response = await dio.request(
-       'http://192.168.29.231:3000/login',
+       'http://192.168.1.7:3000/login',
        options: Options(
          method: 'POST',
          headers: headers,
@@ -216,7 +217,6 @@ class _LoginState extends State<Login> {
 
          Map<String,dynamic> res = response.data;
          print(res);
-         var name = res["name"];
          var userid = res["userid"];
          print(userid);
          status =  res["status"];
@@ -225,14 +225,16 @@ class _LoginState extends State<Login> {
            passwordController.clear();
            var usertype = res["usertype"];
            status = "";
+           print(usertype);
            if(usertype=="Owner"||usertype=="Tenant"){
-             Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=>UserScreen(
-               name: res["name"],
+             print(usertype);
+             Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=>Userscreen(
+               user_id: userid
              )));
            }else if(usertype=="admin"){
 
             Navigator.pushReplacement(context, MaterialPageRoute(
-               builder: (context) => ApartmentDetails(userid: userid)));
+               builder: (context) => UserDetails(userid: userid)));
            }
          }
      }

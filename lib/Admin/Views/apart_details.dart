@@ -169,13 +169,14 @@ class ApartmentDetailsState extends State<ApartmentDetails> {
                                   fontSize: 15,
                                   color: Colors.black,
                                 ),
-                                SizedBox(height: 7,),
+                                const SizedBox(height: 7,),
                                 SizedBox(
                                   width:
                                   MediaQuery.of(context).size.width / 1.3,
+                                  //height: MediaQuery.of(context).size.height,
                                   child: Textfield(
                                     controller: address,
-                                    keyboardType: TextInputType.text,
+                                    keyboardType: TextInputType.multiline,
                                     maxlines: null,
                                     text: "Enter address",
                                     onChanged: (value) {
@@ -369,7 +370,7 @@ class ApartmentDetailsState extends State<ApartmentDetails> {
        "email": registration.email,
        "phone": registration.phone,
        "admin_type": "admin",
-       "address": "",
+       "address": address.text,
      });
      var dio = Dio();
 

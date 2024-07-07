@@ -1,69 +1,77 @@
 
 
 class Users {
-  int? id;
-  String? appartName;
-  String? userName;
-  String? flatNo;
-  String? mobileNum;
-  String? emailId;
+  String? uid;
+  String? apartment_name;
+  String? block_name;
+  String? first_name;
+  String? last_name;
+  String? flat_no;
+  String? phone;
+  String? email;
   String? password;
-  String? userType;
-  String? permenantAddress;
-  String? apartId;
-  String? adminId;
-  String? approval;
-  bool?ispressed;
+  String? user_type;
+  String? address;
+  String? apartment_code;
+  String? admin_id;
+  bool? ispressed;
+  String?status;
   String?remarks;
   Users(
-      {this.id,
-        this.appartName,
-        this.userName,
-        this.flatNo,
-        this.mobileNum,
-        this.emailId,
+      {this.uid,
+        this.apartment_name,
+        this.first_name,
+        this.last_name,
+        this.flat_no,
+        this.phone,
+        this.email,
         this.password,
-        this.userType,
-        this.permenantAddress,
-        this.apartId,
-        this.adminId,
-        this.approval,
+        this.user_type,
+        this.address,
+        this.apartment_code,
+        this.admin_id,
+        this.block_name,
+        this.status,
         this.ispressed,
         this.remarks
       });
 
   Users.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    appartName = json['appart_name'];
-    userName = json['user_name'];
-    flatNo = json['flat_no'];
-    mobileNum = json['mobile_num'];
-    emailId = json['email_id'];
+    uid = json['uid'];
+    apartment_name = json['apartment_name'];
+    first_name = json['first_name'];
+    last_name = json['last_name'];
+    flat_no = json['flat_no'];
+    phone = json['phone'];
+    email = json['email'];
     password = json['password'];
-    userType = json['user_type'];
-    permenantAddress = json['permenant_address'];
-    apartId = json['apartId'];
-    adminId = json['adminId'];
-    approval = json['approval'];
+    user_type = json['user_type'];
+    address = json['address'];
+    apartment_code = json['apartment_code'];
+    admin_id = json['admin_id'];
+    status = json['status'];
     ispressed = false;
+    block_name = json["block_name"];
     remarks = json['remarks'];
 
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['appart_name'] = appartName;
-    data['user_name'] = userName;
-    data['flat_no'] = flatNo;
-    data['mobile_num'] = mobileNum;
-    data['email_id'] = emailId;
+    data['uid'] = uid;
+    data['apartment_name'] = apartment_name;
+    data['firstname'] = first_name;
+    data['last_name'] = last_name;
+    data['flat_no'] = flat_no;
+    data['phone'] = phone;
+    data['email'] = email;
     data['password'] = password;
-    data['user_type'] = userType;
-    data['permenant_address'] = permenantAddress;
-    data['apartId'] = apartId;
-    data['adminId'] = adminId;
-    data['approval'] = approval;
+    data['user_type'] = user_type;
+    data['address'] = address;
+    data['apartment_code'] = apartment_code;
+    data['admin_id'] = admin_id;
+    data['status'] = status;
+    data['block_name'] = block_name;
     data['ispressed'] = ispressed;
     data['remarks'] = remarks;
     return data;
