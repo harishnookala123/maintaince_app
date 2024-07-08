@@ -110,6 +110,7 @@ class _PendingRequestsState extends State<PendingRequests> {
                               if(selectedvalue!=null){
                                 print("dgd");
                                 itemcount = 0;
+                                refreshUsers();
                               }
                             });
                           },
@@ -153,11 +154,11 @@ class _PendingRequestsState extends State<PendingRequests> {
               physics: const ScrollPhysics(),
               children: [
                 FutureBuilder<List<Users>?>(
-                  future: ApiService().getUsers(widget.apartid!, "Pending", selectedvalue),
+                  future: futureUsers,  // Ensure using the future defined in initState or refreshed
                   builder: (context, snap) {
                     if (snap.hasData) {
-                       users = snap.data;
-                       itemcount = users!.length;
+                      users = snap.data;
+                      itemcount = users!.length;
                       print("Number of users: $itemcount");
                       return Container(
                         margin: const EdgeInsets.all(12.3),
