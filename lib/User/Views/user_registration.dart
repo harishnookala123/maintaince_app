@@ -251,13 +251,26 @@ class UserRegistrationState extends State<UserRegistration> {
                                     ),
                                   ),
                                   const SizedBox(height: 15,),
+                                  status!=null?Center(
+                                    child: BasicText(
+                                      fontSize: 16,
+                                      color: Colors.red,
+                                      title: status,
+                                    ),
+                                  ):Container(),
+                                  const SizedBox(height: 15,),
+
                                   Center(
                                     child: ElevatedButton(
                                         onPressed: (){
-                                          getNavigate(selectedValue,
-                                              selectedflat,widget.apartmentDetails,
-                                              usertype
-                                          );
+                                          if(formKey.currentState!.validate()){
+                                            setState(() {
+                                              getNavigate(selectedValue,
+                                                  selectedflat,widget.apartmentDetails,
+                                                  usertype
+                                              );
+                                            });
+                                          }
                                         },
                                      style: ElevatedButton.styleFrom(
                                        minimumSize: const Size(130, 50),
@@ -271,7 +284,9 @@ class UserRegistrationState extends State<UserRegistration> {
                                          )
                                         ),
                                     ),
-                                  )
+                                  ),
+                                  const SizedBox(height: 15,),
+
                                 ],
                               );
                             }
@@ -385,13 +400,14 @@ class UserRegistrationState extends State<UserRegistration> {
        "status":"Pending",
        "remarks":"",
      };
-     print(widget.adminId);
-     final String jsonUserData = json.encode(userData);
-    var values = await ApiService().registerUser(userData);
-    if(values!=null){
-      print(values.user_type);
+     status = await ApiService().registerUser(userData);
+    if(status=="User is registered"){
       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>
       const Login()));
+    }else{
+      setState(() {
+        status = "Email is already registered";
+      });
     }
    }
 }
