@@ -45,15 +45,18 @@ class _UserDetailsState extends State<UserDetails>
                   Tab(
                       child: BasicText(
                     title: "Pending",
+                        fontSize: 15,
                   )),
                   Tab(
                     child: BasicText(
                       title: "Approved",
+                      fontSize: 15,
                     ),
                   ),
                   Tab(
                     child: BasicText(
                       title: "Rejected",
+                      fontSize: 15,
                     ),
                   ),
                 ],
