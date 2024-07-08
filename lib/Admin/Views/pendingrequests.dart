@@ -37,10 +37,10 @@ class _PendingRequestsState extends State<PendingRequests> {
       });
     }).catchError((error) {
       print("Error fetching users: $error");
-      setState(() {
+
         users = [];
         itemcount = 0;
-      });
+
     });
   }
 
