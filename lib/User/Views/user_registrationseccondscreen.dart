@@ -264,7 +264,7 @@ class UserSecondRegistrationState extends State<UserSecondRegistration> {
     print(jsonUserData);
 
     const String url =
-        'http://192.168.29.92:3000/registerUser'; // Local server URL
+        'http://192.168.29.231:3000/registerUser'; // Local server URL
     var dio = Dio();
 
     try {

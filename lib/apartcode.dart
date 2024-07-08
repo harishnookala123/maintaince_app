@@ -118,6 +118,7 @@ class _ApartCodeState extends State<ApartCode> {
                                     await getVerify();
                                     if(messageId==false){
                                       apartmentDetails = await ApiService().getApartmentDetails(apartmentId.text);
+                                      print(apartmentDetails);
                                     }
                                   },
                                   child: const Text(
@@ -169,7 +170,7 @@ class _ApartCodeState extends State<ApartCode> {
                             print(messageId);
                               var blocks = await ApiService()
                                   .getBlocks(apartmentId.text);
-                              print(blocks);
+                              print(apartmentDetails);
                               getNavigate(blocks,apartmentDetails,
                                   adminId
                               );
@@ -213,7 +214,7 @@ class _ApartCodeState extends State<ApartCode> {
     var data = json.encode({"apartment_code": apartment_code});
     var dio = Dio();
     var response = await dio.get(
-      'http://192.168.1.6:3000/checkAdminId/$apartment_code',
+      'http://192.168.29.231:3000/checkAdminId/$apartment_code',
       options: Options(headers: headers),
       data: data,
     );
