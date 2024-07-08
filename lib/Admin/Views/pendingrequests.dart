@@ -19,32 +19,37 @@ class _PendingRequestsState extends State<PendingRequests> {
   TextEditingController? remarks = TextEditingController();
   String? selectedvalue;
 
-  int? itemcount;
-
   List<Users>? users;
+  int? itemcount;
 
   @override
   void initState() {
-    print(widget.apartid);
-    futureUsers = ApiService().getUsers(widget.apartid!, "Pending", selectedvalue);
     super.initState();
+    _fetchUsers();
   }
 
-  refreshUsers() {
-    setState(() {
-      futureUsers = ApiService().getUsers(widget.apartid!,"Pending",selectedvalue);
+  void _fetchUsers() {
+    futureUsers = ApiService().getUsers(widget.apartid!, "Pending", selectedvalue);
+    futureUsers!.then((value) {
+      setState(() {
+        users = value;
+        itemcount = users!.length;
+      });
+    }).catchError((error) {
+      print("Error fetching users: $error");
+      setState(() {
+        users = [];
+        itemcount = 0;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.apartid);
     return Scaffold(
       body: Column(
         children: [
-          const SizedBox(
-            height: 8,
-          ),
+          const SizedBox(height: 8),
           FutureBuilder<List<String>?>(
             future: ApiService().getBlockName(widget.apartid),
             builder: (context, snap) {
@@ -80,7 +85,8 @@ class _PendingRequestsState extends State<PendingRequests> {
                               borderRadius: BorderRadius.circular(15.4),
                             ),
                             focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15.4)),
+                              borderRadius: BorderRadius.circular(15.4),
+                            ),
                           ),
                           hint: const Text(
                             'Select Block',
@@ -106,12 +112,7 @@ class _PendingRequestsState extends State<PendingRequests> {
                           onChanged: (value) {
                             setState(() {
                               selectedvalue = value.toString();
-                              print("Selected block: $selectedvalue");
-                              if(selectedvalue!=null){
-                                print("dgd");
-                                itemcount = 0;
-                                refreshUsers();
-                              }
+                              _fetchUsers(); // Fetch users again when value changes
                             });
                           },
                           onSaved: (value) {
@@ -154,44 +155,49 @@ class _PendingRequestsState extends State<PendingRequests> {
               physics: const ScrollPhysics(),
               children: [
                 FutureBuilder<List<Users>?>(
-                  future: futureUsers,  // Ensure using the future defined in initState or refreshed
+                  future: futureUsers,
                   builder: (context, snap) {
-                    if (snap.hasData) {
+                    if (snap.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.green,
+                        ),
+                      );
+                    } else if (snap.hasError) {
+                      return Center(
+                        child: Text("Error: ${snap.error}"),
+                      );
+                    } else if (snap.hasData && snap.data!.isEmpty) {
+                      return Center(
+                        child: BasicText(
+                          title: "No Pending Requests",
+                          color: Colors.black,
+                          fontSize: 14.5,
+                        ),
+                      );
+                    } else if (snap.hasData && snap.data!.isNotEmpty) {
                       users = snap.data;
                       itemcount = users!.length;
-                      print("Number of users: $itemcount");
                       return Container(
                         margin: const EdgeInsets.all(12.3),
-                        child: users!.isNotEmpty
-                            ? AnimatedList(
-                            shrinkWrap: true,
-                            physics: const ScrollPhysics(),
-                            key: _listKey,
-                            initialItemCount: itemcount!,
-                            itemBuilder: (context, index, animation) {
-                              return _buildListItem(
-                                  context, index, users!, animation);
-                            })
-                            : Center(
-                          child: BasicText(
-                            title: "No Pending Requests",
-                            color: Colors.black,
-                            fontSize: 14.5,
-                          ),
+                        child: AnimatedList(
+                          shrinkWrap: true,
+                          physics: const ScrollPhysics(),
+                          key: _listKey,
+                          initialItemCount: itemcount!,
+                          itemBuilder: (context, index, animation) {
+                            return _buildListItem(context, index, users!, animation,);
+                          },
                         ),
                       );
                     }
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.green,
-                      ),
-                    );
+                    return Container();
                   },
                 ),
               ],
             ),
           )
-              : Container()
+              : Container(),
         ],
       ),
     );
@@ -287,120 +293,115 @@ class _PendingRequestsState extends State<PendingRequests> {
                   ],
                 ),
                 Container(
-                  margin: const EdgeInsets.all(12.4),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      BasicText(
-                        title: "Apart Name : - ",
-                        color: Colors.black,
-                        fontSize: 16,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 2.4,
-                        child: BasicText(
-                          title: users[index].apartment_name!,
-                          color: Colors.black,
-                          fontSize: 15.5,
-                        ),
-                      ),
-                    ],
-                  ),
+                  margin: const EdgeInsets.only(top: 12.4),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                users[index].ispressed == false
-                    ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                      ),
-                      onPressed: () async {
-                        await ApiService().updateApproval(
-                          users[index].uid!,
-                          "Approved",
-                          "",
-                        );
-                        _removeItem(index, users);
-                      },
-                      child: Text(
-                        "Approve",
-                        style: GoogleFonts.acme(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
+                    BasicText(
+                      title: "Apartment : -",
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width/2.5,
+                      child: BasicText(
+                        title: users[index].apartment_name!,
+                        color: Colors.black,
+                        fontSize: 15.5,
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 14.3),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.pink,
+                  ],
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                ),
+                if (users[index].ispressed ?? false)
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: TextField(
+                          controller: remarks,
+                          decoration: InputDecoration(
+                            hintText: "Enter remarks",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                          ),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            users[index].ispressed = true;
-                          });
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
+                        onPressed: () async {
+                          await ApiService().updateApproval(
+                            users[index].uid!,
+                            "Declined",
+                            remarks!.text,
+                          );
+                          _removeItem(index, users);
                         },
                         child: Text(
-                          "Decline",
+                          "Submit",
                           style: GoogleFonts.acme(
                             color: Colors.white,
                             fontSize: 16,
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                )
-                    : Column(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.23,
-                      child: Textfield(
-                        controller: remarks,
-                        keyboardType: TextInputType.multiline,
-                        text: "Remarks",
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Please enter Remarks";
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Center(
-                      child: ElevatedButton(
+                      const SizedBox(height: 10),
+                    ],
+                  )
+                else
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(130, 50),
-                          backgroundColor: Colors.green.shade400,
+                          backgroundColor: Colors.green,
                         ),
                         onPressed: () async {
                           await ApiService().updateApproval(
                             users[index].uid!,
-                            "Decline",
-                            remarks!.text,
+                            "Approved",
+                            "",
                           );
                           _removeItem(index, users);
-                          setState(() {
-                            remarks!.text = "";
-                          });
                         },
-                        child: BasicText(
-                          title: "Submit",
-                          color: Colors.white,
-                          fontSize: 16,
+                        child: Text(
+                          "Approve",
+                          style: GoogleFonts.acme(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                      Container(
+                        margin: const EdgeInsets.only(left: 14.3),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.pink,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              users[index].ispressed = true;
+                            });
+                          },
+                          child: Text(
+                            "Decline",
+                            style: GoogleFonts.acme(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                const SizedBox(height: 10),
                 const SizedBox(
                   height: 20,
                 ),
@@ -502,7 +503,7 @@ class _PendingRequestsState extends State<PendingRequests> {
     });
 
     if (users.isEmpty) {
-      refreshUsers();
+      _fetchUsers(); // Refresh users if the list becomes empty
     }
   }
 }
