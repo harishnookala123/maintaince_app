@@ -46,7 +46,7 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
                            SizedBox(
                              child: BasicText(
                                fontSize: 19.2,
-                              title: data!.apartname,
+                              title: data!.apartmentName,
                               color: Colors.green,),),
                            ],
                          ),
@@ -56,8 +56,7 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
             ],
           ),
         ),
-        drawer:  Drawer(
-          child: DrawerDetails(adminid:widget.userid),
+        drawer:  const Drawer(
             //backgroundColor: Colors.black,
         ),
         backgroundColor: Colors.white,
@@ -134,7 +133,7 @@ class _GridItemState extends State<GridItem> {
     return SizedBox(
       child:  InkWell(
         onTap: (){
-          getNavigate(widget.index,widget.adminvalues);
+          //getNavigate(widget.index,widget.adminvalues);
         },
         child: Card(
           color: Colors.white,
@@ -156,8 +155,9 @@ class _GridItemState extends State<GridItem> {
     );
   }
 
+/*
   getNavigate(int index, Admin? adminvalues) async {
-   var flats = adminvalues!.noOfFlats;
+   var flats = adminvalues!.apartmentName;
    var admindetails = adminvalues;
      if(index==0){
        Navigator.push(context, MaterialPageRoute(builder:
@@ -167,9 +167,12 @@ class _GridItemState extends State<GridItem> {
      }else if(index==2){
        var adminvalues =  await ApiService().getUserById(widget.id!);
         var apartid = adminvalues!.apartId;
-      /* Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserDetails(
+      */
+/* Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserDetails(
          apartid:apartid
-       )));*/
+       )));*//*
+
      }
    }
+*/
 }

@@ -11,8 +11,10 @@ class ApiService {
   var dio = Dio();
 
   Future<Admin?> getUserById(String id) async {
+    print(id);
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
+      print(response.body);
       var value = Admin.fromJson(json.decode(response.body));
 
       return value;
@@ -119,6 +121,23 @@ class ApiService {
       return null;
     }
   }
+   fetchAdminData(String id) async {
+    final dio = Dio();
+    print(id.toString()+ "dgdg");
+    final url = 'http://192.168.29.231/admin/$id'; // Replace with your backend URL
+    try {
+      final response = await dio.get(url);
+
+      if (response.statusCode == 200) {
+        print('Admin data: ${response.data}');
+        // Handle the data (e.g., parse JSON to Dart object)
+      } else {
+        print('Failed to load admin data: ${response.statusMessage}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
   static addingBlocks(String apartname, data) async {
     final Dio dio = Dio();
     final response = await dio.post(
@@ -207,5 +226,5 @@ class ApiService {
       return blocknames;
   }
     return null;
-}
+  }
 }

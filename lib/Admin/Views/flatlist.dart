@@ -1,63 +1,128 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/Model/adminRegistartion.dart';
+import 'package:maintaince_app/Admin/Views/showingflatlist.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
+
+import '../changeprovider/api.dart';
 class FlatList extends StatefulWidget {
-  int?noOfFlats;
-  Admin? adminvalues;
-   FlatList({super.key,this.noOfFlats,this.adminvalues  });
+  String? apartmentCode;
+   FlatList({super.key, this.apartmentCode});
   @override
   State<FlatList> createState() => _FlatListState();
 }
 
 class _FlatListState extends State<FlatList> {
+  String? selectedvalue;
+
   @override
   Widget build(BuildContext context) {
-    Admin?useradmin = widget.adminvalues;
     return Scaffold(
-      body: Column(
+      body:Column(
         children: [
-          const SizedBox(height: 40,),
-          BasicText(
-            title: useradmin!.apartname,
-            color: Colors.purple,
-            fontSize: 18,
-          ),
-          Expanded(child:GridView.builder(
-              physics: const ScrollPhysics(),
-              itemCount: widget.noOfFlats,
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 3.0,
-                mainAxisSpacing: 2.3,
-                // childAspectRatio: 12.0
-              ),
-              itemBuilder: (context,index){
+          FutureBuilder<List<String>?>(
+            future: ApiService().getBlockName(widget.apartmentCode),
+            builder: (context, snap) {
+              if (snap.hasData) {
+                List<String>? blocknames = snap.data;
                 return Container(
-                  margin: const EdgeInsets.all(12.3),
-                  width: 200.0,  // Specify the width of the container
-                  height: 150.0, // Specify the height of the container
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black87, // Border color
-                      width: 1.0,         // Border width
-                    ),
-                    borderRadius: BorderRadius.circular(15.0), // Optional: for rounded corners
+                  margin: const EdgeInsets.symmetric(horizontal:20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 25,),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        child: BasicText(
+                          title: "Select Block",
+                          fontSize: 16.5,
+                          color: Colors.pinkAccent.shade400,
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.4,
+                        child: DropdownButtonFormField2<String>(
+                          isDense: true,
+                          isExpanded: true,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.black, width: 1.0),
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            enabled: true,
+                            contentPadding: const EdgeInsets.symmetric(vertical: 22),
+                            border: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.black),
+                              borderRadius: BorderRadius.circular(15.4),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.4),
+                            ),
+                          ),
+                          hint: const Text(
+                            'Select Block',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          value: selectedvalue,
+                          items: blocknames!
+                              .map((item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(
+                              item.toString(),
+                              style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w400, fontSize: 18),
+                            ),
+                          ))
+                              .toList(),
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Please select block.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              selectedvalue = value.toString();
+                            });
+                          },
+                          onSaved: (value) {
+                            selectedvalue = value.toString();
+                          },
+                          buttonStyleData: const ButtonStyleData(
+                            padding: EdgeInsets.only(right: 8),
+                          ),
+                          iconStyleData: const IconStyleData(
+                            icon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Colors.black,
+                            ),
+                            iconSize: 25,
+                          ),
+                          dropdownStyleData: DropdownStyleData(
+                            elevation: 12,
+                            maxHeight: MediaQuery.of(context).size.height / 2.7,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          menuItemStyleData: const MenuItemStyleData(
+                            padding: EdgeInsets.symmetric(horizontal: 25),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                child: Center(child: TextButton(
-                  style: TextButton.styleFrom(
-
-                  ),
-                  child: Text(index.toString()),
-                  onPressed: (){
-
-                  },
-                )),
                 );
-              })
-          )
+              }
+              return Container();
+            },
+          ),
+          ShowingFlatlist(blockname:selectedvalue,apartmentcode:widget.apartmentCode)
         ],
       ),
+
     );
 
   }

@@ -286,7 +286,6 @@ class UserRegistrationState extends State<UserRegistration> {
                                     ),
                                   ),
                                   const SizedBox(height: 15,),
-
                                 ],
                               );
                             }

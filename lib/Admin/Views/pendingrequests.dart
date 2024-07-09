@@ -28,7 +28,7 @@ class _PendingRequestsState extends State<PendingRequests> {
     _fetchUsers();
   }
 
-  void _fetchUsers() {
+   _fetchUsers() {
     futureUsers = ApiService().getUsers(widget.apartid!, "Pending", selectedvalue);
     futureUsers!.then((value) {
       setState(() {
@@ -228,9 +228,9 @@ class _PendingRequestsState extends State<PendingRequests> {
                       Users? user = await ApiService.userData(users[index].uid!);
                       userPop(user!);
                     },
-                    icon: const Icon(
+                    icon:  Icon(
                       Icons.info,
-                      color: Colors.orangeAccent,
+                      color: Colors.orangeAccent.shade700,
                       size: 26,
                     ),
                   ),

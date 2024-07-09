@@ -6,8 +6,11 @@ import 'package:maintaince_app/Admin/changeprovider/coadminprovider.dart';
 import 'package:maintaince_app/User/Views/userscreen.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
+import 'Admin/Model/adminRegistartion.dart';
+import 'Admin/Model/usermodel.dart';
 import 'Admin/Views/adminscreen.dart';
 import 'Admin/Views/apart_details.dart';
+import 'Admin/Views/homepage.dart';
 import 'Admin/Views/registrationsecondpage.dart';
 import 'Admin/Views/userdetails.dart';
 import 'Co_admin/Views/registration.dart';
@@ -204,7 +207,7 @@ class _LoginState extends State<Login> {
      });
      var dio = Dio();
      var response = await dio.request(
-       'http://192.168.1.7:3000/login',
+       'http://192.168.29.231:3000/login',
        options: Options(
          method: 'POST',
          headers: headers,
@@ -227,14 +230,13 @@ class _LoginState extends State<Login> {
            status = "";
            print(usertype);
            if(usertype=="Owner"||usertype=="Tenant"){
-             print(usertype);
              Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=>Userscreen(
                user_id: userid
              )));
            }else if(usertype=="admin"){
-
-            Navigator.pushReplacement(context, MaterialPageRoute(
-               builder: (context) => UserDetails(userid: userid)));
+             var adminId = userid;
+              Admin?admin = await ApiService().getUserById(adminId);
+              getNavigate(admin,userid);
            }
          }
      }
@@ -246,7 +248,6 @@ class _LoginState extends State<Login> {
   }
 
   getText() {
-    print(status);
     return Container(
       margin: const EdgeInsets.only(top: 12.3,bottom: 12.3),
       child: Text(status!,
@@ -261,5 +262,12 @@ class _LoginState extends State<Login> {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+   getNavigate(Admin? admin, userid) {
+    Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) => HomePage(userid: userid,
+            admin:admin
+        )));
   }
 }

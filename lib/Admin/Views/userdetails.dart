@@ -27,6 +27,7 @@ class _UserDetailsState extends State<UserDetails>
   @override
   Widget build(BuildContext context) {
     var id = widget.userid;
+    print(id);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: DefaultTabController(
