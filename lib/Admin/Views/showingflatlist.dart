@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
-
+import 'package:maintaince_app/styles/basicstyles.dart';
 import '../Model/usermodel.dart';
+
 class ShowingFlatlist extends StatefulWidget {
   String? blockname;
   String? apartmentcode;
-   ShowingFlatlist({super.key,this.blockname,this.apartmentcode });
+
+  ShowingFlatlist({super.key, this.blockname, this.apartmentcode});
 
   @override
   State<ShowingFlatlist> createState() => _ShowingFlatListState();
@@ -15,59 +18,89 @@ class ShowingFlatlist extends StatefulWidget {
 class _ShowingFlatListState extends State<ShowingFlatlist> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          FutureBuilder<List<String>?>(
-              future: ApiService().getFlats(widget.apartmentcode, widget.blockname),
-              builder: (context,snap){
-                if(snap.hasData){
-                  var flats = snap.data;
-                  return FutureBuilder<List<Users>?>(
-                      future:ApiService().getUsers(widget.apartmentcode!, "Approved", widget.blockname),
-                      builder: (context,snapshot){
-                        if(snapshot.hasData){
-                          var approved = snapshot.data;
-                          return Container(
-                            margin: const EdgeInsets.only(left: 12.3,right: 12.3),
-                            child: GridView.builder(
-                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 4
+    return FutureBuilder<List<String>?>(
+      future: ApiService().getFlats(widget.apartmentcode, widget.blockname),
+      builder: (context, snap) {
+        if (snap.hasData) {
+          var flats = snap.data;
+          return FutureBuilder<List<Users>?>(
+            future: ApiService().getUsers(widget.apartmentcode!, "Approved", widget.blockname),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var approved = snapshot.data;
+                return Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 12.3, right: 12.3),
+                    child: GridView.builder(
+                      physics: const ScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 12.3,
+                        mainAxisExtent: 120,
+                      ),
+                      shrinkWrap: true,
+                      itemCount: flats!.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                            elevation: 2.0,
+                            color: getDetails(approved, flats[index]) == flats[index]
+                                ? getUsertype(approved, flats[index]) == "Owner"
+                                ? Colors.green
+                                : Colors.orange
+                                : Colors.white,
+                            child:  Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                              Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 10.0),
+                                child: Text(
+                                  flats[index],
+                                  style: GoogleFonts.acme(
+                                    fontSize: 18,
+                                    color: getDetails(approved, flats[index]) == flats[index]?Colors.white:Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    letterSpacing: 0.5
+                                  ),
                                 ),
-                                shrinkWrap: true,
-                                itemCount: flats!.length,
-                                itemBuilder:(context,index){
-                                  getData(approved);
-                                  return Card(
-                                    elevation: 2.0,
-                                    color: getDetails(approved,flats[index])==flats[index]?
-                                        getUsertype(approved,flats[index])=="Owner"?Colors.green:Colors.yellow:
-                                    Colors.white,
-                                    child: Container(
-                                      child: Center(child: Text(flats[index])),
-                                    ),
-                                  );
-                                } ),
-                          );
-
-                        }return Container();
-                      });
-                }return const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.pink,
+                              ),
+                            ),
+                            const Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: 0.0),
+                                child: Text(
+                                  'Harish',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),),
+                              ],
+                            )
+                        );
+                      },
+                    ),
                   ),
                 );
               }
-          )
-        ],
-      ),
+              return Container();
+            },
+          );
+        }
+        return const Center(
+          child: CircularProgressIndicator(
+            color: Colors.pink,
+          ),
+        );
+      },
     );
   }
 
   List getData(List<Users>? approved) {
-   List flats = [];
-    for(int i=0;i<approved!.length;i++){
+    List flats = [];
+    for (int i = 0; i < approved!.length; i++) {
       flats.add(approved[i].flat_no.toString());
     }
     return flats;
@@ -75,8 +108,8 @@ class _ShowingFlatListState extends State<ShowingFlatlist> {
 
   getDetails(List<Users>? approved, String flat) {
     String? flatnumber = "";
-    for(int i =0;i<approved!.length;i++){
-      if(flat==approved[i].flat_no){
+    for (int i = 0; i < approved!.length; i++) {
+      if (flat == approved[i].flat_no) {
         flatnumber = approved[i].flat_no;
         return flatnumber;
       }
@@ -84,8 +117,8 @@ class _ShowingFlatListState extends State<ShowingFlatlist> {
   }
 
   getUsertype(List<Users>? approved, String flat) {
-    for(int i =0;i<approved!.length;i++){
-      if(flat == approved[i].flat_no){
+    for (int i = 0; i < approved!.length; i++) {
+      if (flat == approved[i].flat_no) {
         return approved[i].user_type;
       }
     }
