@@ -5,8 +5,10 @@ import 'package:maintaince_app/Admin/Views/adminscreen.dart';
 import 'package:maintaince_app/Admin/Views/registration.dart';
 import 'package:maintaince_app/User/Views/user_registration.dart';
 
+import 'Admin/Views/registrationsecondpage.dart';
 import 'Co_admin/Views/registration.dart';
 import 'Security/Views/securityregistration.dart';
+import 'User/Views/user_checklist.dart';
 import 'apartcode.dart';
 
 class SelectRegister extends StatefulWidget {
@@ -108,13 +110,14 @@ class SelectRegisterScreen extends State<SelectRegister> {
   getNavigate(String value) {
     if (value == "Admin") {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const AdminRegistration()));
+          MaterialPageRoute(builder: (context) => const AdminPersonal()));
     } else if (value == "User") {
        Navigator.push(context,
-          MaterialPageRoute(builder: (context) =>  ApartCode()));
+          MaterialPageRoute(builder: (context) =>  const Expensive ()));
     } else if (value == "Security") {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const SecurityRegistration()));
     }
   }
 }
+// ApartCode
