@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:maintaince_app/Admin/Model/usermodel.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:maintaince_app/styles/drawer_style.dart';
 
 class Expenses extends StatefulWidget {
-  const Expenses({super.key});
+  Users? user;
+   Expenses({super.key, this.user});
 
   @override
   ExpensesState createState() => ExpensesState();
 }
-
 class ExpensesState extends State<Expenses> {
   final formKey = GlobalKey<FormState>();
   String? selectedExpense;
@@ -24,7 +25,7 @@ class ExpensesState extends State<Expenses> {
           color: Colors.blue,
         ),
       ),
-      drawer: const CustomDrawer(),
+      drawer: CustomDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

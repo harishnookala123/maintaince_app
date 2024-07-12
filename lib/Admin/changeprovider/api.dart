@@ -7,15 +7,12 @@ import '../Model/usermodel.dart';
 import '../Model/blocks.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.29.92:3000';
+  static const String baseUrl = 'http://192.168.29.231:3000';
   var dio = Dio();
 
   Future<Admin?> getAdminById(String id) async {
-    print(id);
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
-      // print(response.body.toString() + "AdminId");
-      // print(response.body);
       var value = Admin.fromJson(json.decode(response.body));
 
       return value;
@@ -24,26 +21,23 @@ class ApiService {
     }
   }
   Future<List<ApartmentDetails>?> getApartmentDetails(String? apartmentCode) async {
-
     var headers = {'Content-Type': 'application/json'};
     var dio = Dio();
 
     try {
       var response = await dio.get(
-        'http://192.168.29.92:3000/userregister/$apartmentCode',
+        'http://192.168.29.231:3000/userregister/$apartmentCode',
         options: Options(
           headers: headers,
         ),
       );
 
       if (response.statusCode == 200) {
-        print(response.data);
         List data = response.data["apartmentDetails"];
-        print(data);
         return data.map((json) => ApartmentDetails.fromJson(json)).toList();
       }
     } catch (e) {
-      print("Error: $e");
+      print("dgd");
     }
 
     return null;
@@ -54,7 +48,7 @@ class ApiService {
     var dio = Dio();
     try {
       var response = await dio.get(
-        'http://192.168.29.92:3000/flats/$apartmentcode/$blockname',
+        'http://192.168.29.231:3000/flats/$apartmentcode/$blockname',
         options: Options(
           headers: headers,
         ),
@@ -68,17 +62,15 @@ class ApiService {
         return values;
       }
     } catch (e) {
-      print("Error: $e");
     }
     return null;
   }
 
   Future<List<Users>?> getUsers(String apartId, String requests, String? selectedvalue) async {
-    print("${selectedvalue}Blockname");
     var data = {"apartId": apartId,"blockname":selectedvalue};
     var dio = Dio();
     var response = await dio.request(
-      'http://192.168.29.92:3000/user/$apartId/$requests/$selectedvalue',
+      'http://192.168.29.231:3000/user/$apartId/$requests/$selectedvalue',
       options: Options(
         method: 'GET',
       ),
@@ -89,30 +81,25 @@ class ApiService {
       List data = response.data['Users'];
       return data.map((json) => Users.fromJson(json)).toList();
     } else {
-      print(response.statusMessage);
     }
     return null;
   }
 
    updateApproval(String userId, String approvalStatus, String text) async {
-    print(text);
     try {
       final dio = Dio();
       final response = await dio.put(
-        'http://192.168.29.92:3000/approval/$userId',
-        data: {'approval': approvalStatus,'remarks': text},
+        'http://192.168.29.231:3000/approval/$userId',
+        data: {'status': approvalStatus,'remarks': text},
       );
       if (response.statusCode == 200) {
-        print('Approval status updated successfully');
       } else {
-        print('Failed to update approval status');
       }
     } catch (e) {
       print('Error: $e');
     }
   }
   static Future<Users?>userData(String userid) async {
-    print(userid);
     final response = await http.get(Uri.parse('$baseUrl/user/$userid'));
     if (response.statusCode == 200) {
       var data  = response.body;
@@ -125,8 +112,8 @@ class ApiService {
   }
    fetchAdminData(String id) async {
     final dio = Dio();
-    // print(id.toString()+ "dgdg");
-    final url = 'http://192.168.29.92:3000/admin/$id'; // Replace with your backend URL
+    print(id.toString()+ "dgdg");
+    final url = 'http://192.168.29.231/admin/$id'; // Replace with your backend URL
     try {
       final response = await dio.get(url);
 
@@ -143,7 +130,7 @@ class ApiService {
   static addingBlocks(String apartname, data) async {
     final Dio dio = Dio();
     final response = await dio.post(
-      'http://192.168.29.92:3000/approval/admin/apartments',
+      'http://192.168.29.231:3000/approval/admin/apartments',
       data: data,
     );
     if (response.statusCode == 200) {
@@ -155,12 +142,12 @@ class ApiService {
   }
 
   Future<List<BlockNames>?>getBlocks(String? apartmentCode) async {
-    // print(apartmentCode);
+    print(apartmentCode);
     var headers = {'Content-Type': 'application/json'};
     var dio = Dio();
     try {
       var response = await dio.get(
-        'http://192.168.29.92:3000/userregister/$apartmentCode',
+        'http://192.168.29.231:3000/userregister/$apartmentCode',
         options: Options(
           headers: headers,
         ),
@@ -171,22 +158,22 @@ class ApiService {
         return data.map((json) => BlockNames.fromJson(json)).toList();
       }
     } catch (e) {
-       // print("Error: $e");
+       print("Error: $e");
     }
 
     return null;
   }
 
   Future<String?>registerUser(Map<String, dynamic> userData) async {
+    print(userData);
     var response = await dio.post(
-      'http://192.168.29.92:3000/registerUser',
+      'http://192.168.29.231:3000/registerUser',
       options: Options(
         method: 'Post',
       ),
       data: userData,
     );
     if(response.statusCode==200){
-      print(response.data);
        var userid = response.data["status"];
 
        return userid;
@@ -196,7 +183,7 @@ class ApiService {
   Future<String?>getapartcode(String?userid) async {
     var userId = {"userid":userid!};
     var response = await dio.get(
-      'http://192.168.29.92:3000/apartmentcode/$userid',
+      'http://192.168.29.231:3000/apartmentcode/$userid',
       options: Options(
         method: 'GET',
       ),
@@ -209,11 +196,10 @@ class ApiService {
    return null;
   }
 
-
   Future<List<String>?>getBlockName(String? apartid) async {
     var userId = {"apartmentCode":apartid!};
     var response = await dio.get(
-      'http://192.168.29.92:3000/blockname/$apartid',
+      'http://192.168.29.231:3000/blockname/$apartid',
       options: Options(
         method: 'GET',
       ),
@@ -229,4 +215,23 @@ class ApiService {
   }
     return null;
   }
+  maintainceAmount(Map<String,dynamic>data, String? blockname, String? apartcode) async {
+    var users = await getUsers(apartcode!, "Approved", blockname);
+   var listofusers= [];
+    for(int i=0;i<users!.length;i++){
+      listofusers.add(users[i].uid);
+    }
+    print(listofusers);
+    final response = await dio.post(
+      'http://192.168.29.231:3000/adminmaintaince/$blockname',
+      data: {"data":data,"userid":listofusers},
+    );
+    if (response.statusCode == 200) {
+      print(response.data);
+      var status = response.data["status"];
+
+      return status;
+    }
+  }
+
 }

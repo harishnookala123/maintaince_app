@@ -67,7 +67,7 @@ class _ShowingFlatListState extends State<ShowingFlatlist> {
                               ),
                             ),
                             const Align(
-                              alignment: Alignment.bottomCenter,
+                              alignment: Alignment.bottomLeft,
                               child: Padding(
                                 padding: EdgeInsets.only(bottom: 0.0),
                                 child: Text(
