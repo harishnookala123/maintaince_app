@@ -3,22 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:maintaince_app/User/Views/expenses.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 
+import '../../Admin/Model/usermodel.dart';
 import '../../styles/drawer_style.dart';
 
-class Expensive extends StatelessWidget {
-  const Expensive({super.key});
+class UserHomeScreen extends StatelessWidget {
+  Users?user;
+  UserHomeScreen({super.key, this.user,});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: BasicText(
-          title: 'Apartment Name',
+          title: user!.apartment_name,
           fontSize: 19,
           color: Colors.blue,
         ),
       ),
-       drawer:  const CustomDrawer(),
+       drawer:   CustomDrawer(
+         user:user
+       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -34,7 +38,7 @@ class Expensive extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const Expenses()));
+                          builder: (context) =>  Expenses(user:user)));
                 },
               ),
             ),
