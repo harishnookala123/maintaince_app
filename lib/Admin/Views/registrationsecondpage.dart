@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/changeprovider/adminprovider.dart';
+import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:maintaince_app/login.dart';
 import 'package:provider/provider.dart';
 import '../../styles/basicstyles.dart';
@@ -166,7 +167,7 @@ class _AdminPersonalState extends State<AdminPersonal> {
     var dio = Dio();
 
     var response = await dio.request(
-      'http://192.168.29.231:3000/registerAdmin',
+      '$baseUrl/registerAdmin',
       options: Options(
         method: 'POST',
         headers: headers,

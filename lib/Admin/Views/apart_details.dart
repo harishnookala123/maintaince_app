@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/changeprovider/adminprovider.dart';
+import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
 
@@ -345,7 +346,7 @@ class ApartmentDetailsState extends State<ApartmentDetails> {
     var data = json.encode({"apartmentcode": apartmentcode});
     var dio = Dio();
     var response = await dio.request(
-      'http://192.168.29.231:3000/checkAdminId/$apartmentcode',
+      '$baseUrl/checkAdminId/$apartmentcode',
       options: Options(
         method: 'GET',
         headers: headers,

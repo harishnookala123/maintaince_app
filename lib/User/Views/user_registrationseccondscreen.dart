@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/Model/apartmentdetails.dart';
+import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:maintaince_app/User/Views/userscreen.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 
@@ -264,7 +265,7 @@ class UserSecondRegistrationState extends State<UserSecondRegistration> {
     print(jsonUserData);
 
     const String url =
-        'http://192.168.29.231:3000/registerUser'; // Local server URL
+        '$baseUrl/registerUser'; // Local server URL
     var dio = Dio();
 
     try {

@@ -214,7 +214,7 @@ class _ApartCodeState extends State<ApartCode> {
     var data = json.encode({"apartment_code": apartment_code});
     var dio = Dio();
     var response = await dio.get(
-      'http://192.168.29.231:3000/checkAdminId/$apartment_code',
+      '$baseUrl/checkAdminId/$apartment_code',
       options: Options(headers: headers),
       data: data,
     );
