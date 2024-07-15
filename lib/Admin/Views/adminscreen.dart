@@ -35,7 +35,7 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
           title:  Column(
             children: [
                FutureBuilder<Admin?>(
-                   future:ApiService().getUserById(widget.userid!) ,
+                   future:ApiService().getAdminById(widget.userid!) ,
                    builder: (context,snap){
                      if(snap.hasData){
                        var data = snap.data;
@@ -61,7 +61,7 @@ AdminRegistrationModel? adminRegistrationModel = AdminRegistrationModel();
         ),
         backgroundColor: Colors.white,
         body: FutureBuilder<Admin?>(
-                future: ApiService().getUserById(widget.userid!),
+                future: ApiService().getAdminById(widget.userid!),
                 builder:(context,snap){
                if(snap.hasData){
                  var value = snap.data;

@@ -340,14 +340,14 @@ class ApartmentDetailsState extends State<ApartmentDetails> {
     }
   }
 
-  postAdminId(String apartId) async {
+  postAdminId(String apartmentcode) async {
     var headers = {'Content-Type': 'application/json'};
-    var data = json.encode({"apartment_code": apartId});
+    var data = json.encode({"apartmentcode": apartmentcode});
     var dio = Dio();
     var response = await dio.request(
-      'http://192.168.29.231:3000/checkAdminId',
+      'http://192.168.29.231:3000/checkAdminId/$apartmentcode',
       options: Options(
-        method: 'POST',
+        method: 'GET',
         headers: headers,
       ),
       data: data,
@@ -360,6 +360,7 @@ class ApartmentDetailsState extends State<ApartmentDetails> {
   }
 
    postAdminDetails(AdminRegistrationModel registration, ApartDetails apartment) async {
+    print(widget.userid);
      var headers = {'Content-Type': 'application/json'};
      var data = json.encode({
        "admin_id": widget.userid,

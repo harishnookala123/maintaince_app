@@ -44,6 +44,7 @@ dependencies:
   dio: any
   shared_preferences: any
   dropdown_button2: any
+  intl: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
