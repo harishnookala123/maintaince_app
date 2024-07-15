@@ -1,10 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:maintaince_app/styles/drawer_style.dart';
 
+import '../../Admin/Model/usermodel.dart';
+
 class Expenses extends StatefulWidget {
-  const Expenses({super.key});
+  Users? user;
+  Expenses({super.key, this.user});
 
   @override
   ExpensesState createState() => ExpensesState();
@@ -12,7 +14,16 @@ class Expenses extends StatefulWidget {
 
 class ExpensesState extends State<Expenses> {
   final formKey = GlobalKey<FormState>();
+  final TextEditingController otherExpenseController = TextEditingController();
+  final TextEditingController amountController = TextEditingController();
   String? selectedExpense;
+
+  @override
+  void dispose() {
+    otherExpenseController.dispose();
+    amountController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +35,7 @@ class ExpensesState extends State<Expenses> {
           color: Colors.blue,
         ),
       ),
-      drawer: const CustomDrawer(),
+      drawer: CustomDrawer(user: widget.user),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -35,7 +46,7 @@ class ExpensesState extends State<Expenses> {
               child: Column(
                 children: [
                   SizedBox(
-                    width: 320, // Set the width as per your requirement
+                    width: 320,
                     child: DropdownButtonFormField<String>(
                       decoration: const InputDecoration(
                         labelText: 'Select Expense',
@@ -66,9 +77,40 @@ class ExpensesState extends State<Expenses> {
                       },
                     ),
                   ),
+                  if (selectedExpense == 'Others') ...[
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      controller: otherExpenseController,
+                      decoration: const InputDecoration(
+                        labelText: 'Enter Expense',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter an expense';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                  const SizedBox(height: 16.0),
+                  TextFormField(
+                    controller: amountController,
+                    decoration: const InputDecoration(
+                      labelText: 'Enter Amount',
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter an amount';
+                      }
+                      return null;
+                    },
+                  ),
                   const SizedBox(height: 16.0),
                   SizedBox(
-                    width: 160, // Set the width as per your requirement
+                    width: 160,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(30, 50),
@@ -77,11 +119,17 @@ class ExpensesState extends State<Expenses> {
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
                           // Handle form submission
+                          if (selectedExpense == 'Others') {
+                            print('Selected Expense: ${otherExpenseController.text}');
+                          } else {
+                            print('Selected Expense: $selectedExpense');
+                          }
+                          print('Entered Amount: ${amountController.text}');
                         }
                       },
                       child: const Text(
                         'Submit',
-                        style: TextStyle(fontSize: 20,),
+                        style: TextStyle(fontSize: 20),
                       ),
                     ),
                   ),
