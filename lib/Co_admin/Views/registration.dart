@@ -8,6 +8,7 @@ import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
 
 import '../../Admin/Views/adminscreen.dart';
+import '../../Admin/changeprovider/api.dart';
 
 class CoRegistration extends StatefulWidget {
   String? adminId;
@@ -19,8 +20,9 @@ class CoRegistration extends StatefulWidget {
 }
 
 class CoRegistrationState extends State<CoRegistration> {
-  var apartmentName = TextEditingController();
-  var coAdmin = TextEditingController();
+  var apartCode = TextEditingController();
+  var fisrtName = TextEditingController();
+  var lastName = TextEditingController();
   var mobileNumber = TextEditingController();
   var emailId = TextEditingController();
   var password = TextEditingController();
@@ -66,41 +68,19 @@ class CoRegistrationState extends State<CoRegistration> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+
                             Container(
                               margin:
                                   const EdgeInsets.only(left: 15.3, bottom: 8),
                               child: BasicText(
-                                title: "Apartment Name : - ",
+                                title: "First Name : - ",
                                 color: Colors.black,
                                 fontSize: 14.7,
                               ),
                             ),
                             Textfield(
-                              text: "ApartmentName",
-                              controller: apartmentName,
-                              keyboardType: TextInputType.text,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "Please Enter Apartment Name";
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(left: 15.3, bottom: 8),
-                              child: BasicText(
-                                title: "CoAdmin Name : - ",
-                                color: Colors.black,
-                                fontSize: 14.7,
-                              ),
-                            ),
-                            Textfield(
-                              text: "Enter coAdmin Name",
-                              controller: coAdmin,
+                              text: "Enter First Name",
+                              controller: fisrtName,
                               keyboardType: TextInputType.text,
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -112,6 +92,27 @@ class CoRegistrationState extends State<CoRegistration> {
                             const SizedBox(
                               height: 10,
                             ),
+                            Container(
+                              margin:
+                              const EdgeInsets.only(left: 15.3, bottom: 8),
+                              child: BasicText(
+                                title: "Last Name : - ",
+                                color: Colors.black,
+                                fontSize: 14.7,
+                              ),
+                            ),
+                            Textfield(
+                              text: "Enter Last Name",
+                              controller: lastName,
+                              keyboardType: TextInputType.text,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Please Enter Last Name";
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 10),
                             Container(
                               margin:
                                   const EdgeInsets.only(left: 15.3, bottom: 8),
@@ -194,6 +195,107 @@ class CoRegistrationState extends State<CoRegistration> {
                                 return null;
                               },
                             ),
+                            const SizedBox(height: 10),
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 3.4),
+                              child: BasicText(title: "Enter Apartment Code"),
+                            ),
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width / 1.8,
+                                    child: Textfield(
+                                      controller: apartmentId,
+                                      text: "Apartment Id",
+                                      keyboardType: TextInputType.text,
+                                      validator: (value){
+                                        if(value!.isEmpty){
+                                          return "Please Enter Apartment Code";
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value){
+                                        /*  apartmentId.value = apartmentId.value.copyWith(
+                                  text: value.replaceAll(' ', ''),
+                                  selection: TextSelection.collapsed(offset: value.length),
+                                );*/
+
+                                      },
+                                    ),
+                                  ),
+                                  messageId == false
+                                      ? const SizedBox(
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.verified_user_rounded,
+                                          color: Colors.green,
+                                          size: 25,
+                                        ),
+                                        Text(
+                                          "Verified",
+                                          style: TextStyle(
+                                              color: Colors.green, fontSize: 14),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                      : Expanded(
+                                    child: SizedBox(
+                                      height:
+                                      MediaQuery.of(context).size.height / 16.3,
+                                      child: Container(
+                                        margin: const EdgeInsets.only(left: 6),
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                              Colors.green.shade500),
+                                          onPressed: () async {
+                                            await getVerify();
+                                            if(messageId==false){
+                                              var apartmentDetails = await ApiService().getApartmentDetails(apartmentId.text);
+                                              print(apartmentDetails);
+                                            }
+                                          },
+                                          child: const Text(
+                                            "Verify",
+                                            style: TextStyle(
+                                                fontSize: 17, color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (message == false)
+                              Container(
+                                margin: const EdgeInsets.only(top: 5.3),
+                                child: messageId == true
+                                    ? const Text(
+                                  "Apartment Id already Present",
+                                  style:
+                                  TextStyle(color: Colors.red, fontSize: 14.5),
+                                )
+                                    : Container(),
+                              )
+                            else
+                              Container(
+                                margin: const EdgeInsets.only(top: 3.4),
+                                child: Text(
+                                  messageId == true
+                                      ? "Id should be at least 4 characters and contain at least one number and one alphabet"
+                                      : "",
+                                  style:
+                                  const TextStyle(color: Colors.red, fontSize: 11.5),
+                                ),
+                              ),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             const SizedBox(
                               height: 10,
                             ),
@@ -250,23 +352,23 @@ class CoRegistrationState extends State<CoRegistration> {
 
   getCoAdminRegistration(String? adminId) async {
     var headers = {'Content-Type': 'application/json'};
-    print(apartmentName.text);
+    // print(apartmentName.text);
     var data = json.encode({
-      "apartname": apartmentName.text,
-      "name": coAdmin.text,
+      "firstName": fisrtName.text,
+      "lastName": lastName.text,
       "email": emailId.text,
-      "phonenumber": mobileNumber.text,
+      "phone": mobileNumber.text,
       "password": password.text,
       "user_type": "Co-admin",
       "adminId": widget.adminId,
-      "apartId": widget.apartId,
-      "CoadminId": "Co${coAdmin.text}"
+      "apartment_code": widget.apartId,
+      "CoadminId": "Co${fisrtName.text}"
     });
 
     var dio = Dio();
 
     var response = await dio.request(
-      'http://192.168.29.231:3000/Co-adminregister',
+      'http://192.168.29.92:3000/coadmin',
       options: Options(
         method: 'POST',
         headers: headers,
@@ -281,6 +383,39 @@ class CoRegistrationState extends State<CoRegistration> {
     } else {
       print("Har");
       print(response.statusMessage);
+    }
+  }
+
+
+  Future<void> getVerify() async {
+    const pattern = r'^(?=.*[a-zA-Z])(?=.*\d)(?=(?:[^a-zA-Z]*[a-zA-Z])).{1,}$';
+    final regExp = RegExp(pattern);
+    if (regExp.hasMatch(apartmentId.text)) {
+      await postAdminId(apartmentId.text);
+      setState(() {
+        message = false;
+      });
+    } else {
+      setState(() {
+        message = true;
+      });
+    }
+  }
+
+  Future<void> postAdminId(String apartmentCode) async {
+    var headers = {'Content-Type': 'application/json'};
+    var data = json.encode({"apartment_code": apartmentCode});
+    var dio = Dio();
+    var response = await dio.get(
+      'http://192.168.29.92:3000/checkAdminId/$apartmentCode',
+      options: Options(headers: headers),
+      data: data,
+    );
+    if (response.statusCode == 200) {
+      setState(() {
+        messageId = response.data["message"];
+        var adminId = response.data["admin_id"];
+      });
     }
   }
 }

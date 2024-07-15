@@ -5,6 +5,7 @@ import 'package:maintaince_app/Admin/Views/userdetails.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 
+import '../../Co_admin/Views/registration.dart';
 import 'maintaince_bill.dart';
 class BuildDrawer extends StatefulWidget {
   Admin? userdetails;
@@ -63,7 +64,18 @@ class BuildDrawerState extends State<BuildDrawer> {
                     fontWeight: FontWeight.w500
                 ),
               ),
+
           ),
+          const SizedBox(height: 8),
+          TextButton(onPressed: (){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>
+                CoRegistration()));
+          }, child:  Text("Add Member",
+            style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.w500
+            ),
+          )),
         ],
       ),
 
