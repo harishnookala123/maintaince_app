@@ -3,9 +3,10 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintaince_app/Admin/Model/apartmentdetails.dart';
 import '../Model/adminRegistartion.dart';
+import '../Model/coadmin.dart';
 import '../Model/usermodel.dart';
 import '../Model/blocks.dart';
- const String baseUrl = 'http://maintenanceapplication.ap-south-1.elasticbeanstalk.com';
+ const String baseUrl = 'http://192.168.29.92:3000';
 
 class ApiService {
   var dio = Dio();
@@ -13,6 +14,7 @@ class ApiService {
   Future<Admin?> getAdminById(String id) async {
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
+      print(response.body);
       var value = Admin.fromJson(json.decode(response.body));
 
       return value;
@@ -96,7 +98,7 @@ class ApiService {
       } else {
       }
     } catch (e) {
-      print('Error: $e');
+      // print('Error: $e');
     }
   }
   static Future<Users?>userData(String userid) async {
@@ -221,13 +223,13 @@ class ApiService {
     for(int i=0;i<users!.length;i++){
       listofusers.add(users[i].uid);
     }
-    print(listofusers);
+    // print(listofusers);
     final response = await dio.post(
       '$baseUrl/adminmaintaince/$blockname',
       data: {"data":data,"userid":listofusers},
     );
     if (response.statusCode == 200) {
-      print(response.data);
+      // print(response.data);
       var status = response.data["status"];
 
       return status;
@@ -235,7 +237,6 @@ class ApiService {
   }
 
    postexpenses(String? uid, Map<String, dynamic> data) async {
-    print(data);
     var dio = Dio();
     final response = await dio.post(
       '$baseUrl/expenses/$uid',
@@ -246,6 +247,19 @@ class ApiService {
        return status;
      }
    }
+  Future<List<CoAdmin>>fetchCoAdmins(String apartment_code, String userid) async {
+    var dio = Dio();
+    final response = await dio.get('$baseUrl/co_admin/$apartment_code/$userid');
+
+    if (response.statusCode == 200) {
+      List data = response.data["status"];
+      print(data);
+      var value = data.map((e) => CoAdmin.fromJson(e)).toList();
+      return value;
+    } else {
+      throw Exception('Failed to load CoAdmin list');
+    }
+  }
 
 
 }

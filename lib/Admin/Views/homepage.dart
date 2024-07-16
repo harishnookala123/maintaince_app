@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/Model/usermodel.dart';
@@ -5,7 +9,9 @@ import 'package:maintaince_app/Admin/Views/expenserequests.dart';
 import 'package:maintaince_app/Admin/Views/users_list.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import '../Model/adminRegistartion.dart';
+import '../Model/coadmin.dart';
 import 'builddrawer.dart';
+import 'coAdmin_list.dart';
 import 'flatlist.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,6 +36,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     Admin? admin = widget.admin;
+    print(admin!.admin_id);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -110,24 +117,30 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  getNavigate(String? userid, Admin? admin, String? selectedValue) {
+  getNavigate(String? userid, Admin? admin, String? selectedValue) async {
     var apartmentCode = admin!.apartmentCode;
-    if(selectedValue== "Flat list"){
-      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>
-       FlatList(apartmentCode: apartmentCode)
+    print(userid);
+    if (selectedValue == "Flat list") {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+          FlatList(apartmentCode: apartmentCode)
       ));
     }
-    if(selectedValue== "Users"){
-      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>
+    if (selectedValue == "Users") {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
           Userlist(apartid: apartmentCode)
       ));
     }
-    if(selectedValue== "Expense requests"){
-      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>
+    if (selectedValue == "Expense requests") {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
           Expenserequests(apartid: apartmentCode)
       ));
     }
-
-
+    if (selectedValue == "Coadmin details") {
+      print(apartmentCode.toString()+"hejhjagdcjagdadaygjaggfjhahjas");
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+          CoAdminlist(apartid: apartmentCode,userid: userid)
+      ));
+    }
   }
+
 }
