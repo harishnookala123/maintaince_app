@@ -27,7 +27,8 @@ class ManagementInfoScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 FutureBuilder<Admin?>(future:ApiService().getAdminById(user!.admin_id!),
+                 FutureBuilder<Admin?>(
+                     future:ApiService().getAdminById(user!.admin_id!),
                      builder: (context,snap){
                         if(snap.hasData){
                           var admin = snap.data;

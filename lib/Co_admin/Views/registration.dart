@@ -4,10 +4,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/Model/adminRegistartion.dart';
-import 'package:maintaince_app/Admin/changeprovider/coadminprovider.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
 
+import '../../Admin/Model/coadmin.dart';
 import '../../Admin/Views/adminscreen.dart';
 import '../../Admin/Views/homepage.dart';
 import '../../Admin/changeprovider/api.dart';

@@ -4,19 +4,18 @@ import 'package:http/http.dart' as http;
 import 'package:maintaince_app/Admin/Model/apartmentdetails.dart';
 import '../Model/adminRegistartion.dart';
 import '../Model/coadmin.dart';
+import '../Model/expenserequest.dart';
 import '../Model/usermodel.dart';
 import '../Model/blocks.dart';
- const String baseUrl = 'http://192.168.29.92:3000';
+ const String baseUrl = 'http://maintenanceapplication.ap-south-1.elasticbeanstalk.com';
 
 class ApiService {
   var dio = Dio();
-
+   String baseUrl1 = 'http://192.168.29.231:3000';
   Future<Admin?> getAdminById(String id) async {
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
-      print(response.body);
       var value = Admin.fromJson(json.decode(response.body));
-
       return value;
     } else {
       return null;
@@ -98,7 +97,7 @@ class ApiService {
       } else {
       }
     } catch (e) {
-      // print('Error: $e');
+      print('Error: $e');
     }
   }
   static Future<Users?>userData(String userid) async {
@@ -223,13 +222,13 @@ class ApiService {
     for(int i=0;i<users!.length;i++){
       listofusers.add(users[i].uid);
     }
-    // print(listofusers);
+    print(listofusers);
     final response = await dio.post(
       '$baseUrl/adminmaintaince/$blockname',
       data: {"data":data,"userid":listofusers},
     );
     if (response.statusCode == 200) {
-      // print(response.data);
+      print(response.data);
       var status = response.data["status"];
 
       return status;
@@ -237,6 +236,7 @@ class ApiService {
   }
 
    postexpenses(String? uid, Map<String, dynamic> data) async {
+    print(data);
     var dio = Dio();
     final response = await dio.post(
       '$baseUrl/expenses/$uid',
@@ -247,9 +247,21 @@ class ApiService {
        return status;
      }
    }
+
+ Future<List<ExpenseRequest>?> getExpenseusers(String? block_name, String? apartment_code,String?status) async {
+    var dio = Dio();
+    final response = await dio.get('$baseUrl1/expenseusers/$apartment_code/$block_name/$status',
+        data: {"apartment_code" : apartment_code, "status":status,"block_name":block_name}
+    );
+    if(response.statusCode==200){
+      print(response.data);
+      List status = response.data['expenses'];
+      return status.map((e) => ExpenseRequest.fromJson(e)).toList();
+    }
+  }
   Future<List<CoAdmin>>fetchCoAdmins(String apartment_code, String userid) async {
     var dio = Dio();
-    final response = await dio.get('$baseUrl/co_admin/$apartment_code/$userid');
+    final response = await dio.get('$baseUrl1/co_admin/$apartment_code/$userid');
 
     if (response.statusCode == 200) {
       List data = response.data["status"];

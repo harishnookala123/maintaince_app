@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
-import 'package:maintaince_app/Admin/changeprovider/coadminprovider.dart';
 import 'package:maintaince_app/User/Views/userscreen.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
@@ -110,24 +109,23 @@ class _LoginState extends State<Login> {
                                 ),
                                 onPressed: _toggleObscureText,
                               ),
-                              isDense: true,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               hintText: 'Password',
                             ),
-                            minLines: 1,
-                            maxLines: 1,
                           ),
                           const SizedBox(height: 15),
                           SizedBox(
                             child: ElevatedButton(
                               onPressed: () {
                                 if (formKey.currentState!.validate()) {
-                                  getPost(
-                                    emailController.text,
-                                    passwordController.text.replaceAll(' ', ''),
-                                  );
+                                  setState(() {
+                                    getPost(
+                                      emailController.text,
+                                      passwordController.text.replaceAll(' ', ''),
+                                    );
+                                  });
                                 }
                               },
                               style: ElevatedButton.styleFrom(
@@ -147,7 +145,6 @@ class _LoginState extends State<Login> {
                           status != null
                               ? getText()
                               : Container(
-                            margin: const EdgeInsets.only(top: 4.3),
                           ),
                           Row(
                             children: [
@@ -213,49 +210,47 @@ class _LoginState extends State<Login> {
       data: data,
     );
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> res = response.data;
-      print(res);
-      var userid = res["userid"];
-      print(userid);
-      status = res["status"];
+    setState(() async {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> res = response.data;
+        var userid = res["userid"];
+        status = res["status"];
 
-      if (status == "Login Successful") {
-        emailController.clear();
-        passwordController.clear();
-        var usertype = res["usertype"];
-        status = "";
-        print(usertype);
-        if (usertype == "Owner" || usertype == "Tenant") {
-          Users? users = await ApiService.userData(userid);
-          print(users!.status.toString());
+        if (status == "Login Successful") {
+          emailController.clear();
+          passwordController.clear();
+          var usertype = res["usertype"];
+          print(usertype);
+          if (usertype == "Owner" || usertype == "Tenant") {
+            ApiService.userData(userid).then((users) {
+              print(users!.status.toString());
+              if(users.status == "Pending"){
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Userscreen(user_id: userid),
+                  ),
+                );
+              } else {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserHomeScreen(user:users),
+                  ),
+                );
+              }
+            });
+          } else if (usertype == "admin") {
+           Admin?admin = await ApiService().getAdminById(userid);
+              getNavigate(admin, userid);
 
-          if(users.status == "Pending"){
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Userscreen(user_id: userid),
-              ),
-            );
-          } else {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => UserHomeScreen(user:users),
-              ),
-            );          }
-
-        } else if (usertype == "admin") {
-          var adminId = userid;
-          Admin? admin = await ApiService().getAdminById(adminId);
-          getNavigate(admin, userid);
+          }
         }
+      } else {
+        print("Login failed");
+        status = response.data["status"];
       }
-    } else {
-      setState(() {
-        status = response.data;
-      });
-    }
+    });
   }
 
   getText() {

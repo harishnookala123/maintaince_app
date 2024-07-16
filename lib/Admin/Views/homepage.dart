@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/Model/usermodel.dart';
@@ -36,7 +32,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     Admin? admin = widget.admin;
-    print(admin!.admin_id);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -130,8 +125,8 @@ class _HomePageState extends State<HomePage> {
           Userlist(apartid: apartmentCode)
       ));
     }
-    if (selectedValue == "Expense requests") {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+    if(selectedValue== "Expense requests"){
+      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>
           Expenserequests(apartid: apartmentCode)
       ));
     }
