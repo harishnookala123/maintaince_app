@@ -377,7 +377,7 @@ class ApartmentDetailsState extends State<ApartmentDetails> {
      var dio = Dio();
 
      var response = await dio.request(
-       'http://192.168.29.231:3000/regapartAdmin',
+       '$baseUrl/regapartAdmin',
        options: Options(
          method: 'POST',
          headers: headers,

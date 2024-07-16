@@ -201,12 +201,12 @@ class _AdminPersonalState extends State<AdminPersonal> {
 
   }
 
-  postAdminId(String apartId) async {
+  postAdminId(String apartmentCode) async {
     var headers = {'Content-Type': 'application/json'};
-    var data = json.encode({"apartment_code": apartId});
+    var data = json.encode({"apartment_code": apartmentCode});
     var dio = Dio();
     var response = await dio.request(
-      'http://192.168.1.6:3000/checkAdminId',
+      '$baseUrl/checkAdminId/:$apartmentCode',
       options: Options(
         method: 'POST',
         headers: headers,

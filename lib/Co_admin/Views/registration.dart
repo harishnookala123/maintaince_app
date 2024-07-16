@@ -3,17 +3,20 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:maintaince_app/Admin/Model/adminRegistartion.dart';
 import 'package:maintaince_app/Admin/changeprovider/coadminprovider.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
 
 import '../../Admin/Views/adminscreen.dart';
+import '../../Admin/Views/homepage.dart';
 import '../../Admin/changeprovider/api.dart';
 
 class CoRegistration extends StatefulWidget {
   String? adminId;
   String? apartId;
-  CoRegistration({super.key, this.adminId, this.apartId});
+  Admin? admin;
+  CoRegistration({super.key, this.adminId, this.apartId, this.admin });
 
   @override
   State<CoRegistration> createState() => CoRegistrationState();
@@ -322,15 +325,9 @@ class CoRegistrationState extends State<CoRegistration> {
                                           BorderRadius.circular(25.0))),
                               onPressed: () {
                                 if (formKey.currentState!.validate()) {
-                                  getCoAdminRegistration(widget.adminId);
-                                  if (status == "Co-Admin is registered") {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => AdminScreen(
-                                                  userid: widget.adminId,
-                                                )));
-                                  }
+                                  setState(() {
+                                    getCoAdminRegistration(widget.adminId);
+                                  });
                                 }
                               },
                               child: Text("Register",
@@ -351,24 +348,25 @@ class CoRegistrationState extends State<CoRegistration> {
   }
 
   getCoAdminRegistration(String? adminId) async {
+    print(widget.apartId);
     var headers = {'Content-Type': 'application/json'};
     // print(apartmentName.text);
     var data = json.encode({
-      "firstName": fisrtName.text,
-      "lastName": lastName.text,
+      "first_name": fisrtName.text,
+      "last_name": lastName.text,
       "email": emailId.text,
       "phone": mobileNumber.text,
       "password": password.text,
       "user_type": "Co-admin",
-      "adminId": widget.adminId,
-      "apartment_code": widget.apartId,
+      "admin_id": widget.adminId,
+      "apartment_code": apartmentId.text,
       "CoadminId": "Co${fisrtName.text}"
     });
 
     var dio = Dio();
 
     var response = await dio.request(
-      'http://192.168.29.92:3000/coadmin',
+      'http://192.168.1.7:3000/coadmin',
       options: Options(
         method: 'POST',
         headers: headers,
@@ -379,7 +377,15 @@ class CoRegistrationState extends State<CoRegistration> {
       setState(() {
         status = response.data["status"];
       });
-      return status;
+      if(status=="Coadmin is registered"){
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomePage(
+                  userid: widget.adminId,
+                  admin: widget.admin,
+                )));
+      }
     } else {
       print("Har");
       print(response.statusMessage);
@@ -407,7 +413,7 @@ class CoRegistrationState extends State<CoRegistration> {
     var data = json.encode({"apartment_code": apartmentCode});
     var dio = Dio();
     var response = await dio.get(
-      'http://192.168.29.92:3000/checkAdminId/$apartmentCode',
+      'http://192.168.1.7:3000/checkAdminId/$apartmentCode',
       options: Options(headers: headers),
       data: data,
     );

@@ -205,7 +205,7 @@ class _LoginState extends State<Login> {
     });
     var dio = Dio();
     var response = await dio.request(
-     'http://maintenanceapplication.ap-south-1.elasticbeanstalk.com/login',
+      '$baseUrl/login',
       options: Options(
         method: 'POST',
         headers: headers,

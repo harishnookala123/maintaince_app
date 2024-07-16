@@ -69,8 +69,8 @@ class BuildDrawerState extends State<BuildDrawer> {
           const SizedBox(height: 8),
           TextButton(onPressed: (){
             Navigator.of(context).push(MaterialPageRoute(builder: (context)=>
-                CoRegistration()));
-          }, child:  Text("Add Member",
+                CoRegistration(adminId: widget.userid ,admin:admin)));
+          }, child:  Text("Add Co-Member",
             style: GoogleFonts.poppins(
                 fontSize: 16,
                 fontWeight: FontWeight.w500

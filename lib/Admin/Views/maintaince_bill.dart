@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:intl/intl.dart';
-
 import '../../styles/basicstyles.dart';
 
 class MaintainceBill extends StatefulWidget {
@@ -22,7 +21,6 @@ class _MaintainceBillState extends State<MaintainceBill> {
   String? selectedvalue;
  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     amount.addListener(_formatNumber);
  }
@@ -204,11 +202,13 @@ class _MaintainceBillState extends State<MaintainceBill> {
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade400,
+                      backgroundColor: Colors.purple.shade300,
                       minimumSize: const Size(120, 50)
                     ),
                     onPressed: () {
-                       postData(widget.userid,widget.apartcode);
+                      setState(() {
+                        postData(widget.userid,widget.apartcode);
+                      });
                     },
                     child: Text(
                       "Submit",
@@ -247,7 +247,6 @@ class _MaintainceBillState extends State<MaintainceBill> {
      String maintainceamount = amount.text.replaceAll(",", "");
 
      var value = await ApiService().getApartmentDetails(apartcode);
-     print(DateTime.now());
    Map<String,dynamic>data = {
      "apartment_name":value![0].apartmentName,
      "apartment_code": value[0].apartmentCode,

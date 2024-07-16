@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/Admin/changeprovider/coadminprovider.dart';
 import 'package:maintaince_app/splashscreen.dart';
@@ -16,7 +14,7 @@ void main() {
       ChangeNotifierProvider(create: (context)=> ApartDetails()),
       ChangeNotifierProvider(create: (context)=> Userregistration())
     ],
-   child: const MyApp(),
+     child: const MyApp(),
   ),
   );
 }

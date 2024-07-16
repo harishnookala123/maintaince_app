@@ -1,50 +1,47 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:maintaince_app/Admin/Views/showingflatlist.dart';
-import 'package:maintaince_app/styles/basicstyles.dart';
-import '../changeprovider/api.dart';
 
-class FlatList extends StatefulWidget {
-  String? apartmentCode;
-   FlatList({super.key, this.apartmentCode});
+import '../../styles/basicstyles.dart';
+import '../changeprovider/api.dart';
+class Expenserequests extends StatefulWidget {
+  String? apartid;
+  Expenserequests({super.key, this.apartid});
+
   @override
-  State<FlatList> createState() => FlatListState();
+  State<Expenserequests> createState() => _ExpenserequestsState();
 }
 
-class FlatListState extends State<FlatList> {
+class _ExpenserequestsState extends State<Expenserequests> {
   String? selectedvalue;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.grey.shade100,
         child: Column(
           children: [
-            const SizedBox(height: 10,),
+            SizedBox(height: 30,),
             FutureBuilder<List<String>?>(
-              future: ApiService().getBlockName(widget.apartmentCode),
+              future: ApiService().getBlockName(widget.apartid),
               builder: (context, snap) {
                 if (snap.hasData) {
                   List<String>? blocknames = snap.data;
                   return Container(
-                    margin: const EdgeInsets.symmetric(horizontal:20),
+                    margin: const EdgeInsets.only(left: 10, top: 12.3),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 25,),
                         Container(
                           alignment: Alignment.topLeft,
                           child: BasicText(
                             title: "Select Block",
                             fontSize: 16.5,
-                            color: Colors.pinkAccent.shade400,
                           ),
                         ),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.35,
+                          width: MediaQuery.of(context).size.width / 1.4,
                           child: DropdownButtonFormField2<String>(
                             isDense: true,
                             isExpanded: true,
@@ -54,7 +51,7 @@ class FlatListState extends State<FlatList> {
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
                               enabled: true,
-                              contentPadding: const EdgeInsets.symmetric(vertical: 22),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 15),
                               border: OutlineInputBorder(
                                 borderSide: const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(15.4),
@@ -87,6 +84,7 @@ class FlatListState extends State<FlatList> {
                             onChanged: (value) {
                               setState(() {
                                 selectedvalue = value.toString();
+                                _fetchUsers(); // Fetch users again when value changes
                               });
                             },
                             onSaved: (value) {
@@ -121,12 +119,14 @@ class FlatListState extends State<FlatList> {
                 return Container();
               },
             ),
-            ShowingFlatList(blockname:selectedvalue,apartmentcode:widget.apartmentCode)
+
           ],
         ),
-      )
-
+      ),
     );
-
   }
+
+   _fetchUsers() {
+
+   }
 }

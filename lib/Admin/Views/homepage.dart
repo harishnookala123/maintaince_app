@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/Model/usermodel.dart';
+import 'package:maintaince_app/Admin/Views/expenserequests.dart';
+import 'package:maintaince_app/Admin/Views/users_list.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import '../Model/adminRegistartion.dart';
 import 'builddrawer.dart';
@@ -115,5 +117,17 @@ class _HomePageState extends State<HomePage> {
        FlatList(apartmentCode: apartmentCode)
       ));
     }
+    if(selectedValue== "Users"){
+      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>
+          Userlist(apartid: apartmentCode)
+      ));
+    }
+    if(selectedValue== "Expense requests"){
+      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>
+          Expenserequests(apartid: apartmentCode)
+      ));
+    }
+
+
   }
 }

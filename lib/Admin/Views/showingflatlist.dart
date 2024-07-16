@@ -1,21 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
-import 'package:maintaince_app/styles/basicstyles.dart';
 import '../Model/usermodel.dart';
 
-class ShowingFlatlist extends StatefulWidget {
+class ShowingFlatList extends StatefulWidget {
   String? blockname;
   String? apartmentcode;
 
-  ShowingFlatlist({super.key, this.blockname, this.apartmentcode});
+  ShowingFlatList({super.key, this.blockname, this.apartmentcode});
 
   @override
-  State<ShowingFlatlist> createState() => _ShowingFlatListState();
+  State<ShowingFlatList> createState() => _ShowingFlatListState();
 }
 
-class _ShowingFlatListState extends State<ShowingFlatlist> {
+class _ShowingFlatListState extends State<ShowingFlatList> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<String>?>(
@@ -59,7 +57,8 @@ class _ShowingFlatListState extends State<ShowingFlatlist> {
                                   flats[index],
                                   style: GoogleFonts.acme(
                                     fontSize: 18,
-                                    color: getDetails(approved, flats[index]) == flats[index]?Colors.white:Colors.black,
+                                    color: getDetails(approved, flats[index])
+                                        == flats[index]?Colors.white:Colors.black,
                                     fontWeight: FontWeight.w500,
                                     letterSpacing: 0.5
                                   ),
