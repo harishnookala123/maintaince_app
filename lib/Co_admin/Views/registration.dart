@@ -43,9 +43,7 @@ class CoRegistrationState extends State<CoRegistration> {
         body: BackGroundImage(
           child: SizedBox(
               height: MediaQuery.of(context).size.height / 1.4,
-              child: Consumer<CoAdmin>(
-                builder: (context, admin, child) {
-                  return ListView(
+              child:ListView(
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     //mainAxisSize: MainAxisSize.min,
@@ -341,8 +339,6 @@ class CoRegistrationState extends State<CoRegistration> {
                         ),
                       )
                     ],
-                  );
-                },
               )),
         ));
   }

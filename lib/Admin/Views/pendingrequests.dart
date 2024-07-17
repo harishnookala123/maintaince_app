@@ -493,7 +493,7 @@ class _PendingRequestsState extends State<PendingRequests> {
     _listKey.currentState!.removeItem(
       index,
           (context, animation) => SizeTransition(
-        sizeFactor: animation,
+            sizeFactor: animation,
         child: _buildListItem(context, index, [removedUser], animation),
       ),
       duration: const Duration(milliseconds: 300),

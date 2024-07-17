@@ -1,16 +1,15 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
+import 'package:intl/intl.dart';
 import '../../styles/basicstyles.dart';
 
 class MaintainceBill extends StatefulWidget {
-  final String? apartcode;
-  final String? userid;
-
-  MaintainceBill({Key? key, this.apartcode, this.userid}) : super(key: key);
+  String? apartcode;
+  String?userid;
+  MaintainceBill({super.key, this.apartcode,this.userid});
 
   @override
   State<MaintainceBill> createState() => _MaintainceBillState();
@@ -18,14 +17,17 @@ class MaintainceBill extends StatefulWidget {
 
 class _MaintainceBillState extends State<MaintainceBill> {
   TextEditingController amount = TextEditingController();
-  String? selectedvalue;
 
+  String? selectedvalue;
+ @override
+  void initState() {
+    super.initState();
+ }
   @override
   void dispose() {
     amount.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,9 +87,8 @@ class _MaintainceBillState extends State<MaintainceBill> {
                       ),
                     ],
                   );
-                } else {
-                  return CircularProgressIndicator();
                 }
+                return Container();
               },
             ),
             SizedBox(height: 20),
@@ -95,7 +96,7 @@ class _MaintainceBillState extends State<MaintainceBill> {
               "Enter Maintenance Bill Amount",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.pink.shade400),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextFormField(
               controller: amount,
               keyboardType: TextInputType.number,
@@ -137,16 +138,16 @@ class _MaintainceBillState extends State<MaintainceBill> {
   void postData(String? userid, String? apartcode) async {
     String maintainceamount = amount.text.replaceAll(",", "");
 
-    var value = await ApiService().getApartmentDetails(apartcode);
-    Map<String, dynamic> data = {
-      "apartment_name": value![0].apartmentName,
-      "apartment_code": value[0].apartmentCode,
-      "block_name": selectedvalue,
-      "admin_id": userid,
-      "amount": int.parse(maintainceamount),
-      "date": DateTime.now().toString(),
+     var value = await ApiService().getApartmentDetails(apartcode);
+   Map<String,dynamic>data = {
+     "apartment_name":value![0].apartmentName,
+     "apartment_code": value[0].apartmentCode,
+     "block_name" : selectedvalue,
+     "admin_id" : userid,
+     "amount" : int.parse(maintainceamount),
+     "date" : DateTime.now().toString(),
     };
-    amount.clear();
-    ApiService().maintainceAmount(data, selectedvalue, apartcode);
-  }
+     amount.clear();
+     ApiService().maintainceAmount(data,selectedvalue,apartcode);
+   }
 }

@@ -11,7 +11,7 @@ import '../Model/blocks.dart';
 
 class ApiService {
   var dio = Dio();
-   String baseUrl1 = 'http://192.168.1.7:3000';
+   String baseUrl1 = 'http://192.168.29.231:3000';
   Future<Admin?> getAdminById(String id) async {
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
@@ -104,7 +104,6 @@ class ApiService {
     final response = await http.get(Uri.parse('$baseUrl/user/$userid'));
     if (response.statusCode == 200) {
       var data  = response.body;
-      print(data);
       var value = Users.fromJson(json.decode(response.body));
       return value;
     } else {
@@ -222,10 +221,9 @@ class ApiService {
     for(int i=0;i<users!.length;i++){
       listofusers.add(users[i].uid);
     }
-    print(listofusers);
     final response = await dio.post(
-      '$baseUrl/adminmaintaince/$blockname',
-      data: {"data":data,"userid":listofusers},
+      '$baseUrl1/adminmaintaince/$blockname',
+      data: {"data":data,"userid":listofusers,"apartment_code" : apartcode},
     );
     if (response.statusCode == 200) {
       print(response.data);
@@ -254,7 +252,6 @@ class ApiService {
         data: {"apartment_code" : apartment_code, "status":status,"block_name":block_name}
     );
     if(response.statusCode==200){
-      print(response.data);
       List status = response.data['expenses'];
       return status.map((e) => ExpenseRequest.fromJson(e)).toList();
     }
@@ -272,6 +269,31 @@ class ApiService {
       throw Exception('Failed to load CoAdmin list');
     }
   }
+   approvalExpenses(String apartmentCode, int id, String status, String remarks) async {
+    print(id);
+    print(status);
+    print(remarks);
+    var dio = Dio();
 
+    try {
+      final response = await dio.put(
+        '$baseUrl1/approvalexpenses/$id',
+        data: {'status': status,'remarks': remarks},
+      );
 
+      if (response.statusCode == 200) {
+        print('Response data: ${response.data}');
+      } else {
+        print('Error: Unexpected status code ${response.statusCode}');
+      }
+    } on DioError catch (e) {
+      if (e.response != null) {
+        print('Dio error! Status: ${e.response?.statusCode}, Data: ${e.response?.data}');
+      } else {
+        print('Error sending request: ${e.message}');
+      }
+    } catch (e) {
+      print('Unexpected error: $e');
+    }
+  }
 }

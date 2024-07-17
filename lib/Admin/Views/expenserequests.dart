@@ -21,6 +21,7 @@ class _ExpenserequestsState extends State<Expenserequests> {
   List<ExpenseRequest>? expenses;
   int? itemcount;
   Future<List<ExpenseRequest>?>? futureUsers;
+  final formKey = GlobalKey<FormState>();
 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
@@ -143,7 +144,7 @@ class _ExpenserequestsState extends State<Expenserequests> {
               future: ApiService().getExpenseusers(selectedvalue, widget.apartid, "Pending"),
               builder: (context, snap) {
                 if (snap.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Container();
                 } else if (snap.hasData && snap.data!.isEmpty) {
                   return Center(
                     child: BasicText(
@@ -210,6 +211,32 @@ class _ExpenserequestsState extends State<Expenserequests> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 12.5),
+                ),
+                FutureBuilder<Users?>(
+                    future: ApiService.userData(expenses[index].userId!),
+                    builder: (context,snap){
+                      if(snap.hasData){
+                        Users? user = snap.data;
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            BasicText(
+                              title: "Name : -",
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                            BasicText(
+                              title: user!.first_name,
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ],
+                        );
+
+                    }return Container();
+                    }),
+                Container(
+                   margin: const EdgeInsets.only(top: 12.5),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -379,7 +406,9 @@ class _ExpenserequestsState extends State<Expenserequests> {
       setState(() {
         expenses = value;
         itemcount = expenses!.length;
-        _listKey.currentState?.setState(() {}); // Refresh the list view
+        _listKey.currentState?.setState(() {
+          _fetchUsers();
+        }); // Refresh the list view
         print("Fetched ${expenses!.length} expense requests"); // Debug logging
       });
     }).catchError((error) {
@@ -397,35 +426,46 @@ class _ExpenserequestsState extends State<Expenserequests> {
         return Column(
           children: [
             if (expenses[index].ispressed ?? false) ...[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextField(
-                  controller: remarks,
-                  decoration: InputDecoration(
-                    hintText: "Enter remarks",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                ),
-                onPressed: () async {
-                  // Add your decline logic here
-                  _removeItem(index, expenses);
-                },
-                child: Text(
-                  "Submit",
-                  style: GoogleFonts.acme(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
+             Form(
+               key: formKey,
+                 child: Column(
+               children: [
+                 Padding(
+                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                   child: TextField(
+                     controller: remarks,
+                     decoration: InputDecoration(
+                       hintText: "Enter remarks",
+                       border: OutlineInputBorder(
+                         borderRadius: BorderRadius.circular(12.0),
+                       ),
+                     ),
+                   ),
+                 ),
+                 const SizedBox(height: 10),
+                 ElevatedButton(
+                   style: ElevatedButton.styleFrom(
+                     backgroundColor: Colors.red,
+                   ),
+                   onPressed: () async {
+                     if(formKey.currentState!.validate()){
+
+                       ApiService().approvalExpenses(expenses[index].apartmentCode!,
+                           expenses[index].id!, "Decline", remarks.text);
+                       _removeItem(index, expenses);
+                       remarks.clear();
+                     }
+                   },
+                   child: Text(
+                     "Submit",
+                     style: GoogleFonts.acme(
+                       color: Colors.white,
+                       fontSize: 16,
+                     ),
+                   ),
+                 ),
+               ],
+             )),
               const SizedBox(height: 10),
             ] else ...[
               Row(
@@ -437,7 +477,8 @@ class _ExpenserequestsState extends State<Expenserequests> {
                     ),
                     onPressed: () async {
                       // Add your approve logic here
-                      print("Approved: ${expenses[index].userId}");
+                        ApiService().approvalExpenses(expenses[index].apartmentCode!,
+                            expenses[index].id!, "Approve","");
                       _removeItem(index, expenses);
                     },
                     child: Text(

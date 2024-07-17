@@ -1,4 +1,5 @@
 class ExpenseRequest {
+  int?id;
   String? expenseDate;
   int? amount;
   String? expenseType;
@@ -8,7 +9,9 @@ class ExpenseRequest {
   String? status;
   bool?ispressed;
   ExpenseRequest(
-      {this.expenseDate,
+      {
+        this.id,
+        this.expenseDate,
         this.amount,
         this.expenseType,
         this.description,
@@ -19,6 +22,7 @@ class ExpenseRequest {
       });
 
   ExpenseRequest.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
     expenseDate = json['expense_date'];
     amount = json['amount'];
     expenseType = json['expense_type'];
@@ -31,6 +35,7 @@ class ExpenseRequest {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data["id"] = id;
     data['expense_date'] = expenseDate;
     data['amount'] = amount;
     data['expense_type'] = expenseType;
