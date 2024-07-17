@@ -36,6 +36,10 @@ class ManagementInfoScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
 
+                              const Text("Admin Details:",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
+
+                              const SizedBox(height:8),
+
                               Text(
                                   'Name: ${admin?.firstName ?? ''}',
                                   style: const TextStyle(fontSize: 16),
