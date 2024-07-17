@@ -6,7 +6,7 @@ class ExpenseRequest {
   String? apartmentCode;
   String? userId;
   String? status;
-
+  bool?ispressed;
   ExpenseRequest(
       {this.expenseDate,
         this.amount,
@@ -14,7 +14,9 @@ class ExpenseRequest {
         this.description,
         this.apartmentCode,
         this.userId,
-        this.status});
+        this.status,
+        this.ispressed,
+      });
 
   ExpenseRequest.fromJson(Map<String, dynamic> json) {
     expenseDate = json['expense_date'];
@@ -24,6 +26,7 @@ class ExpenseRequest {
     apartmentCode = json['apartment_code'];
     userId = json['user_id'];
     status = json['status'];
+    ispressed = false;
   }
 
   Map<String, dynamic> toJson() {

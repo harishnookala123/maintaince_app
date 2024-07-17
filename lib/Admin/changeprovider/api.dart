@@ -11,7 +11,7 @@ import '../Model/blocks.dart';
 
 class ApiService {
   var dio = Dio();
-   String baseUrl1 = 'http://192.168.29.231:3000';
+   String baseUrl1 = 'http://192.168.1.7:3000';
   Future<Admin?> getAdminById(String id) async {
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
@@ -27,7 +27,7 @@ class ApiService {
 
     try {
       var response = await dio.get(
-        '$baseUrl/userregister/$apartmentCode',
+        '$baseUrl1/userregister/$apartmentCode',
         options: Options(
           headers: headers,
         ),

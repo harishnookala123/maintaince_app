@@ -1,13 +1,13 @@
 import 'dart:convert';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:maintaince_app/Admin/Model/expenserequest.dart';
-
 import '../../styles/basicstyles.dart';
 import '../Model/usermodel.dart';
 import '../changeprovider/api.dart';
+
 class Expenserequests extends StatefulWidget {
   String? apartid;
   Expenserequests({super.key, this.apartid});
@@ -20,16 +20,27 @@ class _ExpenserequestsState extends State<Expenserequests> {
   String? selectedvalue;
   List<ExpenseRequest>? expenses;
   int? itemcount;
+  Future<List<ExpenseRequest>?>? futureUsers;
+
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+
+  var remarks = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUsers();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         margin: const EdgeInsets.all(12.5),
-        child: Column(
+        child: ListView(
+          shrinkWrap: true,
+          physics: const ScrollPhysics(),
           children: [
-            const SizedBox(height: 30,),
             FutureBuilder<List<String>?>(
               future: ApiService().getBlockName(widget.apartid),
               builder: (context, snap) {
@@ -92,6 +103,7 @@ class _ExpenserequestsState extends State<Expenserequests> {
                             onChanged: (value) {
                               setState(() {
                                 selectedvalue = value.toString();
+                                _fetchUsers(); // Fetch users when a new block is selected
                               });
                             },
                             onSaved: (value) {
@@ -127,19 +139,11 @@ class _ExpenserequestsState extends State<Expenserequests> {
               },
             ),
             const SizedBox(height: 10,),
-            selectedvalue!=null?FutureBuilder<List<ExpenseRequest>?>(
+            selectedvalue != null ? FutureBuilder<List<ExpenseRequest>?>(
               future: ApiService().getExpenseusers(selectedvalue, widget.apartid, "Pending"),
               builder: (context, snap) {
                 if (snap.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.green,
-                    ),
-                  );
-                } else if (snap.hasError) {
-                  return Center(
-                    child: Text("Error: ${snap.error}"),
-                  );
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snap.hasData && snap.data!.isEmpty) {
                   return Center(
                     child: BasicText(
@@ -159,24 +163,22 @@ class _ExpenserequestsState extends State<Expenserequests> {
                       key: _listKey,
                       initialItemCount: itemcount!,
                       itemBuilder: (context, index, animation) {
-                        return _buildListItem(context, index, expenses!, animation,);
+                        return _buildListItem(context, index, expenses!, animation);
                       },
                     ),
                   );
                 }
                 return Container();
               },
-            ):Container(),
-
+            ) : Container(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildListItem(BuildContext context, int index, List<ExpenseRequest> users,
-      Animation<double> animation) {
-    if (index >= users.length) {
+  Widget _buildListItem(BuildContext context, int index, List<ExpenseRequest> expenses, Animation<double> animation) {
+    if (index >= expenses.length) {
       return Container(); // Return an empty container if the index is out of bounds
     }
     return FadeTransition(
@@ -196,115 +198,86 @@ class _ExpenserequestsState extends State<Expenserequests> {
                   alignment: Alignment.topRight,
                   child: IconButton(
                     onPressed: () async {
-                      Users? user = await ApiService.userData(users[index].userId!);
+                      Users? user = await ApiService.userData(expenses[index].userId!);
                       userPop(user!);
                     },
-                    icon:  Icon(
+                    icon: Icon(
                       Icons.info,
                       color: Colors.orangeAccent.shade700,
                       size: 26,
                     ),
                   ),
                 ),
-                FutureBuilder<Users?>(
-                    future:ApiService.userData(expenses![index].userId!) ,
-                    builder: (context,snap){
-                      if(snap.hasData){
-                        var user = snap.data;
-                        return Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: BasicText(
-                                    title: "Name : - ",
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                BasicText(
-                                  title: user!.first_name!,
-                                  color: Colors.black,
-                                  fontSize: 15.5,
-                                ),
-                              ],
-                            ),
-                            Container(
-                               margin: const EdgeInsets.only(top: 12.5),
-                            )
-                          ],
-                        );
-
-                      }else{
-                        return Container();
-                      }
-                    }),
                 Container(
-                  margin: const EdgeInsets.only(top: 12.4),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: BasicText(
-                        title: "Block : -",
-                        color: Colors.black,
-                        fontSize: 16,
-                      ),
-                    ),
-
-                  ],
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 12.4),
+                  margin: const EdgeInsets.only(top: 12.5),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     BasicText(
-                      title: "Flat No : -",
+                      title: "Amount : -",
                       color: Colors.black,
                       fontSize: 16,
                     ),
-
+                    BasicText(
+                      title: "${expenses[index].amount} Rs",
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
                   ],
                 ),
                 Container(
-                  margin: const EdgeInsets.only(top: 12.4),
+                  margin: const EdgeInsets.only(top: 12.5),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     BasicText(
-                      title: "Apartment : -",
+                      title: "Expense type : -",
                       color: Colors.black,
                       fontSize: 16,
                     ),
-
+                    BasicText(
+                      title: "${expenses[index].expenseType} ",
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 12.5),
+                    ),
                   ],
                 ),
                 Container(
-                  margin: const EdgeInsets.only(top: 10),
+                  margin: const EdgeInsets.only(top: 12.5),
                 ),
-
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    BasicText(
+                      title: "Expense Date : -",
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                    BasicText(
+                      title: "${getdate(expenses[index].expenseDate)} Rs",
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 4.3, bottom: 12.3),
+                ),
+                buildbuttons(expenses, index),
                 const SizedBox(height: 10),
-                const SizedBox(
-                  height: 20,
-                ),
               ],
             ),
-          ),
-          const SizedBox(
-            height: 10,
           ),
         ],
       ),
     );
-
   }
+
   userPop(Users user) {
     return showDialog(
       context: context,
@@ -338,7 +311,7 @@ class _ExpenserequestsState extends State<Expenserequests> {
                 _buildDetailRow("User Name: ", user.first_name!),
                 _buildDetailRow("Phone Number:", user.phone!),
                 _buildDetailRow("Apart Name:", user.apartment_name!),
-                _buildDetailRow("Block Name", user.block_name!),
+                _buildDetailRow("Block Name:", user.block_name!),
                 _buildDetailRow("Flat No:", user.flat_no!),
                 _buildDetailRow("Email:", user.email!),
                 _buildDetailRow("User Type:", user.user_type!),
@@ -374,6 +347,133 @@ class _ExpenserequestsState extends State<Expenserequests> {
           ),
         ],
       ),
+    );
+  }
+
+  String getdate(String? expenseDate) {
+    DateTime dateTime = DateTime.parse(expenseDate!);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
+    return formattedDate;
+  }
+
+  void _removeItem(int index, List<ExpenseRequest> expenses) {
+    final removedItem = expenses[index];
+
+    setState(() {
+      expenses.removeAt(index);
+    });
+
+    _listKey.currentState!.removeItem(
+      index,
+          (context, animation) => _buildListItem(context, index, [removedItem], animation),
+      duration: const Duration(milliseconds: 300),
+    );
+
+    if (expenses.isEmpty) {
+      _fetchUsers(); // Refresh users if the list becomes empty
+    }
+  }
+  void _fetchUsers() {
+    futureUsers = ApiService().getExpenseusers(selectedvalue, widget.apartid, "Pending");
+    futureUsers!.then((value) {
+      setState(() {
+        expenses = value;
+        itemcount = expenses!.length;
+        _listKey.currentState?.setState(() {}); // Refresh the list view
+        print("Fetched ${expenses!.length} expense requests"); // Debug logging
+      });
+    }).catchError((error) {
+      print("Error fetching users: $error");
+      setState(() {
+        expenses = [];
+        itemcount = 0;
+      });
+    });
+  }
+
+  Widget buildbuttons(List<ExpenseRequest> expenses, int index) {
+    return StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        return Column(
+          children: [
+            if (expenses[index].ispressed ?? false) ...[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextField(
+                  controller: remarks,
+                  decoration: InputDecoration(
+                    hintText: "Enter remarks",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                onPressed: () async {
+                  // Add your decline logic here
+                  _removeItem(index, expenses);
+                },
+                child: Text(
+                  "Submit",
+                  style: GoogleFonts.acme(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+            ] else ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                    ),
+                    onPressed: () async {
+                      // Add your approve logic here
+                      print("Approved: ${expenses[index].userId}");
+                      _removeItem(index, expenses);
+                    },
+                    child: Text(
+                      "Approve",
+                      style: GoogleFonts.acme(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 14.3),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.pink,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          expenses[index].ispressed = true;
+                        });
+                      },
+                      child: Text(
+                        "Decline",
+                        style: GoogleFonts.acme(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ],
+        );
+      },
     );
   }
 }
