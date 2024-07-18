@@ -36,6 +36,7 @@ class ExpensesState extends State<Expenses> {
   @override
   Widget build(BuildContext context) {
     var apartmentcode = widget.user!.apartment_code;
+   var blockname = widget.user!.block_name;
     return Scaffold(
       appBar: AppBar(
         title: BasicText(
@@ -57,103 +58,6 @@ class ExpensesState extends State<Expenses> {
               key: formKey,
               child: Column(
                 children: [
-                  FutureBuilder<List<String>?>(
-                    future: ApiService().getBlockName(apartmentcode),
-                    builder: (context, snap) {
-                      if (snap.hasData) {
-                        List<String>? blocknames = snap.data;
-                        return Container(
-                          margin: const EdgeInsets.symmetric(horizontal:20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                alignment: Alignment.topLeft,
-                                child: BasicText(
-                                  title: "Select Block",
-                                  fontSize: 16.5,
-                                  color: Colors.pinkAccent.shade400,
-                                ),
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width / 1.35,
-                                child: DropdownButtonFormField2<String>(
-                                  isDense: true,
-                                  isExpanded: true,
-                                  decoration: InputDecoration(
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.black, width: 1.0),
-                                      borderRadius: BorderRadius.circular(15.0),
-                                    ),
-                                    enabled: true,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 22),
-                                    border: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.black),
-                                      borderRadius: BorderRadius.circular(15.4),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.4),
-                                    ),
-                                  ),
-                                  hint: const Text(
-                                    'Select Block',
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                  value: selectedvalue,
-                                  items: blocknames!
-                                      .map((item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                      item.toString(),
-                                      style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.w400, fontSize: 18),
-                                    ),
-                                  ))
-                                      .toList(),
-                                  validator: (value) {
-                                    if (value == null) {
-                                      return 'Please select block.';
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedvalue = value.toString();
-                                    });
-                                  },
-                                  onSaved: (value) {
-                                    selectedvalue = value.toString();
-                                  },
-                                  buttonStyleData: const ButtonStyleData(
-                                    padding: EdgeInsets.only(right: 8),
-                                  ),
-                                  iconStyleData: const IconStyleData(
-                                    icon: Icon(
-                                      Icons.arrow_drop_down,
-                                      color: Colors.black,
-                                    ),
-                                    iconSize: 25,
-                                  ),
-                                  dropdownStyleData: DropdownStyleData(
-                                    elevation: 12,
-                                    maxHeight: MediaQuery.of(context).size.height / 2.7,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                  menuItemStyleData: const MenuItemStyleData(
-                                    padding: EdgeInsets.symmetric(horizontal: 25),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      }
-                      return Container();
-                    },
-                  ),
                    const SizedBox(height: 20,),
                   SizedBox(
                     width: 320,
@@ -268,7 +172,7 @@ class ExpensesState extends State<Expenses> {
       'remarks': "",
       'appartment_code' : widget.user!.apartment_code,
       "userid" : uid,
-      "block_name" : selectedvalue
+      "block_name" : widget.user!.block_name
     };
     status =  await ApiService().postexpenses(uid,data);
     if(status == "Expense inserted successfully"){
