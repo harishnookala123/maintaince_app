@@ -14,7 +14,7 @@ class UserHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:  const Color(0xFFE0FFFF) ,
+        backgroundColor: const Color(0xFFE0FFFF),
         title: BasicText(
           title: user!.apartment_name,
           fontSize: 19,
@@ -40,8 +40,8 @@ class UserHomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               buildCard(
-                icon: Icons.money,
-                title: 'Expenses',
+                icon: Icons.monetization_on_sharp,
+                title: 'Rise Expenses',
                 onTap: () {
                   Navigator.push(
                     context,
@@ -67,6 +67,14 @@ class UserHomeScreen extends StatelessWidget {
                   // Handle navigation to Complaints
                 },
               ),
+              const SizedBox(height: 16.0),
+              buildCard(
+                icon: Icons.error,
+                title: 'Maintenance Bill Payments',
+                onTap: () {
+                  // Handle navigation to Complaints
+                },
+              ),
             ],
           ),
         ),
@@ -79,22 +87,44 @@ class UserHomeScreen extends StatelessWidget {
     required String title,
     required VoidCallback onTap,
   }) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      elevation: 4,
-      shadowColor: Colors.orange.shade300,
-      child: ListTile(
-        leading: Icon(icon, color: Colors.orange.shade600),
-        title: Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 18,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 8.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.green.shade200, Colors.orange.shade400],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.blue.shade100,
+              blurRadius: 8,
+              offset: const Offset(2, 2),
+            ),
+          ],
+        ),
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          leading: Container(
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.6),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: Colors.orange.shade900, size: 27),
+          ),
+          title: Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: Colors.white,
+            ),
           ),
         ),
-        onTap: onTap,
       ),
     );
   }

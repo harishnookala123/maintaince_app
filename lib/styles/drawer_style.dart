@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:maintaince_app/User/Views/management_info.dart';
-
-import '../Admin/Model/adminRegistartion.dart';
 import '../Admin/Model/usermodel.dart';
 import '../User/Views/user_infoscreen.dart';
 
 class CustomDrawer extends StatelessWidget {
   final Users? user;
 
-
-  CustomDrawer({super.key, this.user,});
+  CustomDrawer({Key? key, this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,49 +14,67 @@ class CustomDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          SizedBox(
-            height: 100, // Decrease the height
-            child: DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.account_circle,
-                    color: Colors.white,
-                    size: 30.0,
-                  ),
-                  const SizedBox(width: 8.0), // Add some spacing between the icon and the text
-                  Text(
-                    user!.first_name!,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue.shade400,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.account_circle,
                       color: Colors.white,
-                      fontSize: 24,
+                      size: 50.0,
                     ),
-                  ),
-                ],
-              ),
+                    const SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            user?.first_name ?? 'User Name',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4.0),
+                          Text(
+                            user?.email ?? 'user@example.com',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.5,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0), // Decrease padding
-            leading: const Icon(Icons.edit),
+            leading: const Icon(Icons.edit, color: Colors.blue),
             title: const Text(
               'Edit Profile',
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 19),
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
             ),
             onTap: () {
               // Handle navigation to Edit Profile
             },
           ),
+          const Divider(),
           ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0), // Decrease padding
-            leading: const Icon(Icons.info),
+            leading: const Icon(Icons.info, color: Colors.blue),
             title: const Text(
               'Info',
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 19),
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
             ),
             onTap: () {
               Navigator.push(
@@ -70,15 +85,14 @@ class CustomDrawer extends StatelessWidget {
               );
             },
           ),
+          const Divider(),
           ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0), // Decrease padding
-            leading: const Icon(Icons.info),
+            leading: const Icon(Icons.info, color: Colors.blue),
             title: const Text(
               'Management Info',
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 19),
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
             ),
             onTap: () {
-
               Navigator.push(
                 context,
                 MaterialPageRoute(
