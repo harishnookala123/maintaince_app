@@ -5,7 +5,7 @@ class ExpenseRequest {
   String? expenseType;
   String? description;
   String? apartmentCode;
-  String? userId;
+  String? user_id;
   String? status;
   bool?ispressed;
   ExpenseRequest(
@@ -16,7 +16,7 @@ class ExpenseRequest {
         this.expenseType,
         this.description,
         this.apartmentCode,
-        this.userId,
+        this.user_id,
         this.status,
         this.ispressed,
       });
@@ -28,7 +28,7 @@ class ExpenseRequest {
     expenseType = json['expense_type'];
     description = json['description'];
     apartmentCode = json['apartment_code'];
-    userId = json['user_id'];
+    user_id = json['user_id'];
     status = json['status'];
     ispressed = false;
   }
@@ -41,7 +41,7 @@ class ExpenseRequest {
     data['expense_type'] = expenseType;
     data['description'] = description;
     data['apartment_code'] = apartmentCode;
-    data['user_id'] = userId;
+    data['user_id'] = user_id;
     data['status'] = status;
     return data;
   }

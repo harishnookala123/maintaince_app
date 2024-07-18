@@ -199,7 +199,7 @@ class _ExpenserequestsState extends State<Expenserequests> {
                   alignment: Alignment.topRight,
                   child: IconButton(
                     onPressed: () async {
-                      Users? user = await ApiService.userData(expenses[index].userId!);
+                      Users? user = await ApiService.userData(expenses[index].user_id!);
                       userPop(user!);
                     },
                     icon: Icon(
@@ -213,7 +213,7 @@ class _ExpenserequestsState extends State<Expenserequests> {
                   margin: const EdgeInsets.only(top: 12.5),
                 ),
                 FutureBuilder<Users?>(
-                    future: ApiService.userData(expenses[index].userId!),
+                    future: ApiService.userData(expenses[index].user_id!),
                     builder: (context,snap){
                       if(snap.hasData){
                         Users? user = snap.data;
