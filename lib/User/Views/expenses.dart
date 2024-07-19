@@ -35,8 +35,7 @@ class ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
-    var apartmentcode = widget.user!.apartment_code;
-   var blockname = widget.user!.block_name;
+   var width = MediaQuery.of(context).size.width/1.25;
     return Scaffold(
       appBar: AppBar(
         title: BasicText(
@@ -60,7 +59,7 @@ class ExpensesState extends State<Expenses> {
                 children: [
                    const SizedBox(height: 20,),
                   SizedBox(
-                    width: 320,
+                    width: width,
                     child: DropdownButtonFormField<String>(
                       decoration: const InputDecoration(
                         labelText: 'Select Expense',
@@ -93,7 +92,7 @@ class ExpensesState extends State<Expenses> {
                   ),
                   const SizedBox(height: 20,),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width/1.25,
+                    width: width,
                     child: TextFormField(
                       controller: otherExpenseController,
                       decoration: const InputDecoration(
@@ -114,7 +113,7 @@ class ExpensesState extends State<Expenses> {
                   ],
                   const SizedBox(height: 16.0),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width/1.25,
+                    width: width,
                     child: TextFormField(
                       controller: amountController,
                       decoration: const InputDecoration(

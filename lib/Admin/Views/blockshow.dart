@@ -110,10 +110,11 @@ class _BlockshowState extends State<Blockshow> {
         "apartment_name" :apart.apartName,
         'block_name' : widget.blockname,
         'flat_no' : blocks[i].toString(),
+        "address" : "ddg",
       };
       try {
         var response = await dio.request(
-          '$baseUrl/saveBlockName',
+          'http://192.168.29.231:3000/saveBlockName',
           options: Options(
             method: 'POST',
             headers: headers,

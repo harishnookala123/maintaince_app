@@ -9,7 +9,8 @@ import '../changeprovider/apartmentdetails.dart';
 class BlockName extends StatefulWidget {
   String? noOfblocks;
   String?apartname;
-  BlockName({super.key,  this.noOfblocks,this.apartname});
+  String? address;
+  BlockName({super.key,  this.noOfblocks,this.apartname,});
 
   @override
   State<BlockName> createState() => _BlockNameState();

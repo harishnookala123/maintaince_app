@@ -11,7 +11,7 @@ import '../Model/blocks.dart';
 
 class ApiService {
   var dio = Dio();
-   String baseUrl1 = 'http://192.168.1.7:3000';
+   String baseUrl1 = 'http://192.168.29.231:3000';
   Future<Admin?> getAdminById(String id) async {
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
@@ -216,20 +216,23 @@ class ApiService {
   }
     return null;
   }
+
   maintainceAmount(Map<String,dynamic>data, String? blockname, String? apartcode) async {
     var users = await getUsers(apartcode!, "Approved", blockname);
-   var listofusers= [];
+   var listofusers = [];
     for(int i=0;i<users!.length;i++){
       listofusers.add(users[i].uid);
     }
-    final response = await dio.post(
+   /* final response = await dio.post(
       '$baseUrl1/adminmaintaince/$blockname',
-      data: {"data":data,"userid":listofusers,"apartment_code" : apartcode},
+       data: {"data":data,"userid":listofusers,"apartment_code" : apartcode},
+    );*/
+    final response = await dio.get(
+        "$baseUrl1/getDistinctBlockNames",
     );
     if (response.statusCode == 200) {
       print(response.data);
       var status = response.data["status"];
-
       return status;
     }
   }
@@ -238,7 +241,7 @@ class ApiService {
     print(data);
     var dio = Dio();
     final response = await dio.post(
-      '$baseUrl/expenses/$uid',
+      '$baseUrl1/expenses/$uid',
       data: {"data":data,"userid":uid},
     );
      if(response.statusCode==200){
@@ -280,6 +283,7 @@ class ApiService {
       final response = await dio.put(
         '$baseUrl1/approvalexpenses/$id',
         data: {'status': status,'remarks': remarks},
+
       );
 
       if (response.statusCode == 200) {

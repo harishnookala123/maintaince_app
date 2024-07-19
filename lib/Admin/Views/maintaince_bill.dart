@@ -36,11 +36,9 @@ class _MaintainceBillState extends State<MaintainceBill> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Maintenance Bill',
-          style: GoogleFonts.poppins(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
+          'Maintaince Bill',
+          style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w500,
+          color: Colors.white
           ),
         ),
         centerTitle: true,
@@ -191,16 +189,16 @@ class _MaintainceBillState extends State<MaintainceBill> {
   void postData(String? userid, String? apartcode) async {
     String maintainceamount = amount.text.replaceAll(",", "");
 
-    var value = await ApiService().getApartmentDetails(apartcode);
-    Map<String, dynamic> data = {
-      "apartment_name": value![0].apartmentName,
-      "apartment_code": value[0].apartmentCode,
-      "block_name": selectedvalue,
-      "admin_id": userid,
-      "amount": int.parse(maintainceamount),
-      "date": DateTime.now().toString(),
+     var value = await ApiService().getApartmentDetails(apartcode);
+   Map<String,dynamic>data = {
+     "apartment_name":value![0].apartmentName,
+     "apartment_code": value[0].apartmentCode,
+     "block_name" : selectedvalue,
+     "admin_id" : userid,
+     "amount" : int.parse(maintainceamount),
+     "date" : DateTime.now().toString(),
     };
-    amount.clear();
-    ApiService().maintainceAmount(data, selectedvalue, apartcode);
-  }
+     amount.clear();
+     ApiService().maintainceAmount(data,selectedvalue,apartcode);
+   }
 }
