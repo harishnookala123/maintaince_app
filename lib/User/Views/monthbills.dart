@@ -20,7 +20,7 @@ class _MaintenanceBillState extends State<MaintenanceBill> {
       body: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: FutureBuilder<MaintainceBill?>(
-              future: ApiService().getMaintainceBill(widget.userid),
+              future: ApiService().getMaintainceBill(widget.userid, "Paid"),
               builder: (context, snap) {
                 if (snap.hasData) {
                   var bills = snap.data!.result;

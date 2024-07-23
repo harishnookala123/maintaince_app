@@ -12,7 +12,7 @@ import '../Model/blocks.dart';
 
 class ApiService {
   var dio = Dio();
-   String baseUrl1 = 'http://192.168.29.231:3000';
+   String baseUrl1 = 'http://192.168.1.7:3000';
   Future<Admin?> getAdminById(String id) async {
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
@@ -105,7 +105,6 @@ class ApiService {
   static Future<Users?>userData(String userid) async {
     final response = await http.get(Uri.parse('$baseUrl/user/$userid'));
     if (response.statusCode == 200) {
-      var data  = response.body;
       var value = Users.fromJson(json.decode(response.body));
       return value;
     } else {
@@ -218,21 +217,22 @@ class ApiService {
     return null;
   }
 
-  maintainceAmount(Map<String,dynamic>data, String? blockname, String? apartcode) async {
-    var users = await getUsers(apartcode!, "Approved", blockname);
-    var listofusers = [];
-    for(int i=0;i<users!.length;i++){
-      listofusers.add(users[i].uid);
-    }
-    final response = await dio.get(
-      "$baseUrl1/runeverymonth",
-    );
-    if (response.statusCode == 200) {
-      print(response.data);
-      var status = response.data["status"];
-      return status;
-    }
+  maintainceAmount() async {
+    // var users = await getUsers(apartcode!, "Approved", blockname);
+    // var listofusers = [];
+    // for(int i=0;i<users!.length;i++){
+    //   listofusers.add(users[i].uid);
+    // }
+    // final response = await dio.get(
+    //   "$baseUrl1/runeverymonth",
+    // );
+    // if (response.statusCode == 200) {
+    //   print(response.data);
+    //   var status = response.data["status"];
+    //   return status;
+    // }
   }
+
    postexpenses(String? uid, Map<String, dynamic> data) async {
     print(data);
     var dio = Dio();
@@ -246,7 +246,8 @@ class ApiService {
      }
    }
 
- Future<List<ExpenseRequest>?> getExpenseusers(String? block_name, String? apartment_code,String?status) async {
+ Future<List<ExpenseRequest>?> getExpenseusers(String? block_name,
+     String? apartment_code,String?status) async {
     var dio = Dio();
     final response = await dio.get('$baseUrl1/expenseusers/$apartment_code/$block_name/$status',
         data: {"apartment_code" : apartment_code, "status":status,"block_name":block_name}
@@ -255,6 +256,7 @@ class ApiService {
       List status = response.data['expenses'];
       return status.map((e) => ExpenseRequest.fromJson(e)).toList();
     }
+    return null;
   }
   Future<List<CoAdmin>>fetchCoAdmins(String apartment_code, String userid) async {
     var dio = Dio();
@@ -287,7 +289,7 @@ class ApiService {
       } else {
         print('Error: Unexpected status code ${response.statusCode}');
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (e.response != null) {
         print('Dio error! Status: ${e.response?.statusCode}, Data: ${e.response?.data}');
       } else {
@@ -297,10 +299,10 @@ class ApiService {
       print('Unexpected error: $e');
     }
   }
-  Future<MaintainceBill?>getMaintainceBill(String?userid) async {
+  Future<MaintainceBill?>getMaintainceBill(String?userid, String status) async {
     var dio = Dio();
     final response = await dio.get(
-        '$baseUrl1/maintaincebill/$userid');
+        '$baseUrl1/maintaincebill/$userid/$status');
     if(response.statusCode==200){
       print(response.data);
       return MaintainceBill.fromJson(response.data);
@@ -331,10 +333,6 @@ class ApiService {
 
      var value = data.map((e) => CoAdmin.fromJson(e)).toList();
      return value;
-      /*
-      var  value = CoAdmin.fromJson(json.decode(response.body));
-*/
-
     } else {
       return null;
     }

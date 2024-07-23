@@ -85,7 +85,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 icon: Icons.error,
                 title: 'Maintenance Bill Payments',
                 onTap: () {
-                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserBills(userid: widget.user!.uid!,)));
+                 Navigator.of(context).push(MaterialPageRoute(
+                     builder: (context)=>UserBills(userid: widget.user!.uid!,)));
                 },
               ),
             ],

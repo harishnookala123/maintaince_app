@@ -199,6 +199,6 @@ class _MaintainceBillState extends State<MaintainceBill> {
      "date" : DateTime.now().toString(),
     };
      amount.clear();
-     ApiService().maintainceAmount(data,selectedvalue,apartcode);
+     ApiService().maintainceAmount();
    }
 }
