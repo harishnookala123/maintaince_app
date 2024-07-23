@@ -5,6 +5,7 @@ import 'package:maintaince_app/styles/basicstyles.dart';
 
 import '../../Admin/Model/usermodel.dart';
 import '../../styles/drawer_style.dart';
+import 'billpayments.dart';
 
 class UserHomeScreen extends StatefulWidget {
   final Users? user;
@@ -84,7 +85,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 icon: Icons.error,
                 title: 'Maintenance Bill Payments',
                 onTap: () {
-                  // Handle navigation to Complaints
+                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserBills(userid: widget.user!.uid!,)));
                 },
               ),
             ],
