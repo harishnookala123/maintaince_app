@@ -8,7 +8,7 @@ import 'package:maintaince_app/User/Views/user_registration.dart';
 import 'Admin/Views/registrationsecondpage.dart';
 import 'Co_admin/Views/registration.dart';
 import 'Security/Views/securityregistration.dart';
-import 'User/Views/user_checklist.dart';
+import 'User/Views/homescreen.dart';
 import 'apartcode.dart';
 
 class SelectRegister extends StatefulWidget {

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintaince_app/Admin/Model/apartmentdetails.dart';
+import '../../User/Model/maintaince_bill.dart';
 import '../Model/adminRegistartion.dart';
 import '../Model/coadmin.dart';
 import '../Model/expenserequest.dart';
@@ -11,7 +12,7 @@ import '../Model/blocks.dart';
 
 class ApiService {
   var dio = Dio();
-   String baseUrl1 = 'http://192.168.29.92:3000';
+   String baseUrl1 = 'http://192.168.29.231:3000';
   Future<Admin?> getAdminById(String id) async {
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
@@ -216,24 +217,22 @@ class ApiService {
   }
     return null;
   }
+
   maintainceAmount(Map<String,dynamic>data, String? blockname, String? apartcode) async {
     var users = await getUsers(apartcode!, "Approved", blockname);
-   var listofusers= [];
+    var listofusers = [];
     for(int i=0;i<users!.length;i++){
       listofusers.add(users[i].uid);
     }
-    final response = await dio.post(
-      '$baseUrl1/adminmaintaince/$blockname',
-      data: {"data":data,"userid":listofusers,"apartment_code" : apartcode},
+    final response = await dio.get(
+      "$baseUrl1/runeverymonth",
     );
     if (response.statusCode == 200) {
       print(response.data);
       var status = response.data["status"];
-
       return status;
     }
   }
-
    postexpenses(String? uid, Map<String, dynamic> data) async {
     print(data);
     var dio = Dio();
@@ -280,6 +279,7 @@ class ApiService {
       final response = await dio.put(
         '$baseUrl1/approvalexpenses/$id',
         data: {'status': status,'remarks': remarks},
+
       );
 
       if (response.statusCode == 200) {
@@ -296,6 +296,16 @@ class ApiService {
     } catch (e) {
       print('Unexpected error: $e');
     }
+  }
+  Future<MaintainceBill?>getMaintainceBill(String?userid) async {
+    var dio = Dio();
+    final response = await dio.get(
+        '$baseUrl1/maintaincebill/$userid');
+    if(response.statusCode==200){
+      print(response.data);
+      return MaintainceBill.fromJson(response.data);
+    }
+    return null;
   }
   postComplaint(String uid, String description) async {
     var dio = Dio();
@@ -330,4 +340,3 @@ class ApiService {
     }
   }
 }
-
