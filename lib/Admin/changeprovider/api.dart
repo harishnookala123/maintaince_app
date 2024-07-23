@@ -11,7 +11,7 @@ import '../Model/blocks.dart';
 
 class ApiService {
   var dio = Dio();
-   String baseUrl1 = 'http://192.168.29.231:3000';
+   String baseUrl1 = 'http://192.168.29.92:3000';
   Future<Admin?> getAdminById(String id) async {
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
@@ -216,23 +216,20 @@ class ApiService {
   }
     return null;
   }
-
   maintainceAmount(Map<String,dynamic>data, String? blockname, String? apartcode) async {
     var users = await getUsers(apartcode!, "Approved", blockname);
-   var listofusers = [];
+   var listofusers= [];
     for(int i=0;i<users!.length;i++){
       listofusers.add(users[i].uid);
     }
-   /* final response = await dio.post(
+    final response = await dio.post(
       '$baseUrl1/adminmaintaince/$blockname',
-       data: {"data":data,"userid":listofusers,"apartment_code" : apartcode},
-    );*/
-    final response = await dio.get(
-        "$baseUrl1/getDistinctBlockNames",
+      data: {"data":data,"userid":listofusers,"apartment_code" : apartcode},
     );
     if (response.statusCode == 200) {
       print(response.data);
       var status = response.data["status"];
+
       return status;
     }
   }
@@ -283,7 +280,6 @@ class ApiService {
       final response = await dio.put(
         '$baseUrl1/approvalexpenses/$id',
         data: {'status': status,'remarks': remarks},
-
       );
 
       if (response.statusCode == 200) {
@@ -301,4 +297,37 @@ class ApiService {
       print('Unexpected error: $e');
     }
   }
+  postComplaint(String uid, String description) async {
+    var dio = Dio();
+    try {
+      final response = await dio.post(
+        '$baseUrl1/complaint/$uid/$description',
+      );
+      if (response.statusCode == 200) {
+        return response.data["message"];
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Exception: $e');
+    }
+  }
+
+  Future<List<CoAdmin>?> getCoadminById (String?apartment_code) async {
+    var dio = Dio();
+    final response = await dio.get('$baseUrl1/co_admin/$apartment_code');
+    if (response.statusCode == 200) {
+     List data = response.data["status"];
+
+     var value = data.map((e) => CoAdmin.fromJson(e)).toList();
+     return value;
+      /*
+      var  value = CoAdmin.fromJson(json.decode(response.body));
+*/
+
+    } else {
+      return null;
+    }
+  }
 }
+

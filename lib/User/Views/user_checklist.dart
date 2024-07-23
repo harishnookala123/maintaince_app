@@ -1,27 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:maintaince_app/User/Views/complaints_section.dart';
 import 'package:maintaince_app/User/Views/expenses.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 
 import '../../Admin/Model/usermodel.dart';
 import '../../styles/drawer_style.dart';
 
-class UserHomeScreen extends StatelessWidget {
+class UserHomeScreen extends StatefulWidget {
   final Users? user;
 
-  UserHomeScreen({super.key, this.user});
+   UserHomeScreen({super.key, this.user,});
 
+  @override
+  State<UserHomeScreen> createState() => _UserHomeScreenState();
+}
+
+class _UserHomeScreenState extends State<UserHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFE0FFFF),
         title: BasicText(
-          title: user!.apartment_name,
-          fontSize: 19,
-          color: Colors.blue,
+          title: "welcome ${widget.user!.first_name}",
+          fontSize: 22,
+          color: Colors.black,
         ),
       ),
-      drawer: CustomDrawer(user: user),
+      drawer: CustomDrawer(user: widget.user),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -46,7 +52,7 @@ class UserHomeScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Expenses(user: user),
+                      builder: (context) => Expenses(user: widget.user),
                     ),
                   );
                 },
@@ -65,6 +71,12 @@ class UserHomeScreen extends StatelessWidget {
                 title: 'Complaints',
                 onTap: () {
                   // Handle navigation to Complaints
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>   Complaints(user:widget.user),
+                    ),
+                  );
                 },
               ),
               const SizedBox(height: 16.0),
