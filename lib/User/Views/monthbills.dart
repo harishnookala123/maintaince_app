@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
@@ -8,7 +7,6 @@ import 'package:maintaince_app/styles/basicstyles.dart';
 class MaintenanceBill extends StatefulWidget {
   String? userid;
   MaintenanceBill({super.key, this.userid});
-
   @override
   State<MaintenanceBill> createState() => _MaintenanceBillState();
 }
@@ -30,7 +28,9 @@ class _MaintenanceBillState extends State<MaintenanceBill> {
                        return buildMaintainceBill(bills,index);
                       });
                 }
-                return Container();
+                return const Center(
+                  child: CircularProgressIndicator(color: Colors.pink),
+                );
               })),
     );
   }

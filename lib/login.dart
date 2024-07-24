@@ -133,7 +133,7 @@ class _LoginState extends State<Login> {
                                   horizontal: 37,
                                   vertical: 12,
                                 ),
-                                elevation: 4.0,
+                                elevation: 6.0,
                               ),
                               child: BasicText(
                                 title: "Login",
