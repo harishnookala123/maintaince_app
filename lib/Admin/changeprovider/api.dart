@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/src/widgets/editable_text.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintaince_app/Admin/Model/apartmentdetails.dart';
 import '../../User/Model/maintaince_bill.dart';
 import '../Model/adminRegistartion.dart';
+import '../Model/bills.dart';
 import '../Model/coadmin.dart';
 import '../Model/expenserequest.dart';
 import '../Model/usermodel.dart';
@@ -12,7 +14,7 @@ import '../Model/blocks.dart';
 
 class ApiService {
   var dio = Dio();
-   String baseUrl1 = 'http://192.168.1.7:3000';
+   String baseUrl1 = 'http://192.168.29.231:3000';
   Future<Admin?> getAdminById(String id) async {
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
@@ -217,20 +219,39 @@ class ApiService {
     return null;
   }
 
-  maintainceAmount() async {
-    // var users = await getUsers(apartcode!, "Approved", blockname);
-    // var listofusers = [];
-    // for(int i=0;i<users!.length;i++){
-    //   listofusers.add(users[i].uid);
-    // }
-    // final response = await dio.get(
-    //   "$baseUrl1/runeverymonth",
-    // );
-    // if (response.statusCode == 200) {
-    //   print(response.data);
-    //   var status = response.data["status"];
-    //   return status;
-    // }
+  setDefaultmaintainceAmount(String? apartmentCode, int amount) async {
+    var dio = Dio();
+    var response = await dio.post("$baseUrl1/setmaintaincebill/$apartmentCode/$amount");
+    if(response.statusCode==200){
+      print(response.data);
+    }
+  }
+
+  Future<Bills?> getDefaultAmount(String? apartmentCode) async {
+    var dio = Dio();
+    try {
+      // Make sure to use Uri.encodeComponent to handle special characters in the URL
+      var response = await dio.get("$baseUrl1/getmaintaincebill/${Uri.encodeComponent(apartmentCode ?? "")}");
+
+      if (response.statusCode == 200) {
+        var data = response.data["results"];
+        if (data is List && data.isNotEmpty) {
+          return Bills.fromJson(data[0]); // Assuming data is a list and you want the first item
+        } else {
+          // Handle the case where results are empty or not a list
+          print("No results found for the given apartment code.");
+          return null;
+        }
+      } else {
+        // Handle non-200 responses
+        print("Failed to load data: ${response.statusCode}");
+        return null;
+      }
+    } catch (e) {
+      // Handle any errors that occur during the request
+      print("Error occurred: $e");
+      return null;
+    }
   }
 
    postexpenses(String? uid, Map<String, dynamic> data) async {
@@ -337,4 +358,14 @@ class ApiService {
       return null;
     }
   }
+
+   statusUpdate(String? user_id, String status) async {
+     var dio = Dio();
+     final response = await dio.put('$baseUrl1/updatemaintaince/$user_id/$status');
+     if (response.statusCode == 200) {
+       var data = response.data["records"];
+       return MaintainceBill.fromJson(data);
+
+     }
+   }
 }

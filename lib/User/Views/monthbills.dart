@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:maintaince_app/User/Model/maintaince_bill.dart';
+import 'package:maintaince_app/User/Views/payments.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 
 class MaintenanceBill extends StatefulWidget {
@@ -18,15 +19,23 @@ class _MaintenanceBillState extends State<MaintenanceBill> {
       body: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: FutureBuilder<MaintainceBill?>(
-              future: ApiService().getMaintainceBill(widget.userid, "Paid"),
+              future: ApiService().getMaintainceBill(widget.userid, "Unpaid"),
               builder: (context, snap) {
                 if (snap.hasData) {
                   var bills = snap.data!.result;
-                  return ListView.builder(
+                  return bills!.length>0?ListView.builder(
                       itemCount: bills!.length,
                       itemBuilder: (context, index) {
-                       return buildMaintainceBill(bills,index);
-                      });
+                        return buildMaintainceBill(bills,index);
+                      }):const Center(
+                        child: Text("No Dues",
+                          style: TextStyle(fontSize: 18,
+                            color: Colors.green,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.5
+                          ),
+                        ),
+                      );
                 }
                 return const Center(
                   child: CircularProgressIndicator(color: Colors.pink),
@@ -96,7 +105,11 @@ class _MaintenanceBillState extends State<MaintenanceBill> {
                         minimumSize: const Size(120, 40),
                         backgroundColor: Colors.purple
                       ),
-                      onPressed: (){},
+                      onPressed: (){
+                        setState(() {
+                          ApiService().statusUpdate(widget.userid,"Paid");
+                        });
+                      },
                       child: BasicText(
                         title: "Pay",
                         fontSize: 18,

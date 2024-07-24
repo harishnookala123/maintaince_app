@@ -2,14 +2,17 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:maintaince_app/Admin/Model/bills.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:intl/intl.dart';
 import '../../styles/basicstyles.dart';
+import '../Model/apartmentdetails.dart';
 
 class MaintainceBill extends StatefulWidget {
   String? apartcode;
   String? userid;
-  MaintainceBill({super.key, this.apartcode, this.userid});
+  Bills? bills;
+  MaintainceBill({super.key, this.apartcode, this.userid,this.bills});
 
   @override
   State<MaintainceBill> createState() => _MaintainceBillState();
@@ -33,6 +36,7 @@ class _MaintainceBillState extends State<MaintainceBill> {
 
   @override
   Widget build(BuildContext context) {
+    var amountbill = widget.bills!.maintenance_amount;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -45,72 +49,91 @@ class _MaintainceBillState extends State<MaintainceBill> {
         backgroundColor: Colors.purple.shade300,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
+      body: Center(
+        child: amountbill!=null?Column(
+          children: [
+            const SizedBox(height: 20,),
+            SizedBox(
+              width: MediaQuery.of(context).size.width/1.15,
+              child: Container(
+                margin: const EdgeInsets.all(18.4),
+                child: Card(
+                  child: Column(
+                    children: [
+                      FutureBuilder<List<ApartmentDetails>?>(
+                        future: ApiService().getApartmentDetails(widget.apartcode),
+                        builder: (context,snap){
+                          if(snap.hasData){
+                            var data = snap.data;
+                            return Container(
+                              margin: const EdgeInsets.all(12.4),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Text("Apartment name :- ",
+                                       style: TextStyle(fontSize: 18),
+                                      ),
+                                      Text(data![0].apartmentName!,
+                                      style: const TextStyle(fontSize: 18),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10,),
+                                  Row(
+                                    children: [
+                                      const Text("Maintaince Amount : - ",
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      Text(widget.bills!.maintenance_amount!.toString(),
+                                        style: const TextStyle(fontSize: 18),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10,),
+                                  Row(
+                                    children: [
+                                      const Text("Generate Date : - ",
+                                        style: const TextStyle(fontSize: 18),
+                                      ),
+                                      Text(getDate(widget.bills!.generate_date)!,
+                                        style: const TextStyle(fontSize: 18),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10,),
+                                  Center(
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          minimumSize: const Size(120, 40),
+                                          backgroundColor: Colors.purple
+                                      ),
+                                      onPressed: (){},
+                                      child:BasicText(
+                                        title: "Edit",
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                          return Container();
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ):Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FutureBuilder<List<String>?>(
-                future: ApiService().getBlockName(widget.apartcode),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<String>? blocknames = snapshot.data;
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 20),
-                        Text(
-                          "Select Block",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.pink.shade400,
-                          ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.3,
-                          child: DropdownButtonFormField2<String>(
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please select a block';
-                              }
-                              return null;
-                            },
-                            value: selectedvalue,
-                            items: blocknames!
-                                .map((item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(
-                                item,
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                            ))
-                                .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                selectedvalue = value;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              hintText: 'Select Block',
-                              contentPadding: const EdgeInsets.symmetric(
-                                vertical: 14,
-                                horizontal: 16,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                  return Container();
-                },
-              ),
               const SizedBox(height: 20),
               Text(
                 "Enter Maintenance Bill Amount",
@@ -193,12 +216,22 @@ class _MaintainceBillState extends State<MaintainceBill> {
    Map<String,dynamic>data = {
      "apartment_name":value![0].apartmentName,
      "apartment_code": value[0].apartmentCode,
-     "block_name" : selectedvalue,
      "admin_id" : userid,
      "amount" : int.parse(maintainceamount),
      "date" : DateTime.now().toString(),
     };
      amount.clear();
-     ApiService().maintainceAmount();
+     ApiService().setDefaultmaintainceAmount(value[0].apartmentCode,int.parse(maintainceamount));
    }
+  String? getDate(String? maintenanceDate) {
+    String? dateTime = maintenanceDate;
+    DateTime utcDateTime = DateTime.parse(dateTime!);
+
+    // Convert UTC to local time
+    DateTime localDateTime = utcDateTime.toLocal();
+
+    // Format the local date-time
+    String formattedDate = DateFormat('yyyy-MM-dd').format(localDateTime);
+    return formattedDate;
+  }
 }

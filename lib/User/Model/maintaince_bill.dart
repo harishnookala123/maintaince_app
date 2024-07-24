@@ -33,7 +33,7 @@ class Result {
   String? adminId;
   int? amount;
   String? maintenanceDate;
-
+  String?paid_date;
   Result(
       {this.id,
         this.userId,
@@ -42,7 +42,9 @@ class Result {
         this.blockName,
         this.adminId,
         this.amount,
-        this.maintenanceDate});
+        this.maintenanceDate,
+        this.paid_date,
+      });
 
   Result.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -53,6 +55,7 @@ class Result {
     adminId = json['admin_id'];
     amount = json['amount'];
     maintenanceDate = json['maintenance_date'];
+    paid_date  = json['paid_date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -65,6 +68,7 @@ class Result {
     data['admin_id'] = adminId;
     data['amount'] = amount;
     data['maintenance_date'] = maintenanceDate;
+    data['paid_date'] = paid_date;
     return data;
   }
 }

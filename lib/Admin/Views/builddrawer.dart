@@ -6,6 +6,7 @@ import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 
 import '../../Co_admin/Views/registration.dart';
+import '../Model/bills.dart';
 import 'maintaince_bill.dart';
 
 class BuildDrawer extends StatefulWidget {
@@ -79,7 +80,9 @@ class BuildDrawerState extends State<BuildDrawer> {
             ),
             onTap: () async {
               var apartmentcode = await ApiService().getapartcode(widget.userid);
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => MaintainceBill(apartcode: apartmentcode, userid: widget.userid)));
+              Bills?bills = await ApiService().getDefaultAmount(apartmentcode);
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => MaintainceBill(apartcode: apartmentcode,
+                  userid: widget.userid,bills:bills)));
             },
           ),
           ListTile(

@@ -38,7 +38,7 @@ class _UserscreenState extends State<Userscreen> {
                         Text(users.flat_no!),
                         Text(users.user_type!)
                       ],
-                    ):Column(
+                    ):const Column(
                       children: [
                         Text("ddg"),
                       ],

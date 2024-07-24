@@ -47,35 +47,28 @@ class _ShowingFlatListState extends State<ShowingFlatList> {
                                 : Colors.orange
                                 : Colors.white,
                             child:  Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                              Align(
-                              alignment: Alignment.topCenter,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 10.0),
-                                child: Text(
-                                  flats[index],
-                                  style: GoogleFonts.acme(
-                                    fontSize: 18,
-                                    color: getDetails(approved, flats[index])
-                                        == flats[index]?Colors.white:Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    letterSpacing: 0.5
-                                  ),
+                                Column(
+                                  children: [
+                                    Align(
+                                      child: Text(
+                                        flats[index],
+                                        style: GoogleFonts.acme(
+                                          fontSize: 18,
+                                          color: getDetails(approved, flats[index])
+                                              == flats[index]?Colors.white:Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 0.5
+                                        ),
+                                      ),
+                                    ),
+
+                                  ],
                                 ),
-                              ),
-                            ),
-                            const Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Padding(
-                                padding: EdgeInsets.only(bottom: 0.0),
-                                child: Text(
-                                  'Harish',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),),
+
+
+
                               ],
                             )
                         );
