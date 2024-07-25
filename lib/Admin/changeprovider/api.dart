@@ -219,9 +219,11 @@ class ApiService {
     return null;
   }
 
-  setDefaultmaintainceAmount(String? apartmentCode, int amount) async {
+  setDefaultmaintainceAmount(Map<String,dynamic>data) async {
     var dio = Dio();
-    var response = await dio.post("$baseUrl1/setmaintaincebill/$apartmentCode/$amount");
+    var response = await dio.post("$baseUrl1/setmaintaincebill",
+      data: data
+    );
     if(response.statusCode==200){
       print(response.data);
     }

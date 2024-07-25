@@ -80,9 +80,10 @@ class BuildDrawerState extends State<BuildDrawer> {
             ),
             onTap: () async {
               var apartmentcode = await ApiService().getapartcode(widget.userid);
-              Bills?bills = await ApiService().getDefaultAmount(apartmentcode);
+              print(apartmentcode);
+
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => MaintainceBill(apartcode: apartmentcode,
-                  userid: widget.userid,bills:bills)));
+                  userid: widget.userid)));
             },
           ),
           ListTile(
