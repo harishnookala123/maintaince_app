@@ -10,7 +10,7 @@ import 'billpayments.dart';
 class UserHomeScreen extends StatefulWidget {
   final Users? user;
 
-   UserHomeScreen({super.key, this.user,});
+   UserHomeScreen({super.key, this.user});
 
   @override
   State<UserHomeScreen> createState() => _UserHomeScreenState();
@@ -20,6 +20,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF0F8FF),
       appBar: AppBar(
         backgroundColor: const Color(0xFFE0FFFF),
         title: BasicText(
@@ -43,8 +44,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: ListView(
+            shrinkWrap: true,
             children: [
               buildCard(
                 icon: Icons.monetization_on_sharp,

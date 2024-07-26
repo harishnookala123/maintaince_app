@@ -12,7 +12,7 @@ class BasicText extends StatelessWidget {
   Color? color;
   double? fontSize;
 
-  BasicText({this.color, this.title, this.fontSize});
+  BasicText({super.key, this.color, this.title, this.fontSize});
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -145,7 +145,6 @@ class CommonTextField extends StatelessWidget {
   TextEditingController? email = TextEditingController();
   TextEditingController? password = TextEditingController();
   TextEditingController? address = TextEditingController();
-
   CommonTextField ({super.key,
     this.firstName,this.lastName,this.phone,this.email,this.password,this.address
 });
