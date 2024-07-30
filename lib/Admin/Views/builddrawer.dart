@@ -6,6 +6,7 @@ import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 
 import '../../Co_admin/Views/registration.dart';
+import '../../login.dart';
 import '../Model/bills.dart';
 import 'maintaince_bill.dart';
 
@@ -97,6 +98,36 @@ class BuildDrawerState extends State<BuildDrawer> {
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => CoRegistration(adminId: widget.userid, admin: admin)));
             },
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+                const Login()
+                ));
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15), // Rounded corners
+                ),
+                elevation: 5, // Elevation
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.logout, color: Colors.red, size: 24), // Prefix icon
+                  SizedBox(width: 10), // Space between icon and text
+                  Text(
+                    "Logout",
+                    style: TextStyle(fontSize: 18, color: Colors.red),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
