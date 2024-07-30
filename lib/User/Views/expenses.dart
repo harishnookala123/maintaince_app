@@ -1,6 +1,4 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:maintaince_app/User/Views/homescreen.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
@@ -21,9 +19,7 @@ class ExpensesState extends State<Expenses> {
   final TextEditingController otherExpenseController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
   String? selectedExpense;
-
-  String?status;
-
+  String? status;
   String? selectedvalue;
 
   @override
@@ -35,133 +31,191 @@ class ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
-   var width = MediaQuery.of(context).size.width/1.25;
+    var width = MediaQuery.of(context).size.width / 1.25;
     return Scaffold(
+      backgroundColor: Color(0xFF0078A7) ,
       appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: Color(0xFF004170),
         title: BasicText(
           title: 'Apartment Name',
           fontSize: 19,
-          color: Colors.blue,
+          color: Colors.white,
         ),
       ),
       drawer: CustomDrawer(user: widget.user),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          physics: const ScrollPhysics(),
-          children: [
-            const SizedBox(height: 20),
-            Form(
-              key: formKey,
-              child: Column(
-                children: [
-                   const SizedBox(height: 20,),
-                  SizedBox(
-                    width: width,
-                    child: DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        labelText: 'Select Expense',
-                        border: OutlineInputBorder(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF004170), Color(0xFF0078A7)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            physics: const ScrollPhysics(),
+            children: [
+              const SizedBox(height: 20),
+              Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: width,
+                      child: DropdownButtonFormField<String>(
+                        icon: Icon(Icons.arrow_drop_down_outlined,
+                        color: Colors.white,),
+                        decoration: InputDecoration(
+                          labelText: 'Select Expense',
+                          labelStyle: TextStyle(color: Colors.white),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.1),
+                        ),
+                        dropdownColor:const Color(0xFF82B0F3),
+                        value: selectedExpense,
+                        items: <String>[
+                          'Electricity',
+                          'Plumbing',
+                          'Maintenance',
+                          'Others'
+                        ].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: BasicText(title:value,
+                            color: Colors.white),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedExpense = newValue;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select an expense';
+                          }
+                          return null;
+                        },
                       ),
-                      value: selectedExpense,
-                      items: <String>[
-                        'Electricity',
-                        'Plumbing',
-                        'Maintenance',
-                        'Others'
-                      ].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedExpense = newValue;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please select an expense';
-                        }
-                        return null;
-                      },
                     ),
-                  ),
-                  const SizedBox(height: 20,),
-                  SizedBox(
-                    width: width,
-                    child: TextFormField(
-                      controller: otherExpenseController,
-                      decoration: const InputDecoration(
-                        labelText: 'Enter Description',
-                        border: OutlineInputBorder(),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: width,
+                      child: TextFormField(
+                        controller: otherExpenseController,
+                        decoration: InputDecoration(
+                          labelText: 'Enter Description',
+                          labelStyle: TextStyle(color: Colors.white),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.1),
+                        ),
+                        style: TextStyle(color: Colors.white),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Description';
+                          }
+                          return null;
+                        },
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter Description';
-                        }
-                        return null;
-                      },
                     ),
-                  ),
-                  if (selectedExpense == 'Others') ...[
                     const SizedBox(height: 16.0),
-
+                    SizedBox(
+                      width: width,
+                      child: TextFormField(
+                        controller: amountController,
+                        decoration: InputDecoration(
+                          labelText: 'Enter Amount',
+                          labelStyle: TextStyle(color: Colors.white),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.1),
+                        ),
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(color: Colors.white),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter an amount';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 20.0),
+                    SizedBox(
+                      width: 160,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                          textStyle: const TextStyle(fontSize: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            setState(() {
+                              getPostexpenses(widget.user!.uid);
+                            });
+                          }
+                        },
+                        child: const Text(
+                          'Submit',
+                          style: TextStyle(color: Colors.black, fontSize: 17),
+                        ),
+                      ),
+                    ),
                   ],
-                  const SizedBox(height: 16.0),
-                  SizedBox(
-                    width: width,
-                    child: TextFormField(
-                      controller: amountController,
-                      decoration: const InputDecoration(
-                        labelText: 'Enter Amount',
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter an amount';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 16.0),
-
-                  SizedBox(
-                    width: 160,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(30, 50),
-                        elevation: 4.0,
-                      ),
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                             setState(() {
-                               getPostexpenses(widget.user!.uid);
-                             });
-                        }
-                      },
-                      child: const Text(
-                        'Submit',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-   getPostexpenses(String? uid) async {
-    Map<String,dynamic>data = {
+  getPostexpenses(String? uid) async {
+    Map<String, dynamic> data = {
       'expense_date': DateTime.now().toString(),
       'expense_type': selectedExpense,
       'description': otherExpenseController.text,
@@ -169,16 +223,16 @@ class ExpensesState extends State<Expenses> {
       'amount': amountController.text,
       'status': "Pending",
       'remarks': "",
-      'appartment_code' : widget.user!.apartment_code,
-      "userid" : uid,
-      "block_name" : widget.user!.block_name,
-      "confirm" : "no"
+      'appartment_code': widget.user!.apartment_code,
+      "userid": uid,
+      "block_name": widget.user!.block_name,
+      "confirm": "no"
     };
-    status =  await ApiService().postexpenses(uid,data);
-    if(status == "Expense inserted successfully"){
-       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>
-       UserHomeScreen(user: widget.user)
-       ));
+    status = await ApiService().postexpenses(uid, data);
+    if (status == "Expense inserted successfully") {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+          UserHomeScreen(user: widget.user)
+      ));
     }
-   }
+  }
 }
