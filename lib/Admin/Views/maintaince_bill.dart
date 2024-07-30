@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,6 +30,7 @@ class _MaintainceBillState extends State<MaintainceBill> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController amount = TextEditingController();
   Future<Bills?>? billsFuture;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -59,16 +62,32 @@ class _MaintainceBillState extends State<MaintainceBill> {
         elevation: 0,
       ),
       body: Container(
-        child: widget.maintaince != null
-            ? buildDetailsView(widget.maintaince)
-            : Container(
-                child: buildForm(),
-              ),
-      ),
+        child: FutureBuilder<Bills?>(
+          future: billsFuture,
+          builder: (context,snap){
+            if (snap.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(color: Colors.purple),
+              );
+            }
+            else if (!snap.hasData || snap.data == null) {
+              return buildForm();
+            }
+            else if(snap.hasData){
+              var bills = snap.data;
+              return Container(
+                child: buildDetailsView(bills),
+              );
+            }
+
+            return Container();
+          },
+        ),
+      )
     );
   }
 
-  void postData(String? userid, String? apartcode) async {
+   postData(String? userid, String? apartcode) async {
     String maintainceamount = amount.text.replaceAll(",", "");
 
     var value = await ApiService().getApartmentDetails(apartcode);
@@ -145,12 +164,12 @@ class _MaintainceBillState extends State<MaintainceBill> {
             const SizedBox(height: 20),
             Center(
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    setState(() {
-                      postData(widget.userid, widget.apartcode);
-                      Navigator.pop(context);
-                    });
+                     var data =  postData(widget.userid, widget.apartcode);
+                     Future.delayed(const Duration(milliseconds: 20), () {
+                       Navigator.pop(context);
+                     });
                   }
                 },
                 style: ElevatedButton.styleFrom(

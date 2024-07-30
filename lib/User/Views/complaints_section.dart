@@ -5,7 +5,7 @@ import 'package:maintaince_app/styles/basicstyles.dart';
 
 class UserComplaints extends StatefulWidget {
   final Users? user;
-  UserComplaints({super.key, this.user});
+  const UserComplaints({super.key, this.user});
 
   @override
   ComplaintsState createState() => ComplaintsState();
@@ -72,17 +72,17 @@ class ComplaintsState extends State<UserComplaints> {
                     child: DropdownButtonFormField<String>(
                       decoration: InputDecoration(
                         labelText: 'Select Complaint Type',
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.white,
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors.white,
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors.white,
                           ),
                           borderRadius: BorderRadius.circular(10),
@@ -90,8 +90,8 @@ class ComplaintsState extends State<UserComplaints> {
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.1),
                       ),
-                      dropdownColor:Color(0xFF6396F3),
-                      icon: Icon(
+                      dropdownColor:const Color(0xFF6396F3),
+                      icon: const Icon(
                         Icons.arrow_drop_down,
                         color: Colors.white,
                       ),
@@ -130,17 +130,17 @@ class ComplaintsState extends State<UserComplaints> {
                       controller: descriptionController,
                       decoration: InputDecoration(
                         labelText: 'Description',
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.white,
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors.white,
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors.white,
                           ),
                           borderRadius: BorderRadius.circular(10),
@@ -148,7 +148,7 @@ class ComplaintsState extends State<UserComplaints> {
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.1),
                       ),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                       ),
                       maxLines: 4,

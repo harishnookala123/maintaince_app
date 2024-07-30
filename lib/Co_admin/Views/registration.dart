@@ -362,7 +362,7 @@ class CoRegistrationState extends State<CoRegistration> {
     var dio = Dio();
 
     var response = await dio.request(
-      'http://192.168.1.7:3000/coadmin',
+      '$baseUrl/coadmin',
       options: Options(
         method: 'POST',
         headers: headers,
