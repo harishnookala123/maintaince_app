@@ -1,107 +1,151 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/User/Views/management_info.dart';
 import '../Admin/Model/usermodel.dart';
 import '../User/Views/user_infoscreen.dart';
+import '../login.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
   final Users? user;
 
   CustomDrawer({Key? key, this.user}) : super(key: key);
 
   @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
+  @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue.shade400,
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topRight: Radius.circular(30),
+        bottomRight: Radius.circular(30),
+      ),
+      child: Drawer(
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue.shade200,
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(30),
+                ),
+              ),
+              accountName: Text(
+                widget.user?.first_name ?? 'User Name',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              accountEmail: Text(
+                widget.user?.email ?? 'user@example.com',
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
+              ),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(
+                  Icons.perm_identity_sharp,
+                  size: 40,
+                  color: Colors.pinkAccent.shade200,
+                ),
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.account_circle,
-                      color: Colors.white,
-                      size: 50.0,
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.edit, color: Colors.blue.shade400),
+                    title: Text(
+                      'Edit Profile',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                    const SizedBox(width: 16.0),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    onTap: () {
+                      // Handle navigation to Edit Profile
+                    },
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: Icon(Icons.info, color: Colors.blue.shade400),
+                    title: Text(
+                      'Info',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => InfoScreen(user: widget.user),
+                        ),
+                      );
+                    },
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: Icon(Icons.info, color: Colors.blue.shade400),
+                    title: Text(
+                      'Management Info',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ManagementInfoScreen(user: widget.user),
+                        ),
+                      );
+                    },
+                  ),
+                  const Divider(),
+                  const SizedBox(height: 20.0),
+                  Padding(
+                    padding:  const EdgeInsets.all(16.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Login()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15), // Rounded corners
+                        ),
+                        elevation: 5, // Elevation
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
+                          Icon(Icons.logout, color: Colors.red, size: 24), // Prefix icon
+                          SizedBox(width: 10), // Space between icon and text
                           Text(
-                            user?.first_name ?? 'User Name',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 4.0),
-                          Text(
-                            user?.email ?? 'user@example.com',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.5,
-                            ),
-                            overflow: TextOverflow.ellipsis,
+                            "Logout",
+                            style: TextStyle(fontSize: 20, color: Colors.red),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  const SizedBox(height: 20.0),
+                ],
+              ),
             ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.edit, color: Colors.blue),
-            title: const Text(
-              'Edit Profile',
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-            ),
-            onTap: () {
-              // Handle navigation to Edit Profile
-            },
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.info, color: Colors.blue),
-            title: const Text(
-              'Info',
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => InfoScreen(user: user),
-                ),
-              );
-            },
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.info, color: Colors.blue),
-            title: const Text(
-              'Management Info',
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ManagementInfoScreen(user: user),
-                ),
-              );
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
