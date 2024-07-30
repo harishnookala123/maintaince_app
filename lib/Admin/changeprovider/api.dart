@@ -314,7 +314,7 @@ class ApiService {
     var dio = Dio();
     try {
       final response = await dio.post(
-        '$baseUrl1/complaint/$uid/$description',
+        '$baseUrl1/complaint/$uid/$description/$selectedComplaint/$apartment_code',
       );
       if (response.statusCode == 200) {
         return response.data["message"];
