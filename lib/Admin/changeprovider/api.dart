@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:maintaince_app/Admin/Model/apartmentdetails.dart';
 import '../../User/Model/maintaince_bill.dart';
 import '../Model/adminRegistartion.dart';
+import '../Model/bills.dart';
 import '../Model/coadmin.dart';
-import '../Model/complaints.dart';
 import '../Model/expenserequest.dart';
 import '../Model/usermodel.dart';
 import '../Model/blocks.dart';
@@ -305,7 +305,6 @@ class ApiService {
     final response = await dio.get(
         '$baseUrl1/maintaincebill/$userid/$status');
     if(response.statusCode==200){
-      print(response.data);
       return MaintainceBill.fromJson(response.data);
     }
     return null;
@@ -326,21 +325,21 @@ class ApiService {
     }
   }
 
-  Future<List<Complaints>> getComplaint( String apartmentCode) async {
-    var dio = Dio();
-    try {
-      final response = await dio.get('$baseUrl1/complaint/$apartmentCode');
-      if (response.statusCode == 200) {
-        List<dynamic> data = response.data['result'];
-        return data.map((json) => Complaints.fromJson(json)).toList();
-      } else {
-        throw Exception('Failed to load complaints');
-      }
-    } catch (e) {
-      print('Error: $e');
-      throw Exception('Failed to load complaints');
-    }
-  }
+  // Future<List<Complaints>> getComplaint( String apartmentCode) async {
+  //   var dio = Dio();
+  //   try {
+  //     final response = await dio.get('$baseUrl1/complaint/$apartmentCode');
+  //     if (response.statusCode == 200) {
+  //       List<dynamic> data = response.data['result'];
+  //       return data.map((json) => Complaints.fromJson(json)).toList();
+  //     } else {
+  //       throw Exception('Failed to load complaints');
+  //     }
+  //   } catch (e) {
+  //     print('Error: $e');
+  //     throw Exception('Failed to load complaints');
+  //   }
+  // }
 
 
   Future<List<CoAdmin>?> getCoadminById (String?apartment_code) async {
@@ -371,9 +370,26 @@ class ApiService {
     var response = await dio.post("$baseUrl1/setmaintaincebill",
         data: data
     );
+
     if(response.statusCode==200){
       print(response.data);
     }
   }
+  Future<Bills?> getDefaultAmount(String? apartmentCode) async {
+    var dio = Dio();
+
+      // Make sure to use Uri.encodeComponent to handle special characters in the URL
+      var response = await dio.get(
+          "$baseUrl1/getmaintaincebill/${Uri.encodeComponent(
+              apartmentCode ?? "")}");
+
+      if (response.statusCode == 200) {
+        var data = response.data["results"];
+        print(data);
+        return Bills.fromJson(data[0]);
+      }
+      return null;
+    }
 }
+
 

@@ -23,8 +23,8 @@ class _MaintenanceBillState extends State<MaintenanceBill> {
               builder: (context, snap) {
                 if (snap.hasData) {
                   var bills = snap.data!.result;
-                  return bills!.length>0?ListView.builder(
-                      itemCount: bills!.length,
+                  return bills!.isNotEmpty?ListView.builder(
+                      itemCount: bills.length,
                       itemBuilder: (context, index) {
                         return buildMaintainceBill(bills,index);
                       }):const Center(
@@ -127,9 +127,18 @@ class _MaintenanceBillState extends State<MaintenanceBill> {
     );
   }
 
-  String? getDate(String? maintenanceDate) {
-    DateTime dateTime = DateTime.parse(maintenanceDate!);
-    String formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
-   return formattedDate;
+  String? getDate(String? date) {
+    if (date == null) {
+      return "N/A"; // Or any default value or handling you prefer
+    }
+
+    DateTime utcDateTime = DateTime.parse(date);
+
+    // Convert UTC to local time
+    DateTime localDateTime = utcDateTime.toLocal();
+
+    // Format the local date-time
+    String formattedDate = DateFormat('yyyy-MM-dd').format(localDateTime);
+    return formattedDate;
   }
 }

@@ -171,7 +171,8 @@ class ExpensesState extends State<Expenses> {
       'remarks': "",
       'appartment_code' : widget.user!.apartment_code,
       "userid" : uid,
-      "block_name" : widget.user!.block_name
+      "block_name" : widget.user!.block_name,
+      "confirm" : "no"
     };
     status =  await ApiService().postexpenses(uid,data);
     if(status == "Expense inserted successfully"){

@@ -8,7 +8,7 @@ import '../Model/maintaince_bill.dart';
 
 class MaintainceHistory extends StatefulWidget {
   String? userid;
-   MaintainceHistory({super.key,this.userid });
+  MaintainceHistory({super.key, this.userid});
 
   @override
   State<MaintainceHistory> createState() => MaintainceHistoryState();
@@ -19,30 +19,35 @@ class MaintainceHistoryState extends State<MaintainceHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: FutureBuilder<MaintainceBill?>(
-              future: ApiService().getMaintainceBill(widget.userid, "Paid"),
-              builder: (context, snap) {
-                if (snap.hasData) {
-                  var bills = snap.data!.result;
-                  return bills!.isNotEmpty?ListView.builder(
-                      itemCount: bills.length,
-                      itemBuilder: (context, index) {
-                        return buildMaintainceBill(bills,index);
-                      }):const Center(
-                    child: Text("No Payments has done",
-                      style: TextStyle(fontSize: 18,
-                          color: Colors.green,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.5
-                      ),
-                    ),
-                  );
-                }
-                return const Center(
-                  child: CircularProgressIndicator(color: Colors.pink),
-                );
-              })),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: FutureBuilder<MaintainceBill?>(
+          future: ApiService().getMaintainceBill(widget.userid, "paid"),
+          builder: (context, snap) {
+            if (snap.hasData) {
+              List<Result>? bills = snap.data!.result;
+              return bills!.isNotEmpty
+                  ? ListView.builder(
+                  itemCount: bills.length,
+                  itemBuilder: (context, index) {
+                    return buildMaintainceBill(bills, index);
+                  })
+                  : const Center(
+                child: Text(
+                  "No Payments has done",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.green,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5),
+                ),
+              );
+            }
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.pink),
+            );
+          },
+        ),
+      ),
     );
   }
 
@@ -51,58 +56,60 @@ class MaintainceHistoryState extends State<MaintainceHistory> {
       child: Column(
         children: [
           SizedBox(
-            width: MediaQuery.of(context).size.width/1.3,
+            width: MediaQuery.of(context).size.width / 1.3,
             child: Card(
               child: Column(
                 children: [
                   Container(
                     margin: const EdgeInsets.all(3.5),
                   ),
-                  const SizedBox(height: 10,),
+                  const SizedBox(height: 10),
                   Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       BasicText(
                         title: "Bill Amount :-",
                         fontSize: 16,
                       ),
-                      Container(margin: const EdgeInsets.only(left: 12.3),
-                          child: BasicText(
-                              fontSize: 19,
-                              color: Colors.pink,
-                              title: "₹ ${bills[index].amount}"))
+                      Container(
+                        margin: const EdgeInsets.only(left: 12.3),
+                        child: BasicText(
+                            fontSize: 19,
+                            color: Colors.pink,
+                            title: "₹ ${bills[index].amount}"),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 10,),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      BasicText(title: "Generate Date : -",
+                      BasicText(
+                        title: "Generate Date : -",
                         fontSize: 16,
                       ),
                       BasicText(
-                        title: getDate(bills[index].maintenanceDate).toString(),
+                        title: getDate(bills[index].maintenanceDate),
                         fontSize: 19,
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 10,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      BasicText(title: "Paid Date : -",
-                        fontSize: 16,
                       ),
-                      BasicText(
-                        title: getDate(bills[index].paid_date).toString(),
-                        fontSize: 19,
-                      )
                     ],
                   ),
-                  const SizedBox(height: 20,),
-
-                  const SizedBox(height: 10,)
+                  const SizedBox(height: 10),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: [
+                  //     BasicText(
+                  //       title: "Paid Date : -",
+                  //       fontSize: 16,
+                  //     ),
+                  //     BasicText(
+                  //       title: getDate(bills[index].paid_date),
+                  //       fontSize: 19,
+                  //     ),
+                  //   ],
+                  // ),
+                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
@@ -112,9 +119,12 @@ class MaintainceHistoryState extends State<MaintainceHistory> {
     );
   }
 
-  String? getDate(String? maintenanceDate) {
-    String? dateTime = maintenanceDate;
-    DateTime utcDateTime = DateTime.parse(dateTime!);
+  String? getDate(String? date) {
+    if (date == null) {
+      return "N/A"; // Or any default value or handling you prefer
+    }
+
+    DateTime utcDateTime = DateTime.parse(date);
 
     // Convert UTC to local time
     DateTime localDateTime = utcDateTime.toLocal();

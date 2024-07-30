@@ -81,7 +81,6 @@ class BuildDrawerState extends State<BuildDrawer> {
             onTap: () async {
               var apartmentcode = await ApiService().getapartcode(widget.userid);
               print(apartmentcode);
-
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => MaintainceBill(apartcode: apartmentcode,
                   userid: widget.userid)));
             },

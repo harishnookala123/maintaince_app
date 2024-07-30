@@ -9,4 +9,12 @@ class Bills{
     maintenance_amount  = json["maintenance_amount"];
     generate_date = json ["generate_date"];
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["apartment_code"] = apartment_code;
+    data["maintenance_amount"] = maintenance_amount;
+    data["generate_date"] = generate_date;
+    return data;
+  }
 }
