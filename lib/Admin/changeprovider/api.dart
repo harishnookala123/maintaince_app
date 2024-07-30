@@ -6,6 +6,7 @@ import '../../User/Model/maintaince_bill.dart';
 import '../Model/adminRegistartion.dart';
 import '../Model/bills.dart';
 import '../Model/coadmin.dart';
+import '../Model/complaints.dart';
 import '../Model/expenserequest.dart';
 import '../Model/usermodel.dart';
 import '../Model/blocks.dart';
@@ -13,7 +14,7 @@ import '../Model/blocks.dart';
 
 class ApiService {
   var dio = Dio();
-   String baseUrl1 = 'http://192.168.1.7:3000';
+   String baseUrl1 = 'http://192.168.29.231:3000';
   Future<Admin?> getAdminById(String id) async {
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
@@ -309,7 +310,7 @@ class ApiService {
     }
     return null;
   }
-  postComplaint(String uid, String description) async {
+  postComplaint(String uid, String description, String? selectedComplaint, String? apartment_code) async {
     var dio = Dio();
     try {
       final response = await dio.post(
@@ -325,21 +326,21 @@ class ApiService {
     }
   }
 
-  // Future<List<Complaints>> getComplaint( String apartmentCode) async {
-  //   var dio = Dio();
-  //   try {
-  //     final response = await dio.get('$baseUrl1/complaint/$apartmentCode');
-  //     if (response.statusCode == 200) {
-  //       List<dynamic> data = response.data['result'];
-  //       return data.map((json) => Complaints.fromJson(json)).toList();
-  //     } else {
-  //       throw Exception('Failed to load complaints');
-  //     }
-  //   } catch (e) {
-  //     print('Error: $e');
-  //     throw Exception('Failed to load complaints');
-  //   }
-  // }
+  Future<List<Complaints>> getComplaint( String apartmentCode) async {
+    var dio = Dio();
+    try {
+      final response = await dio.get('$baseUrl1/getComplaints/$apartmentCode');
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data['results'];
+        return data.map((json) => Complaints.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load complaints');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Failed to load complaints');
+    }
+  }
 
 
   Future<List<CoAdmin>?> getCoadminById (String?apartment_code) async {

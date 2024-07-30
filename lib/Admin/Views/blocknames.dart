@@ -26,7 +26,8 @@ class _BlockNameState extends State<BlockName> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.orangeAccent,
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.deepOrangeAccent.shade200,
         title: const Text(
           "Block Set up",
           style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
@@ -40,101 +41,109 @@ class _BlockNameState extends State<BlockName> {
           children: [
             Consumer<ApartDetails>(
               builder: (context, details, child) {
-                return GridView.builder(
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 16.0,
-                    mainAxisSpacing: 6.0,
-                    childAspectRatio: 12.0 / 5.0,
-                  ),
-                  itemCount: details.block,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 12.3),
-                      child: SizedBox(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            elevation: 4.0,
-                            backgroundColor: Colors.white,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SetUpblocks(
-                                  index: index,
-                                ),
+                return Column(
+                  children: [
+                    GridView.builder(
+                      shrinkWrap: true,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16.0,
+                        mainAxisSpacing: 6.0,
+                        childAspectRatio: 12.0 / 5.0,
+                      ),
+                      itemCount: details.block,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 12.3),
+                          child: SizedBox(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 4.0,
+                                backgroundColor: Colors.white,
                               ),
-                            );
-                          },
-                          child: FutureBuilder(
-                            future: loadData(index),
-                            builder: (context, snap) {
-                              if (snap.hasData) {
-                                var data = snap.data;
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        data.toString(),
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.green,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 17,
-                                          letterSpacing: 0.7,
-                                        ),
-                                      ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SetUpblocks(
+                                      index: index,
                                     ),
-                                    const Icon(
-                                      Icons.check_circle,
-                                      color: Colors.green,
-                                      size: 27,
-                                    ),
-                                  ],
-                                );
-                              } else {
-                                return Text(
-                                  'Setup ${String.fromCharCode(65 + index)}',
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
                                   ),
                                 );
-                              }
-                            },
+                              },
+                              child: FutureBuilder(
+                                future: loadData(index),
+                                builder: (context, snap) {
+                                  if (snap.hasData) {
+                                    var data = snap.data;
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            data.toString(),
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 17,
+                                              letterSpacing: 0.7,
+                                            ),
+                                          ),
+                                        ),
+                                        const Icon(
+                                          Icons.check_circle,
+                                          color: Colors.green,
+                                          size: 27,
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    return Text(
+                                      'Setup ${String.fromCharCode(65 + index)}',
+                                      style: GoogleFonts.poppins(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 30),
+                    Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(120, 45),
+                          elevation: 6.0,
+                          backgroundColor: Colors.purple,
+                        ),
+                        onPressed: () async {
+                           SharedPreferences preferences = await SharedPreferences.getInstance();
+                           var data = preferences.getStringList("blockname");
+
+                          getchecklist(data,details.block);
+                        },
+                        child: Text(
+                          "Save",
+                          style: GoogleFonts.actor(
+                            letterSpacing: 0.5,
+                            fontSize: 19.5,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
                           ),
                         ),
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 );
               },
             ),
-            const SizedBox(height: 30),
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(120, 45),
-                  elevation: 6.0,
-                  backgroundColor: Colors.purple,
-                ),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const Login()));
-                },
-                child: Text(
-                  "Save",
-                  style: GoogleFonts.actor(
-                    letterSpacing: 0.5,
-                    fontSize: 19.5,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
+
           ],
         ),
       ),
@@ -149,6 +158,14 @@ class _BlockNameState extends State<BlockName> {
     }
     return null;
   }
+
+   getchecklist(List<String>? data, int? block) {
+
+    // if(data!.length==block){
+    // }
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const Login()));
+
+   }
 
 
 }

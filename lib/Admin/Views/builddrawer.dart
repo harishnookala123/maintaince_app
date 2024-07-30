@@ -58,7 +58,8 @@ class BuildDrawerState extends State<BuildDrawer> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.request_page, color: Colors.pinkAccent.shade200),
+            leading:
+                Icon(Icons.request_page, color: Colors.pinkAccent.shade200),
             title: Text(
               "User Requests",
               style: GoogleFonts.poppins(
@@ -67,11 +68,13 @@ class BuildDrawerState extends State<BuildDrawer> {
               ),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserDetails(userid: widget.userid)));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => UserDetails(userid: widget.userid)));
             },
           ),
           ListTile(
-            leading: Icon(Icons.receipt_long, color: Colors.pinkAccent.shade200),
+            leading:
+                Icon(Icons.receipt_long, color: Colors.pinkAccent.shade200),
             title: Text(
               "Set Maintenance Bills",
               style: GoogleFonts.poppins(
@@ -80,55 +83,68 @@ class BuildDrawerState extends State<BuildDrawer> {
               ),
             ),
             onTap: () async {
-              var apartmentcode = await ApiService().getapartcode(widget.userid);
+              var apartmentcode =
+                  await ApiService().getapartcode(widget.userid);
               print(apartmentcode);
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => MaintainceBill(apartcode: apartmentcode,
-                  userid: widget.userid)));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => MaintainceBill(
+                      apartcode: apartmentcode, userid: widget.userid)));
             },
           ),
           ListTile(
             leading: Icon(Icons.group_add, color: Colors.pinkAccent.shade200),
             title: Text(
-              "Add Co-Member",
+              "Add Co-Admin",
               style: GoogleFonts.poppins(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => CoRegistration(adminId: widget.userid, admin: admin)));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      CoRegistration(adminId: widget.userid, admin: admin)));
             },
           ),
+          SizedBox(height: 20,),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Login()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        maximumSize: const Size(150, 100),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(19), // Rounded corners
+                        ),
+                        elevation: 7, // Elevation
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.logout, color: Colors.red, size: 24), // Prefix icon
+                          SizedBox(width: 10), // Space between icon and text
+                          Text(
+                            "Logout",
+                            style: TextStyle(fontSize: 20, color: Colors.red),
+                          ),
+                        ],
+                      ),
+                    ),
 
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
-                const Login()
-                ));
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15), // Rounded corners
                 ),
-                elevation: 5, // Elevation
               ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.logout, color: Colors.red, size: 24), // Prefix icon
-                  SizedBox(width: 10), // Space between icon and text
-                  Text(
-                    "Logout",
-                    style: TextStyle(fontSize: 18, color: Colors.red),
-                  ),
-                ],
-              ),
-            ),
-          ),
+            ],
+          )        
         ],
       ),
     );

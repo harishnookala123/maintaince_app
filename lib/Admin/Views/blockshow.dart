@@ -28,6 +28,8 @@ class _BlockshowState extends State<Blockshow> {
     var blocks = widget.blocks;
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.deepOrangeAccent.shade200,
         title: BasicText(
           title: widget.blockname,
         ),
@@ -65,7 +67,7 @@ class _BlockshowState extends State<Blockshow> {
                    ElevatedButton(
                        style: ElevatedButton.styleFrom(
                            backgroundColor: Colors.purple,
-                           minimumSize: Size(120, 45)
+                           minimumSize: const Size(120, 45)
                        ),
                        onPressed: (){
                           print(blocks);
@@ -85,7 +87,7 @@ class _BlockshowState extends State<Blockshow> {
     );
   }
 
-   postApartmentDetails(List<String> blocks, ApartDetails apart,) async {
+   postApartmentDetails(List<String> blocks, ApartDetails apart) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
      final encodedList = json.encode(widget.blockname);
       var data = prefs.getStringList("blockname");
@@ -110,7 +112,7 @@ class _BlockshowState extends State<Blockshow> {
         "apartment_name" :apart.apartName,
         'block_name' : widget.blockname,
         'flat_no' : blocks[i].toString(),
-        "address" : "ddg",
+        "address" : apart.Address,
       };
       try {
         var response = await dio.request(

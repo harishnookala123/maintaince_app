@@ -78,7 +78,7 @@ class _SetUpblocksState extends State<SetUpblocks> {
         titleTextStyle: GoogleFonts.actor(
           fontSize: 18.6,
         ),
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.deepOrangeAccent.shade200,
       ),
       body: SingleChildScrollView(
         child: Container(

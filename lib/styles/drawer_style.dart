@@ -24,35 +24,38 @@ class _CustomDrawerState extends State<CustomDrawer> {
       ),
       child: Drawer(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            UserAccountsDrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue.shade200,
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(30),
+            Center(
+              child: UserAccountsDrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade200,
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(30),
+                  ),
                 ),
-              ),
-              accountName: Text(
-                widget.user?.first_name ?? 'User Name',
-                style: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                accountName: Text(
+                  widget.user?.first_name ?? 'User Name',
+                  style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              accountEmail: Text(
-                widget.user?.email ?? 'user@example.com',
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  color: Colors.white,
+                accountEmail: Text(
+                  widget.user?.email ?? 'user@example.com',
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.perm_identity_sharp,
-                  size: 40,
-                  color: Colors.pinkAccent.shade200,
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Icon(
+                    Icons.perm_identity_sharp,
+                    size: 40,
+                    color: Colors.pinkAccent.shade200,
+                  ),
                 ),
               ),
             ),
@@ -113,34 +116,48 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                   const Divider(),
                   const SizedBox(height: 20.0),
-                  Padding(
-                    padding:  const EdgeInsets.all(16.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Login()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15), // Rounded corners
-                        ),
-                        elevation: 5, // Elevation
-                      ),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.logout, color: Colors.red, size: 24), // Prefix icon
-                          SizedBox(width: 10), // Space between icon and text
-                          Text(
-                            "Logout",
-                            style: TextStyle(fontSize: 20, color: Colors.red),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width/2.3,
+                        height: 70,
+                        child: Align(
+                          //alignment: Alignment.bottomRight,
+                          child: Container(
+                            // alignment: Alignment.bottomCenter,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const Login()),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15), // Rounded corners
+                                ),
+                                elevation: 7, // Elevation
+                              ),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.logout, color: Colors.red, size: 24), // Prefix icon
+                                  SizedBox(width: 10), // Space between icon and text
+                                  Text(
+                                    "Logout",
+                                    style: TextStyle(fontSize: 18, color: Colors.red),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ],
+
+                        ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
+                    ],
+                  )
                 ],
               ),
             ),

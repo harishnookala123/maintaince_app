@@ -23,7 +23,7 @@ class MaintainceHistoryState extends State<MaintainceHistory> {
         child: FutureBuilder<MaintainceBill?>(
           future: ApiService().getMaintainceBill(widget.userid, "paid"),
           builder: (context, snap) {
-            if (snap.hasData) {
+            if (snap.hasData && snap.data!=null) {
               List<Result>? bills = snap.data!.result;
               return bills!.isNotEmpty
                   ? ListView.builder(
@@ -41,10 +41,7 @@ class MaintainceHistoryState extends State<MaintainceHistory> {
                       letterSpacing: 0.5),
                 ),
               );
-            }
-            return const Center(
-              child: CircularProgressIndicator(color: Colors.pink),
-            );
+            }return Container();
           },
         ),
       ),

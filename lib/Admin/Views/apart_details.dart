@@ -84,6 +84,7 @@ class ApartmentDetailsState extends State<ApartmentDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          foregroundColor: Colors.white,
           backgroundColor: Colors.deepOrangeAccent.shade200,
           centerTitle: true,
           title: BasicText(
@@ -166,7 +167,7 @@ class ApartmentDetailsState extends State<ApartmentDetails> {
                                 ),
                                 const SizedBox(height: 7,),
                                 BasicText(
-                                  title: "Address",
+                                  title: "Apartment Address",
                                   fontSize: 15,
                                   color: Colors.black,
                                 ),

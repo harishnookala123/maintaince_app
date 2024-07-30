@@ -305,24 +305,6 @@ class _UserlistState extends State<Userlist> {
                 Container(
                   margin: const EdgeInsets.only(top: 12.4),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    BasicText(
-                      title: "Apartment : -",
-                      color: Colors.black,
-                      fontSize: 16,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 2.5,
-                      child: BasicText(
-                        title: users[index].apartment_name!,
-                        color: Colors.black,
-                        fontSize: 15.5,
-                      ),
-                    ),
-                  ],
-                ),
                 Container(
                   margin: const EdgeInsets.only(top: 10),
                 ),

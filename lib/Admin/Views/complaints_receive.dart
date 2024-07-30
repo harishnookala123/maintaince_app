@@ -97,8 +97,27 @@ class ComplaintsReceivedState extends State<ComplaintsReceived> {
                             },
                           ),
                           const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              const Text("Complaint_type : ",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              Text(complaint.complaint_type!,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+
                           const Text(
-                            'Complaint:',
+                            'Complaint : -',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -113,6 +132,7 @@ class ComplaintsReceivedState extends State<ComplaintsReceived> {
                               color: Colors.black,
                             ),
                           ),
+
                         ],
                       ),
                     ),

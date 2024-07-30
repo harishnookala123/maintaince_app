@@ -10,7 +10,7 @@ import 'billpayments.dart';
 class UserHomeScreen extends StatefulWidget {
   final Users? user;
 
-   UserHomeScreen({super.key, this.user});
+   const UserHomeScreen({super.key, this.user});
 
   @override
   State<UserHomeScreen> createState() => _UserHomeScreenState();
@@ -76,7 +76,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>   Complaints(user:widget.user),
+                      builder: (context) => UserComplaints(user:widget.user),
                     ),
                   );
                 },
