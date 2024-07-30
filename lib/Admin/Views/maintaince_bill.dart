@@ -1,19 +1,24 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:maintaince_app/Admin/Model/bills.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
-import 'package:intl/intl.dart';
-import 'package:maintaince_app/User/Model/maintaince_bill.dart';
 import '../../styles/basicstyles.dart';
 import '../Model/apartmentdetails.dart';
 
 class MaintainceBill extends StatefulWidget {
-  String? apartcode;
-  String? userid;
-  Bills? bills;
-  MaintainceBill({super.key, this.apartcode, this.userid, this.bills});
+  final String? apartcode;
+  final String? userid;
+  Bills? maintaince;
+  String? maintainceamount;
+  MaintainceBill({
+    super.key,
+    this.apartcode,
+    this.userid,
+    this.maintaince,
+    this.maintainceamount,
+  });
 
   @override
   State<MaintainceBill> createState() => _MaintainceBillState();
@@ -21,17 +26,18 @@ class MaintainceBill extends StatefulWidget {
 
 class _MaintainceBillState extends State<MaintainceBill> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController amount = TextEditingController();
-  String? selectedvalue;
-  Future<Bills?>? bills;
+  final TextEditingController amount = TextEditingController();
+  Future<Bills?>? billsFuture;
+
   @override
   void initState() {
-    bills = ApiService().getDefaultAmount(widget.apartcode);
     super.initState();
+    billsFuture = ApiService().getDefaultAmount(widget.apartcode);
   }
 
   @override
   void dispose() {
+    amount.dispose();
     super.dispose();
   }
 
@@ -39,125 +45,25 @@ class _MaintainceBillState extends State<MaintainceBill> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
         title: Text(
           'Maintaince Bill',
           style: GoogleFonts.poppins(
-              fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white),
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
         backgroundColor: Colors.purple.shade300,
         elevation: 0,
       ),
-      body: Center(
-        child: Container(
-          child: FutureBuilder<Bills?>(
-            future: bills,
-            builder: (context, snap) {
-              if (snap.hasData) {
-                var bills = snap.data;
-                var amount = bills!.maintenance_amount.toString();
-                return Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    FutureBuilder<List<ApartmentDetails>?>(
-                        future:
-                            ApiService().getApartmentDetails(widget.apartcode),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            var data = snapshot.data;
-                            return Container(
-                                margin: const EdgeInsets.all(17.4),
-                                child: Card(
-                                    child: Container(
-                                  margin: const EdgeInsets.all(12.5),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            "Apartment name :- ",
-                                            style: TextStyle(fontSize: 18),
-                                          ),
-                                          Text(
-                                            data![0].apartmentName!,
-                                            style:
-                                                const TextStyle(fontSize: 18),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            "Maintaince Amount :- ",
-                                            style: TextStyle(fontSize: 18),
-                                          ),
-                                          Text(
-                                            bills.maintenance_amount.toString(),
-                                            style:
-                                                const TextStyle(fontSize: 18),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            "Generate Date : - ",
-                                            style:
-                                                const TextStyle(fontSize: 18),
-                                          ),
-                                          Text(
-                                            getDate(bills.generate_date)!,
-                                            style:
-                                                const TextStyle(fontSize: 18),
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Center(
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              minimumSize: const Size(120, 40),
-                                              backgroundColor: Colors.purple),
-                                          onPressed: () {},
-                                          child: BasicText(
-                                            title: "Edit",
-                                            color: Colors.white,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )));
-                          } else if (!snapshot.hasData ||
-                              snapshot.data == null) {
-                            return buildForm();
-                          }
-                          return const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.purple,
-                            ),
-                          );
-                        }),
-                  ],
-                );
-              }
-              return Container();
-            },
-          ),
-        ),
+      body: Container(
+        child: widget.maintaince != null
+            ? buildDetailsView(widget.maintaince)
+            : Container(
+                child: buildForm(),
+              ),
       ),
     );
   }
@@ -166,31 +72,29 @@ class _MaintainceBillState extends State<MaintainceBill> {
     String maintainceamount = amount.text.replaceAll(",", "");
 
     var value = await ApiService().getApartmentDetails(apartcode);
-    Map<String, dynamic> data = {
-      "apartment_name": value![0].apartmentName,
-      "apartment_code": value[0].apartmentCode,
-      "admin_id": userid,
-      "amount": int.parse(maintainceamount),
-      "date": DateTime.now().toString(),
-    };
-    amount.clear();
-    ApiService().setDefaultmaintainceAmount(data);
+    if (value != null && value.isNotEmpty) {
+      Map<String, dynamic> data = {
+        "apartment_name": value[0].apartmentName,
+        "apartment_code": value[0].apartmentCode,
+        "admin_id": userid,
+        "amount": int.parse(maintainceamount),
+        "date": DateTime.now().toString(),
+      };
+      amount.clear();
+      await ApiService().setDefaultmaintainceAmount(data);
+    }
   }
 
-  String? getDate(String? maintenanceDate) {
-    String? dateTime = maintenanceDate;
-    DateTime utcDateTime = DateTime.parse(dateTime!);
-
-    // Convert UTC to local time
+  String getDate(String? maintenanceDate) {
+    DateTime utcDateTime = DateTime.parse(maintenanceDate!);
     DateTime localDateTime = utcDateTime.toLocal();
-
-    // Format the local date-time
-    String formattedDate = DateFormat('yyyy-MM-dd').format(localDateTime);
-    return formattedDate;
+    return DateFormat('yyyy-MM-dd').format(localDateTime);
   }
 
-  buildForm() {
-    return Form(
+  Widget buildForm() {
+    return Container(
+      margin: const EdgeInsets.all(20),
+      child: Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,7 +147,10 @@ class _MaintainceBillState extends State<MaintainceBill> {
               child: ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    postData(widget.userid, widget.apartcode);
+                    setState(() {
+                      postData(widget.userid, widget.apartcode);
+                      Navigator.pop(context);
+                    });
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -265,6 +172,93 @@ class _MaintainceBillState extends State<MaintainceBill> {
               ),
             ),
           ],
-        ));
+        ),
+      ),
+    );
+  }
+
+  Widget buildDetailsView(Bills? bills) {
+    return Container(
+      alignment: Alignment.topLeft,
+      height: MediaQuery.of(context).size.height/3.5,
+        child: FutureBuilder<List<ApartmentDetails>?>(
+            future: ApiService().getApartmentDetails(widget.apartcode),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator(
+                  color: Colors.purple,
+                );
+              } else if (snapshot.hasData) {
+                var data = snapshot.data;
+                return Container(
+                  margin: const EdgeInsets.all(17.4),
+                  child: Card(
+                    child: Container(
+                      margin: const EdgeInsets.all(12.5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              const Text(
+                                "Apartment name: ",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              Text(
+                                data![0].apartmentName!,
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10,),
+                          Row(
+                            children: [
+                              const Text(
+                                "Maintenance Amount: ",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              Text(
+                                bills!.maintenance_amount.toString(),
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10,),
+
+                          Row(
+                            children: [
+                              const Text(
+                                "Generate Date: ",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              Text(
+                                getDate(bills.generate_date)!,
+                                style: const TextStyle(fontSize: 18),
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Center(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(120, 40),
+                                backgroundColor: Colors.purple,
+                              ),
+                              onPressed: () {},
+                              child: BasicText(
+                                title: "Edit",
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }
+              return Container();
+            }));
   }
 }

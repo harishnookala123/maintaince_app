@@ -381,16 +381,17 @@ class ApiService {
 
       // Make sure to use Uri.encodeComponent to handle special characters in the URL
       var response = await dio.get(
-          "$baseUrl1/getmaintaincebill/${Uri.encodeComponent(
-              apartmentCode ?? "")}");
+          "$baseUrl1/getmaintaincebill/$apartmentCode");
 
-      if (response.statusCode == 200) {
-        var data = response.data["results"];
-        print(data);
-        return Bills.fromJson(data[0]);
+    if (response.statusCode == 200) {
+      var data = response.data['results'];
+      if (data == null || data.isEmpty) {
+        return null;
+      } else {
+        return Bills.fromJson(data);
       }
-      return null;
     }
+    return null;    }
 }
 
 
