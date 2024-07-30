@@ -10,7 +10,7 @@ import 'billpayments.dart';
 class UserHomeScreen extends StatefulWidget {
   final Users? user;
 
-   const UserHomeScreen({super.key, this.user});
+   UserHomeScreen({super.key, this.user});
 
   @override
   State<UserHomeScreen> createState() => _UserHomeScreenState();
@@ -60,30 +60,30 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 },
               ),
               const SizedBox(height: 16.0),
+              // buildCard(
+              //   icon: Icons.report_problem,
+              //   title: 'Grievance',
+              //   onTap: () {
+              //     // Handle navigation to Grievance
+              //   },
+              // ),
+             // const SizedBox(height: 16.0),
               buildCard(
                 icon: Icons.report_problem,
                 title: 'Grievance',
-                onTap: () {
-                  // Handle navigation to Grievance
-                },
-              ),
-              const SizedBox(height: 16.0),
-              buildCard(
-                icon: Icons.error,
-                title: 'Complaints',
                 onTap: () {
                   // Handle navigation to Complaints
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => UserComplaints(user:widget.user),
+                      builder: (context) =>   UserComplaints(user:widget.user),
                     ),
                   );
                 },
               ),
               const SizedBox(height: 16.0),
               buildCard(
-                icon: Icons.error,
+                icon: Icons.payments_sharp,
                 title: 'Maintenance Bill Payments',
                 onTap: () {
                  Navigator.of(context).push(MaterialPageRoute(
@@ -107,8 +107,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8.0),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.green.shade200, Colors.orange.shade400],
+          gradient: const LinearGradient(
+            colors: [Color(0xFF58B3D2), Color(0xFF58B3D2)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
