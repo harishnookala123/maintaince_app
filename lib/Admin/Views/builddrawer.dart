@@ -30,13 +30,13 @@ class BuildDrawerState extends State<BuildDrawer> {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue.shade200,
+            decoration: const BoxDecoration(
+              color: Color(0xFF0099CC),
             ),
             accountName: Text(
               "${admin?.firstName ?? ''} ${admin?.lastName ?? ''}",
               style: GoogleFonts.poppins(
-                fontSize: 20,
+                fontSize: getFontSize(context, 20),
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -44,7 +44,7 @@ class BuildDrawerState extends State<BuildDrawer> {
             accountEmail: Text(
               admin?.email ?? '',
               style: GoogleFonts.poppins(
-                fontSize: 14,
+                fontSize: getFontSize(context, 14),
                 color: Colors.white70,
               ),
             ),
@@ -59,11 +59,13 @@ class BuildDrawerState extends State<BuildDrawer> {
           ),
           ListTile(
             leading:
-                Icon(Icons.request_page, color: Colors.pinkAccent.shade200),
+                Icon(Icons.request_page, color: Colors.pinkAccent.shade200,
+                  size: getFontSize(context, 25),
+                ),
             title: Text(
               "User Requests",
               style: GoogleFonts.poppins(
-                fontSize: 16,
+                fontSize: getFontSize(context, 16),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -74,11 +76,13 @@ class BuildDrawerState extends State<BuildDrawer> {
           ),
           ListTile(
             leading:
-                Icon(Icons.receipt_long, color: Colors.pinkAccent.shade200),
+                Icon(Icons.receipt_long, color: Colors.pinkAccent.shade200,
+                  size: getFontSize(context, 25),
+                ),
             title: Text(
               "Set Maintenance Bills",
               style: GoogleFonts.poppins(
-                fontSize: 16,
+                fontSize: getFontSize(context, 16),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -93,11 +97,13 @@ class BuildDrawerState extends State<BuildDrawer> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.group_add, color: Colors.pinkAccent.shade200),
+            leading: Icon(Icons.group_add, color: Colors.pinkAccent.shade200,
+             size: getFontSize(context, 25),
+            ),
             title: Text(
               "Add Co-Admin",
               style: GoogleFonts.poppins(
-                fontSize: 16,
+                fontSize: getFontSize(context, 16),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -107,7 +113,7 @@ class BuildDrawerState extends State<BuildDrawer> {
                       CoRegistration(adminId: widget.userid, admin: admin)));
             },
           ),
-          SizedBox(height: 20,),
+          const SizedBox(height: 20,),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -116,10 +122,8 @@ class BuildDrawerState extends State<BuildDrawer> {
                     alignment: Alignment.bottomCenter,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => const Login()),
-                        );
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context)=>const Login()));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
@@ -129,14 +133,14 @@ class BuildDrawerState extends State<BuildDrawer> {
                         ),
                         elevation: 7, // Elevation
                       ),
-                      child: const Row(
+                      child:  Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.logout, color: Colors.red, size: 24), // Prefix icon
-                          SizedBox(width: 10), // Space between icon and text
+                          Icon(Icons.logout, color: Colors.red, size: getFontSize(context, 24)), // Prefix icon
+                          const SizedBox(width: 10), // Space between icon and text
                           Text(
                             "Logout",
-                            style: TextStyle(fontSize: 20, color: Colors.red),
+                            style: TextStyle(fontSize: getFontSize(context, 20), color: Colors.red),
                           ),
                         ],
                       ),

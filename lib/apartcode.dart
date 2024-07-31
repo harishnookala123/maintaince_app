@@ -121,10 +121,10 @@ class _ApartCodeState extends State<ApartCode> {
                                       print(apartmentDetails);
                                     }
                                   },
-                                  child: const Text(
+                                  child:  Text(
                                     "Verify",
                                     style: TextStyle(
-                                        fontSize: 17, color: Colors.white),
+                                        fontSize: getFontSize(context, 17), color: Colors.white),
                                   ),
                                 ),
                               ),

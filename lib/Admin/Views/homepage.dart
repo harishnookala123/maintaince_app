@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
     "Users",
     "Security Details",
     "Expense requests",
-    "Complaints",
+    "Grievance",
     "Visitors Info",
     "Emergency"
   ];
@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
           CoAdminlist(apartid: apartmentCode,userid: userid)
       ));
     }
-    if (selectedValue == "Complaints") {
+    if (selectedValue == "Grievance") {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
           ComplaintsReceived(apartmentCode: widget.admin!.apartmentCode,)
       ));

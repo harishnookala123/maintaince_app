@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maintaince_app/styles/basicstyles.dart';
 import '../../Admin/Model/usermodel.dart';
 
 class InfoScreen extends StatelessWidget {
@@ -9,22 +10,24 @@ class InfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       // backgroundColor: const Color(0xFF0078A7),
-      backgroundColor:Colors.blue[50],
+      backgroundColor: const Color(0xFF0099CC),
       appBar: AppBar(
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.white,
         // backgroundColor: const Color(0xFF004170),
-        backgroundColor:Colors.blue[50],
+        backgroundColor: const Color(0xFF003366),
         title: const Text('User Info'),
       ),
       body: Container(
-        // decoration: const BoxDecoration(
-        //   gradient: LinearGradient(
-        //     colors: [Color(0xFF004170), Color(0xFF0078A7)],
-        //     begin: Alignment.topCenter,
-        //     end: Alignment.bottomCenter,
-        //   ),
-        // ),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF003366), // Darker blue color at the top
+              Color(0xFF0099CC), // Lighter blue color at the bottom
+            ],
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Card(
@@ -34,7 +37,7 @@ class InfoScreen extends StatelessWidget {
             ),
             child: SizedBox(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height / 3,
+              height: MediaQuery.of(context).size.height / 3.5,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -42,8 +45,8 @@ class InfoScreen extends StatelessWidget {
                   children: [
                     Text(
                       'Name: ${user?.first_name ?? ''}',
-                      style: const TextStyle(
-                        fontSize: 18,
+                      style:  TextStyle(
+                        fontSize: getFontSize(context, 16),
                         fontWeight: FontWeight.bold,
                         color: Colors.blue,
                       ),
@@ -51,40 +54,40 @@ class InfoScreen extends StatelessWidget {
                     const SizedBox(height: 8.0),
                     Text(
                       'Email: ${user?.email ?? ''}',
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style:  TextStyle(
+                        fontSize: getFontSize(context, 16),
                         color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 8.0),
                     Text(
                       'Phone: ${user?.phone ?? ''}',
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style:  TextStyle(
+                        fontSize: getFontSize(context, 16),
                         color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 8.0),
                     Text(
                       'Block: ${user?.block_name ?? ''}',
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style:  TextStyle(
+                        fontSize: getFontSize(context, 16),
                         color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 8.0),
                     Text(
                       'Flat No: ${user?.flat_no ?? ''}',
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style:  TextStyle(
+                        fontSize: getFontSize(context, 16),
                         color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 8.0),
                     Text(
                       'User Type: ${user?.user_type ?? ''}',
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style:  TextStyle(
+                        fontSize:getFontSize(context, 16),
                         color: Colors.black,
                       ),
                     ),

@@ -304,3 +304,7 @@ class CommonTextField extends StatelessWidget {
   }
 }
 
+double getFontSize(BuildContext context, double fontSize) {
+  double screenWidth = MediaQuery.of(context).size.width;
+  return fontSize * (screenWidth / 375.0);
+}

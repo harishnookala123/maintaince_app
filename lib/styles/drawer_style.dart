@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/User/Views/management_info.dart';
+import 'package:maintaince_app/styles/basicstyles.dart';
 import '../Admin/Model/usermodel.dart';
 import '../User/Views/user_infoscreen.dart';
 import '../login.dart';
@@ -28,16 +29,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
           children: [
             Center(
               child: UserAccountsDrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade200,
-                  borderRadius: const BorderRadius.only(
+                decoration: const BoxDecoration(
+                  color: Color(0xFF0099CC),
+                  borderRadius: BorderRadius.only(
                     topRight: Radius.circular(30),
                   ),
                 ),
                 accountName: Text(
                   widget.user?.first_name ?? 'User Name',
                   style: GoogleFonts.poppins(
-                    fontSize: 20,
+                    fontSize: getFontSize(context, 20),
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -45,7 +46,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 accountEmail: Text(
                   widget.user?.email ?? 'user@example.com',
                   style: GoogleFonts.poppins(
-                    fontSize: 14,
+                    fontSize: getFontSize(context, 14),
                     color: Colors.white,
                   ),
                 ),
@@ -53,7 +54,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   backgroundColor: Colors.white,
                   child: Icon(
                     Icons.perm_identity_sharp,
-                    size: 40,
+                    size: getFontSize(context, 40),
                     color: Colors.pinkAccent.shade200,
                   ),
                 ),
@@ -68,7 +69,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: Text(
                       'Edit Profile',
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: getFontSize(context, 16),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -82,7 +83,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: Text(
                       'Info',
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: getFontSize(context, 16),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -101,7 +102,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: Text(
                       'Management Info',
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: getFontSize(context, 16),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -128,9 +129,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             // alignment: Alignment.bottomCenter,
                             child: ElevatedButton(
                               onPressed: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const Login()),
+                                Navigator.pushReplacement(context,
+                                 MaterialPageRoute(builder: (context)=>const Login())
                                 );
                               },
                               style: ElevatedButton.styleFrom(
@@ -140,14 +140,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 ),
                                 elevation: 7, // Elevation
                               ),
-                              child: const Row(
+                              child:  Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.logout, color: Colors.red, size: 24), // Prefix icon
-                                  SizedBox(width: 10), // Space between icon and text
+                                  const Icon(Icons.logout, color: Colors.red, size: 24), // Prefix icon
+                                  const SizedBox(width: 10), // Space between icon and text
                                   Text(
                                     "Logout",
-                                    style: TextStyle(fontSize: 18, color: Colors.red),
+                                    style: TextStyle(fontSize:getFontSize(context, 18),color: Colors.red),
                                   ),
                                 ],
                               ),

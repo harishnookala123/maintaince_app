@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/User/Views/maintaincehistory.dart';
 import 'package:maintaince_app/User/Views/monthbills.dart';
+import 'package:maintaince_app/styles/basicstyles.dart';
 
 class UserBills extends StatefulWidget {
   final String? userid;
@@ -46,7 +47,7 @@ class _UserBillsState extends State<UserBills> with SingleTickerProviderStateMix
               child: Text(
                 "Maintenance Bill",
                 style: GoogleFonts.poppins(
-                  fontSize: 16.5,
+                  fontSize: getFontSize(context, 16.5),
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -55,7 +56,7 @@ class _UserBillsState extends State<UserBills> with SingleTickerProviderStateMix
               child: Text(
                 "History",
                 style: GoogleFonts.poppins(
-                  fontSize: 16.5,
+                  fontSize: getFontSize(context, 16.5),
                   fontWeight: FontWeight.w500,
                 ),
               ),

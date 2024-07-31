@@ -1,6 +1,9 @@
+
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/Model/usermodel.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
+
 import 'package:maintaince_app/styles/basicstyles.dart';
 
 class UserComplaints extends StatefulWidget {
@@ -175,19 +178,23 @@ class ComplaintsState extends State<UserComplaints> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-
+                        backgroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                         textStyle: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
+                          fontSize: 17,
+                          color: Colors.green,
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(25),
                         ),
                       ),
-                      child: const Text(
+                      child:  Text(
                         'Submit',
-                        style: TextStyle(color: Colors.black, fontSize: 17),
+                        style: GoogleFonts.poppins(
+                          fontSize: 17,
+                          color: const Color(0xFF0099CC),
+                          fontWeight: FontWeight.w500
+                        )
                       ),
                     ),
                   ),

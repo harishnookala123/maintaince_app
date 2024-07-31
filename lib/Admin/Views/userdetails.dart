@@ -46,23 +46,23 @@ class _UserDetailsState extends State<UserDetails>
                   Tab(
                       child: BasicText(
                     title: "Pending",
-                        fontSize: 15,
+                        fontSize: getFontSize(context, 15),
                   )),
                   Tab(
                     child: BasicText(
                       title: "Approved",
-                      fontSize: 15,
+                      fontSize: getFontSize(context, 15),
                     ),
                   ),
                   Tab(
                     child: BasicText(
                       title: "Rejected",
-                      fontSize: 15,
+                      fontSize: getFontSize(context, 15),
                     ),
                   ),
                 ],
               ), // TabBar
-              backgroundColor: Colors.blue.shade200,
+              backgroundColor: const Color(0xFF003366),
               centerTitle: true,
               //backgroundColor: Colors.green,
             ), // AppBar,

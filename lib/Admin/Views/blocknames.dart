@@ -163,8 +163,11 @@ class _BlockNameState extends State<BlockName> {
 
     // if(data!.length==block){
     // }
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const Login()));
-
+     Navigator.pushNamedAndRemoveUntil(
+       context,
+       '/login',
+           (Route<dynamic> route) => false,
+     );
    }
 
 

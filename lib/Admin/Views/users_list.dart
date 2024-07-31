@@ -31,25 +31,30 @@ class _UserlistState extends State<Userlist> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF0099CC),
       appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: const Color(0xFF003366),
         title: Text(
           "User List",
           style: GoogleFonts.poppins(
             fontSize: 20,
             fontWeight: FontWeight.w500,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.orangeAccent.shade100,
         centerTitle: true,
       ),
       body: Container(
         padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.orangeAccent.shade100, Colors.white],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF003366), // Darker blue color at the top
+              Color(0xFF0099CC), // Lighter blue color at the bottom
+            ],
           ),
         ),
         child: Column(
@@ -67,10 +72,12 @@ class _UserlistState extends State<Userlist> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
+                          margin: const EdgeInsets.only(bottom: 2.6),
                           alignment: Alignment.topLeft,
                           child: BasicText(
                             title: "Select Block",
                             fontSize: 16.5,
+                            color: Colors.white,
                           ),
                         ),
                         SizedBox(
@@ -80,7 +87,7 @@ class _UserlistState extends State<Userlist> {
                             isExpanded: true,
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.black, width: 1.0),
+                                borderSide: const BorderSide(color: Colors.white, width: 2.0),
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
                               enabled: true,
@@ -95,8 +102,11 @@ class _UserlistState extends State<Userlist> {
                             ),
                             hint: const Text(
                               'Select Block',
-                              style: TextStyle(fontSize: 14),
+                              style: TextStyle(fontSize: 14,
+                               color: Colors.white
+                              ),
                             ),
+
                             value: selectedvalue,
                             items: blocknames!
                                 .map((item) => DropdownMenuItem<String>(
@@ -104,7 +114,10 @@ class _UserlistState extends State<Userlist> {
                               child: Text(
                                 item.toString(),
                                 style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w400, fontSize: 18),
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: getFontSize(context, 19)
+                                ),
                               ),
                             ))
                                 .toList(),
@@ -129,7 +142,7 @@ class _UserlistState extends State<Userlist> {
                             iconStyleData: const IconStyleData(
                               icon: Icon(
                                 Icons.arrow_drop_down,
-                                color: Colors.black,
+                                color: Colors.white,
                               ),
                               iconSize: 25,
                             ),

@@ -24,21 +24,26 @@ class ComplaintsReceivedState extends State<ComplaintsReceived> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF0099CC),
       appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: const Color(0xFF003366),
         centerTitle: true,
         title: BasicText(
           title: 'Complaints Box',
           fontSize: 19,
-          color: Colors.black,
+          color: Colors.white,
         ),
-        backgroundColor: Colors.blue.shade100,
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade100, Colors.blue.shade200],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF003366), // Darker blue color at the top
+              Color(0xFF0099CC), // Lighter blue color at the bottom
+            ],
           ),
         ),
         padding: const EdgeInsets.all(15.0),

@@ -58,7 +58,7 @@ class _MaintainceBillState extends State<MaintainceBill> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.purple.shade300,
+        backgroundColor: const Color(0xFF003366),
         elevation: 0,
       ),
       body: Container(
@@ -229,7 +229,7 @@ class _MaintainceBillState extends State<MaintainceBill> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 10,),
+                          const SizedBox(height: 10,),
                           Row(
                             children: [
                               const Text(

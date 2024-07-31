@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:maintaince_app/User/Views/homescreen.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
@@ -43,7 +44,6 @@ class ExpensesState extends State<Expenses> {
           color: Colors.white,
         ),
       ),
-      drawer: CustomDrawer(user: widget.user),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -188,7 +188,7 @@ class ExpensesState extends State<Expenses> {
                           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                           textStyle: const TextStyle(fontSize: 16),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(25),
                           ),
                         ),
                         onPressed: () {
@@ -198,9 +198,13 @@ class ExpensesState extends State<Expenses> {
                             });
                           }
                         },
-                        child: const Text(
+                        child:  Text(
                           'Submit',
-                          style: TextStyle(color: Colors.black, fontSize: 17),
+                          style: GoogleFonts.poppins(
+                            color: const Color(0xFF003366),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500
+                          )
                         ),
                       ),
                     ),

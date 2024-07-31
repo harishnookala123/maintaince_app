@@ -33,25 +33,30 @@ class _CoAdminlistState extends State<CoAdminlist> {
   Widget build(BuildContext context) {
     print(widget.userid);
     return Scaffold(
+      backgroundColor: const Color(0xFF0099CC),
       appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: const Color(0xFF003366),
         title: Text(
           "CoAdmin List",
           style: GoogleFonts.poppins(
             fontSize: 20,
             fontWeight: FontWeight.w500,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.orangeAccent.shade100,
         centerTitle: true,
       ),
       body: Container(
         padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.orangeAccent.shade100, Colors.white],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF003366), // Darker blue color at the top
+              Color(0xFF0099CC), // Lighter blue color at the bottom
+            ],
           ),
         ),
         child: FutureBuilder<List<CoAdmin>>(

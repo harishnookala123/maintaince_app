@@ -133,12 +133,12 @@ class _LoginState extends State<Login> {
                                   horizontal: 37,
                                   vertical: 12,
                                 ),
-                                elevation: 6.0,
+                                elevation: 8.0,
                               ),
                               child: BasicText(
                                 title: "Login",
                                 color: Colors.indigo.shade600,
-                                fontSize: 18,
+                                fontSize: getFontSize(context, 18),
                               ),
                             ),
                           ),
@@ -146,38 +146,44 @@ class _LoginState extends State<Login> {
                               ? getText()
                               : Container(
                           ),
-                          Row(
-                            children: [
-                              const Text(
-                                "Don't You have an Account?",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(fontSize: 15),
-                              ),
-                              const SizedBox(width: 10),
-                              Container(
-                                alignment: Alignment.topRight,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const SelectRegister(),
+                          Container(
+                            margin: const EdgeInsets.only(top: 10.5),
+                            child: Wrap(
+                              children: [
+                               Row(
+                                children: [
+                                   Text(
+                                    "Don't You have an Account?",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: getFontSize(context,15)),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Container(
+                                    alignment: Alignment.topRight,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const SelectRegister(),
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        'Register',
+                                        style: TextStyle(
+                                          color: Colors.red.shade900,
+                                          fontSize: getFontSize(context, 18),
+                                          decoration: TextDecoration.underline,
+                                          decorationColor: Colors.red.shade900,
+                                        ),
                                       ),
-                                    );
-                                  },
-                                  child: Text(
-                                    'Register',
-                                    style: TextStyle(
-                                      color: Colors.red.shade900,
-                                      fontSize: 18.0,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Colors.red.shade900,
                                     ),
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
+                                ],
+                              ),],),
+                          )
+
                         ],
                       ),
                     ),
@@ -241,9 +247,8 @@ class _LoginState extends State<Login> {
               }
             });
           } else if (usertype == "admin") {
-           Admin?admin = await ApiService().getAdminById(userid);
+             Admin?admin = await ApiService().getAdminById(userid);
               getNavigate(admin, userid);
-
           }
         }
       } else {
@@ -281,4 +286,5 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+
 }

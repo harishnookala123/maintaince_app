@@ -409,7 +409,7 @@ class CoRegistrationState extends State<CoRegistration> {
     var data = json.encode({"apartment_code": apartmentCode});
     var dio = Dio();
     var response = await dio.get(
-      'http://192.168.1.7:3000/checkAdminId/$apartmentCode',
+      '$baseUrl/checkAdminId/$apartmentCode',
       options: Options(headers: headers),
       data: data,
     );

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintaince_app/Admin/Model/apartmentdetails.dart';
 import '../../User/Model/maintaince_bill.dart';
@@ -11,6 +12,8 @@ import '../Model/expenserequest.dart';
 import '../Model/usermodel.dart';
 import '../Model/blocks.dart';
  const String baseUrl = 'http://maintenanceapplication.ap-south-1.elasticbeanstalk.com';
+
+
 
 class ApiService {
   var dio = Dio();
@@ -30,7 +33,7 @@ class ApiService {
 
     try {
       var response = await dio.get(
-        '$baseUrl1/userregister/$apartmentCode',
+        '$baseUrl/userregister/$apartmentCode',
         options: Options(
           headers: headers,
         ),
@@ -226,7 +229,7 @@ class ApiService {
       listofusers.add(users[i].uid);
     }
     final response = await dio.get(
-      "$baseUrl1/runeverymonth",
+      "$baseUrl/runeverymonth",
     );
     if (response.statusCode == 200) {
       print(response.data);
@@ -239,7 +242,7 @@ class ApiService {
     print(data);
     var dio = Dio();
     final response = await dio.post(
-      '$baseUrl1/expenses/$uid',
+      '$baseUrl/expenses/$uid',
       data: {"data":data,"userid":uid},
     );
      if(response.statusCode==200){
@@ -251,7 +254,7 @@ class ApiService {
  Future<List<ExpenseRequest>?> getExpenseusers(String? block_name,
      String? apartment_code,String?status) async {
     var dio = Dio();
-    final response = await dio.get('$baseUrl1/expenseusers/$apartment_code/$block_name/$status',
+    final response = await dio.get('$baseUrl/expenseusers/$apartment_code/$block_name/$status',
         data: {"apartment_code" : apartment_code, "status":status,"block_name":block_name}
     );
     if(response.statusCode==200){
@@ -262,7 +265,7 @@ class ApiService {
   }
   Future<List<CoAdmin>>fetchCoAdmins(String apartment_code, String userid) async {
     var dio = Dio();
-    final response = await dio.get('$baseUrl1/co_admin/$apartment_code/$userid');
+    final response = await dio.get('$baseUrl/co_admin/$apartment_code/$userid');
 
     if (response.statusCode == 200) {
       List data = response.data["status"];
@@ -281,7 +284,7 @@ class ApiService {
 
     try {
       final response = await dio.put(
-        '$baseUrl1/approvalexpenses/$id',
+        '$baseUrl/approvalexpenses/$id',
         data: {'status': status,'remarks': remarks},
 
       );
@@ -304,7 +307,7 @@ class ApiService {
   Future<MaintainceBill?>getMaintainceBill(String?userid, String status) async {
     var dio = Dio();
     final response = await dio.get(
-        '$baseUrl1/maintaincebill/$userid/$status');
+        '$baseUrl/maintaincebill/$userid/$status');
     if(response.statusCode==200){
       return MaintainceBill.fromJson(response.data);
     }
@@ -314,7 +317,7 @@ class ApiService {
     var dio = Dio();
     try {
       final response = await dio.post(
-        '$baseUrl1/complaint/$uid/$description/$selectedComplaint/$apartment_code',
+        '$baseUrl/complaint/$uid/$description/$selectedComplaint/$apartment_code',
       );
       if (response.statusCode == 200) {
         return response.data["message"];
@@ -329,7 +332,7 @@ class ApiService {
   Future<List<Complaints>> getComplaint( String apartmentCode) async {
     var dio = Dio();
     try {
-      final response = await dio.get('$baseUrl1/getComplaints/$apartmentCode');
+      final response = await dio.get('$baseUrl/getComplaints/$apartmentCode');
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['results'];
         return data.map((json) => Complaints.fromJson(json)).toList();
@@ -345,7 +348,7 @@ class ApiService {
 
   Future<List<CoAdmin>?> getCoadminById (String?apartment_code) async {
     var dio = Dio();
-    final response = await dio.get('$baseUrl1/co_admin/$apartment_code');
+    final response = await dio.get('$baseUrl/co_admin/$apartment_code');
     if (response.statusCode == 200) {
      List data = response.data["status"];
 
@@ -358,7 +361,7 @@ class ApiService {
 
   statusUpdate(String? user_id, String status) async {
     var dio = Dio();
-    final response = await dio.put('$baseUrl1/updatemaintaince/$user_id/$status');
+    final response = await dio.put('$baseUrl/updatemaintaince/$user_id/$status');
     if (response.statusCode == 200) {
       var data = response.data["records"];
       return MaintainceBill.fromJson(data);
@@ -368,7 +371,7 @@ class ApiService {
 
   setDefaultmaintainceAmount(Map<String,dynamic>data) async {
     var dio = Dio();
-    var response = await dio.post("$baseUrl1/setmaintaincebill",
+    var response = await dio.post("$baseUrl/setmaintaincebill",
         data: data
     );
 
@@ -381,7 +384,7 @@ class ApiService {
 
       // Make sure to use Uri.encodeComponent to handle special characters in the URL
       var response = await dio.get(
-          "$baseUrl1/getmaintaincebill/$apartmentCode");
+          "$baseUrl/getmaintaincebill/$apartmentCode");
 
     if (response.statusCode == 200) {
       var data = response.data['results'];

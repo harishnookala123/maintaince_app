@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'Admin/changeprovider/adminprovider.dart';
 import 'Admin/changeprovider/apartmentdetails.dart';
 import 'Admin/changeprovider/userregistration.dart';
+import 'login.dart';
 
 void main() {
   runApp(
@@ -23,10 +24,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: SplashScreen()
+        routes: {
+          '/login': (context) => const Login(),
+        },
+      home: const SplashScreen()
     );
   }
 }
