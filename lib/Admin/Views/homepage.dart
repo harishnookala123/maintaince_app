@@ -49,17 +49,19 @@ class _HomePageState extends State<HomePage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+
         appBar: AppBar(
           elevation: 4.0,
-          flexibleSpace: Container(
-            decoration:  BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.green.shade200, Colors.blue.shade400],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-          ),
+          backgroundColor: const Color(0xFF003366),
+          // flexibleSpace: Container(
+          //   decoration:  BoxDecoration(
+          //     gradient: LinearGradient(
+          //       colors: [Colors.green.shade200, Colors.blue.shade400],
+          //       begin: Alignment.topLeft,
+          //       end: Alignment.bottomRight,
+          //     ),
+          //   ),
+          // ),
           // backgroundColor: Colors.orange,
 
           title: Row(
@@ -74,7 +76,6 @@ class _HomePageState extends State<HomePage> {
               ),
               Text(
                 "${admin!.firstName!.toString().toUpperCase()} ",
-
                 style: GoogleFonts.poppins(
                     color: Colors.white,
                     letterSpacing: 0.5,
@@ -124,8 +125,8 @@ class _HomePageState extends State<HomePage> {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.0),
-                          gradient: LinearGradient(
-                            colors: [Colors.green.shade200, Colors.blue.shade400],
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF0099CC), Color(0xFF003366),],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
