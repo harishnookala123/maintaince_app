@@ -47,6 +47,7 @@ class _MaintainceBillState extends State<MaintainceBill> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF0099CC),
       appBar: AppBar(
         foregroundColor: Colors.white,
         title: Text(
@@ -62,6 +63,16 @@ class _MaintainceBillState extends State<MaintainceBill> {
         elevation: 0,
       ),
       body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF003366), // Darker blue color at the top
+              Color(0xFF0099CC), // Lighter blue color at the bottom
+            ],
+          ),
+        ),
         child: FutureBuilder<Bills?>(
           future: billsFuture,
           builder: (context,snap){
@@ -210,68 +221,74 @@ class _MaintainceBillState extends State<MaintainceBill> {
               } else if (snapshot.hasData) {
                 var data = snapshot.data;
                 return Container(
-                  margin: const EdgeInsets.all(17.4),
+                  margin: const EdgeInsets.all(12.4),
                   child: Card(
                     child: Container(
-                      margin: const EdgeInsets.all(12.5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              const Text(
-                                "Apartment name: ",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              Text(
-                                data![0].apartmentName!,
-                                style: const TextStyle(fontSize: 18),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10,),
-                          Row(
-                            children: [
-                              const Text(
-                                "Maintenance Amount: ",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              Text(
-                                bills!.maintenance_amount.toString(),
-                                style: const TextStyle(fontSize: 18),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10,),
+                       margin: const EdgeInsets.all(10.5),
 
-                          Row(
-                            children: [
-                              const Text(
-                                "Generate Date: ",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              Text(
-                                getDate(bills.generate_date)!,
-                                style: const TextStyle(fontSize: 18),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          Center(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(120, 40),
-                                backgroundColor: Colors.purple,
-                              ),
-                              onPressed: () {},
-                              child: BasicText(
-                                title: "Edit",
-                                color: Colors.white,
-                                fontSize: 18,
+                      child: ListView(
+                        children: [Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                const Text(
+                                  "Apartment name: ",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(
+                                  data![0].apartmentName!,
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10,),
+                            Row(
+                              children: [
+                                const Text(
+                                  "Maintenance Amount: ",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(
+                                  bills!.maintenance_amount.toString(),
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10,),
+
+                            Row(
+                              children: [
+                                const Text(
+                                  "Generate Date: ",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(
+                                  getDate(bills.generate_date)!,
+                                  style: const TextStyle(fontSize: 18),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Center(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: const Size(120, 40),
+                                  elevation: 7,
+                                  // backgroundColor: Colors.purple,
+                                ),
+                                onPressed: () {},
+                                child:Text(
+                                  "Edit",
+                                  style: TextStyle(
+                                      fontSize: getFontSize(context, 20),
+                                      color: Colors.red),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                      ]
                       ),
                     ),
                   ),

@@ -27,17 +27,48 @@ class _ExpenserequestsState extends State<Expenserequests> {
 
   var remarks = TextEditingController();
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _fetchUsers();
+  // }
   @override
   void initState() {
     super.initState();
+    expenses = []; // Initialize expenses as an empty list
     _fetchUsers();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF0099CC),
+      appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: const Color(0xFF003366),
+        title: Text(
+          "Expenses Request",
+          style: GoogleFonts.poppins(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: Container(
-        margin: const EdgeInsets.all(12.5),
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF003366), // Darker blue color at the top
+              Color(0xFF0099CC), // Lighter blue color at the bottom
+            ],
+          ),
+        ),
+        // margin: const EdgeInsets.all(12.5),
         child: ListView(
           shrinkWrap: true,
           physics: const ScrollPhysics(),
@@ -54,10 +85,12 @@ class _ExpenserequestsState extends State<Expenserequests> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
+                          margin: const EdgeInsets.only(bottom: 10),
                           alignment: Alignment.topLeft,
                           child: BasicText(
                             title: "Select Block",
                             fontSize: 16.5,
+                            color: Colors.white,
                           ),
                         ),
                         SizedBox(
@@ -67,7 +100,7 @@ class _ExpenserequestsState extends State<Expenserequests> {
                             isExpanded: true,
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.black, width: 1.0),
+                                borderSide: const BorderSide(color: Colors.white, width: 2.0),
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
                               enabled: true,
@@ -82,7 +115,8 @@ class _ExpenserequestsState extends State<Expenserequests> {
                             ),
                             hint: const Text(
                               'Select Block',
-                              style: TextStyle(fontSize: 14),
+                              style: TextStyle(fontSize: 14,color: Colors.white),
+
                             ),
                             value: selectedvalue,
                             items: blocknames!
@@ -91,7 +125,10 @@ class _ExpenserequestsState extends State<Expenserequests> {
                               child: Text(
                                 item.toString(),
                                 style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w400, fontSize: 18),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 20,
+                                    color: Colors.green.shade400
+                                ),
                               ),
                             ))
                                 .toList(),
@@ -116,7 +153,7 @@ class _ExpenserequestsState extends State<Expenserequests> {
                             iconStyleData: const IconStyleData(
                               icon: Icon(
                                 Icons.arrow_drop_down,
-                                color: Colors.black,
+                                color: Colors.white,
                               ),
                               iconSize: 25,
                             ),
@@ -143,13 +180,39 @@ class _ExpenserequestsState extends State<Expenserequests> {
             selectedvalue != null ? FutureBuilder<List<ExpenseRequest>?>(
               future: ApiService().getExpenseusers(selectedvalue, widget.apartid, "Pending"),
               builder: (context, snap) {
+                // if (snap.connectionState == ConnectionState.waiting) {
+                //   return const Center(child: CircularProgressIndicator());
+                // } else if (snap.hasData && snap.data!.isEmpty) {
+                //   return Center(
+                //     child: BasicText(
+                //       title: "No Pending Requests",
+                //       color: Colors.black,
+                //       fontSize: 14.5,
+                //     ),
+                //   );
+                // } else if (snap.hasData && snap.data!.isNotEmpty) {
+                //   expenses = snap.data;
+                //   itemcount = expenses!.length;
+                //   return Container(
+                //     margin: const EdgeInsets.all(12.3),
+                //     child: AnimatedList(
+                //       shrinkWrap: true,
+                //       physics: const ScrollPhysics(),
+                //       key: _listKey,
+                //       initialItemCount: itemcount!,
+                //       itemBuilder: (context, index, animation) {
+                //         return _buildListItem(context, index, expenses!, animation);
+                //       },
+                //     ),
+                //   );
+                // }
                 if (snap.connectionState == ConnectionState.waiting) {
                   return Container();
                 } else if (snap.hasData && snap.data!.isEmpty) {
                   return Center(
                     child: BasicText(
                       title: "No Pending Requests",
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 14.5,
                     ),
                   );
@@ -419,6 +482,7 @@ class _ExpenserequestsState extends State<Expenserequests> {
       });
     });
   }
+
 
   Widget buildbuttons(List<ExpenseRequest> expenses, int index) {
     return StatefulBuilder(
