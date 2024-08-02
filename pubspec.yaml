@@ -36,7 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   group_radio_button: any
-  google_fonts: ^4.0.5
+  google_fonts: any
   path_provider: any
   provider: any
   email_validator: any
@@ -45,6 +45,8 @@ dependencies:
   shared_preferences: any
   dropdown_button2: any
   intl: any
+  image_picker : any
+  flutter_aws_s3_client: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

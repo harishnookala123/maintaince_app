@@ -329,10 +329,10 @@ class ApiService {
     }
   }
 
-  Future<List<Complaints>> getComplaint( String apartmentCode) async {
+  Future<List<Complaints>> getComplaint( String apartmentCode,String status) async {
     var dio = Dio();
     try {
-      final response = await dio.get('$baseUrl/getComplaints/$apartmentCode');
+      final response = await dio.get('$baseUrl1/getComplaints/$apartmentCode/$status');
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['results'];
         return data.map((json) => Complaints.fromJson(json)).toList();
@@ -345,6 +345,22 @@ class ApiService {
     }
   }
 
+
+   approveComplaint(String userId, String status) async {
+    final dio = Dio();
+    final String url = '$baseUrl1/approvecomplaint/$userId/$status';
+
+    try {
+      final response = await dio.put(url);
+      if (response.statusCode == 200) {
+        print('Complaint updated successfully: ${response.data}');
+      } else {
+        print('Failed to update complaint: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
   Future<List<CoAdmin>?> getCoadminById (String?apartment_code) async {
     var dio = Dio();

@@ -29,7 +29,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
           color: Colors.black,
         ),
       ),
-      drawer: CustomDrawer(user: widget.user),
+      drawer: SizedBox(
+          width: MediaQuery.of(context).size.width/1.35,
+          child: CustomDrawer(user: widget.user)),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(

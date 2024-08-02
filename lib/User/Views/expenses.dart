@@ -1,9 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:maintaince_app/User/Views/homescreen.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
-import 'package:maintaince_app/styles/drawer_style.dart';
 
 import '../../Admin/Model/usermodel.dart';
 
@@ -22,7 +24,9 @@ class ExpensesState extends State<Expenses> {
   String? selectedExpense;
   String? status;
   String? selectedvalue;
+  File? _image;
 
+  final ImagePicker _picker = ImagePicker();
   @override
   void dispose() {
     otherExpenseController.dispose();
@@ -34,10 +38,10 @@ class ExpensesState extends State<Expenses> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width / 1.25;
     return Scaffold(
-      backgroundColor: Color(0xFF0078A7) ,
+      backgroundColor: const Color(0xFF0078A7) ,
       appBar: AppBar(
         foregroundColor: Colors.white,
-        backgroundColor: Color(0xFF004170),
+        backgroundColor: const Color(0xFF004170),
         title: BasicText(
           title: 'Apartment Name',
           fontSize: 19,
@@ -45,7 +49,7 @@ class ExpensesState extends State<Expenses> {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Color(0xFF004170), Color(0xFF0078A7)],
             begin: Alignment.topCenter,
@@ -68,22 +72,22 @@ class ExpensesState extends State<Expenses> {
                     SizedBox(
                       width: width,
                       child: DropdownButtonFormField<String>(
-                        icon: Icon(Icons.arrow_drop_down_outlined,
+                        icon: const Icon(Icons.arrow_drop_down_outlined,
                         color: Colors.white,),
                         decoration: InputDecoration(
                           labelText: 'Select Expense',
-                          labelStyle: TextStyle(color: Colors.white),
+                          labelStyle: const TextStyle(color: Colors.white),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.white),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.white),
                           ),
                           filled: true,
                           fillColor: Colors.white.withOpacity(0.1),
@@ -122,23 +126,23 @@ class ExpensesState extends State<Expenses> {
                         controller: otherExpenseController,
                         decoration: InputDecoration(
                           labelText: 'Enter Description',
-                          labelStyle: TextStyle(color: Colors.white),
+                          labelStyle: const TextStyle(color: Colors.white),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.white),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.white),
                           ),
                           filled: true,
                           fillColor: Colors.white.withOpacity(0.1),
                         ),
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Description';
@@ -154,24 +158,24 @@ class ExpensesState extends State<Expenses> {
                         controller: amountController,
                         decoration: InputDecoration(
                           labelText: 'Enter Amount',
-                          labelStyle: TextStyle(color: Colors.white),
+                          labelStyle: const TextStyle(color: Colors.white),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.white),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.white),
                           ),
                           filled: true,
                           fillColor: Colors.white.withOpacity(0.1),
                         ),
                         keyboardType: TextInputType.number,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter an amount';
@@ -181,6 +185,32 @@ class ExpensesState extends State<Expenses> {
                       ),
                     ),
                     const SizedBox(height: 20.0),
+                    _image==null?Container(
+                      margin: const EdgeInsets.only(left: 12.3,top: 12.4),
+                      child: InkWell(
+                        onTap: (){
+                          _pickImage();
+                        },
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Icon(Icons.attach_file_sharp,
+                             size: 25,
+                              color: Colors.white,
+                            ),
+                            Text("Attach a File",
+                            style: TextStyle(color: Colors.white,
+                             fontSize: 19
+                            ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ):SizedBox(
+                      height: 340,
+                      child: Image.file(_image!),
+                    ),
+                    const SizedBox(height: 20,),
                     SizedBox(
                       width: 160,
                       child: ElevatedButton(
@@ -237,6 +267,16 @@ class ExpensesState extends State<Expenses> {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
           UserHomeScreen(user: widget.user)
       ));
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
     }
   }
 }

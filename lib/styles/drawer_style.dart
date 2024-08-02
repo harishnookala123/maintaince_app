@@ -37,12 +37,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                accountName: Text(
-                  widget.user?.first_name ?? 'User Name',
-                  style: GoogleFonts.poppins(
-                    fontSize: screenWidth * 0.05,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                accountName: Container(
+                  margin: const EdgeInsets.only(top: 2.3),
+                  child: Text(
+                    widget.user?.first_name ?? 'User Name',
+                    style: GoogleFonts.poppins(
+                      fontSize: screenWidth * 0.05,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 accountEmail: Text(

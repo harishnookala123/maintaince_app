@@ -80,8 +80,11 @@ class _HomePageState extends State<HomePage> {
           ),
           centerTitle: true,
         ),
-        drawer: Drawer(
-          child: BuildDrawer(userdetails: admin, userid: widget.userid),
+        drawer: SizedBox(
+          width: MediaQuery.of(context).size.width/1.35,
+          child: Drawer(
+            child: BuildDrawer(userdetails: admin, userid: widget.userid),
+          ),
         ),
         body: Container(
           margin: const EdgeInsets.all(12.3),
@@ -168,7 +171,9 @@ class _HomePageState extends State<HomePage> {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => CoAdminlist(apartid: apartmentCode, userid: userid)));
     }
     if (selectedValue == "Grievance") {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ComplaintsReceived(apartmentCode: widget.admin!.apartmentCode)));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+          ComplaintsReceived(apartmentCode: widget.admin!.apartmentCode,)
+      ));
     }
   }
 }

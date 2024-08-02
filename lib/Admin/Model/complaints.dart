@@ -3,10 +3,12 @@ class Complaints{
   String? description;
   String? apartment_code;
   String?complaint_type;
+  bool?pressed;
   Complaints({this.user_id,
     this.description,
     this.apartment_code,
     this.complaint_type,
+    this.pressed
   });
 
   factory Complaints.fromJson(Map<String, dynamic> json) {
@@ -14,7 +16,8 @@ class Complaints{
          user_id: json['user_id'],
         description: json['description'],
         apartment_code: json['apartment_code'],
-          complaint_type : json["complaint_type"]
+          complaint_type : json["complaint_type"],
+         pressed: false
      );
   }
 }
