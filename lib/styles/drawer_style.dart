@@ -18,6 +18,8 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return ClipRRect(
       borderRadius: const BorderRadius.only(
         topRight: Radius.circular(30),
@@ -38,7 +40,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 accountName: Text(
                   widget.user?.first_name ?? 'User Name',
                   style: GoogleFonts.poppins(
-                    fontSize: getFontSize(context, 20),
+                    fontSize: screenWidth * 0.05,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -46,7 +48,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 accountEmail: Text(
                   widget.user?.email ?? 'user@example.com',
                   style: GoogleFonts.poppins(
-                    fontSize: getFontSize(context, 14),
+                    fontSize: screenWidth * 0.035,
                     color: Colors.white,
                   ),
                 ),
@@ -54,7 +56,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   backgroundColor: Colors.white,
                   child: Icon(
                     Icons.perm_identity_sharp,
-                    size: getFontSize(context, 40),
+                    size: screenWidth * 0.1,
                     color: Colors.pinkAccent.shade200,
                   ),
                 ),
@@ -69,7 +71,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: Text(
                       'Edit Profile',
                       style: GoogleFonts.poppins(
-                        fontSize: getFontSize(context, 16),
+                        fontSize: screenWidth * 0.04,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -83,7 +85,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: Text(
                       'Info',
                       style: GoogleFonts.poppins(
-                        fontSize: getFontSize(context, 16),
+                        fontSize: screenWidth * 0.04,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -102,7 +104,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: Text(
                       'Management Info',
                       style: GoogleFonts.poppins(
-                        fontSize: getFontSize(context, 16),
+                        fontSize: screenWidth * 0.04,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -110,7 +112,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ManagementInfoScreen(user: widget.user),
+                          builder: (context) =>
+                              ManagementInfoScreen(user: widget.user),
                         ),
                       );
                     },
@@ -121,39 +124,39 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width/2.3,
+                        width: screenWidth * 0.45,
                         height: 70,
                         child: Align(
-                          //alignment: Alignment.bottomRight,
-                          child: Container(
-                            // alignment: Alignment.bottomCenter,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(context,
-                                 MaterialPageRoute(builder: (context)=>const Login())
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15), // Rounded corners
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Login()),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              elevation: 7,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.logout,
+                                    color: Colors.red, size: 24),
+                                const SizedBox(width: 10),
+                                Text(
+                                  "Logout",
+                                  style: TextStyle(
+                                      fontSize: screenWidth * 0.050,
+                                      color: Colors.red),
                                 ),
-                                elevation: 7, // Elevation
-                              ),
-                              child:  Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.logout, color: Colors.red, size: 24), // Prefix icon
-                                  const SizedBox(width: 10), // Space between icon and text
-                                  Text(
-                                    "Logout",
-                                    style: TextStyle(fontSize:getFontSize(context, 18),color: Colors.red),
-                                  ),
-                                ],
-                              ),
+                              ],
                             ),
                           ),
-
                         ),
                       ),
                     ],

@@ -12,8 +12,8 @@ import 'complaints_receive.dart';
 import 'flatlist.dart';
 
 class HomePage extends StatefulWidget {
-  String? userid;
-  Admin? admin;
+  final String? userid;
+  final Admin? admin;
   HomePage({super.key, this.userid, this.admin});
   @override
   State<HomePage> createState() => _HomePageState();
@@ -45,63 +45,50 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     Admin? admin = widget.admin;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-
         appBar: AppBar(
+          foregroundColor: Colors.white,
           elevation: 4.0,
           backgroundColor: const Color(0xFF003366),
-          // flexibleSpace: Container(
-          //   decoration:  BoxDecoration(
-          //     gradient: LinearGradient(
-          //       colors: [Colors.green.shade200, Colors.blue.shade400],
-          //       begin: Alignment.topLeft,
-          //       end: Alignment.bottomRight,
-          //     ),
-          //   ),
-          // ),
-          // backgroundColor: Colors.orange,
-
           title: Row(
             children: [
               Text(
                 "Welcome  ",
                 style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    letterSpacing: 0.5,
-                    fontSize: 18.5,
-                    fontWeight: FontWeight.w500),
+                  color: Colors.white,
+                  letterSpacing: 0.5,
+                  fontSize: screenWidth * 0.045,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               Text(
                 "${admin!.firstName!.toString().toUpperCase()} ",
                 style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    letterSpacing: 0.5,
-                    fontSize: 19,
-                    wordSpacing: 1.0,
-                    fontWeight: FontWeight.w500),
+                  color: Colors.white,
+                  letterSpacing: 0.5,
+                  fontSize: screenWidth * 0.047,
+                  wordSpacing: 1.0,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
           centerTitle: true,
-          foregroundColor: Colors.white,
         ),
         drawer: Drawer(
-          child: DrawerHeader(
-            child: BuildDrawer(userdetails: admin, userid: widget.userid),
-          ),
+          child: BuildDrawer(userdetails: admin, userid: widget.userid),
         ),
         body: Container(
           margin: const EdgeInsets.all(12.3),
           child: ListView(
             shrinkWrap: true,
-            physics: const ScrollPhysics(),
             children: [
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               GridView.builder(
                 physics: const ScrollPhysics(),
                 shrinkWrap: true,
@@ -126,7 +113,10 @@ class _HomePageState extends State<HomePage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.0),
                           gradient: const LinearGradient(
-                            colors: [Color(0xFF0099CC), Color(0xFF003366),],
+                            colors: [
+                              Color(0xFF0099CC),
+                              Color(0xFF214973),
+                            ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
@@ -136,14 +126,14 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Icon(
                               icons[index],
-                              size: 50.0,
+                              size: screenWidth * 0.13,
                               color: Colors.white,
                             ),
                             const SizedBox(height: 10),
                             Text(
                               values[index].toString(),
                               style: GoogleFonts.poppins(
-                                fontSize: 16.0,
+                                fontSize: screenWidth * 0.04,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -165,32 +155,20 @@ class _HomePageState extends State<HomePage> {
 
   getNavigate(String? userid, Admin? admin, String? selectedValue) async {
     var apartmentCode = admin!.apartmentCode;
-    print(userid);
     if (selectedValue == "Flat list") {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-          FlatList(apartmentCode: apartmentCode)
-      ));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => FlatList(apartmentCode: apartmentCode)));
     }
     if (selectedValue == "Users") {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-          Userlist(apartid: apartmentCode)
-      ));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Userlist(apartid: apartmentCode)));
     }
-    if(selectedValue== "Expense requests"){
-      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>
-          Expenserequests(apartid: apartmentCode)
-      ));
+    if (selectedValue == "Expense requests") {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Expenserequests(apartid: apartmentCode)));
     }
     if (selectedValue == "Coadmin details") {
-      print(apartmentCode.toString()+"hejhjagdcjagdadaygjaggfjhahjas");
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-          CoAdminlist(apartid: apartmentCode,userid: userid)
-      ));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => CoAdminlist(apartid: apartmentCode, userid: userid)));
     }
     if (selectedValue == "Grievance") {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-          ComplaintsReceived(apartmentCode: widget.admin!.apartmentCode,)
-      ));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ComplaintsReceived(apartmentCode: widget.admin!.apartmentCode)));
     }
   }
 }

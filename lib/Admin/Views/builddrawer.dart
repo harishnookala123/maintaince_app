@@ -24,6 +24,8 @@ class BuildDrawerState extends State<BuildDrawer> {
   @override
   Widget build(BuildContext context) {
     Admin? admin = widget.userdetails;
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Drawer(
       child: ListView(
@@ -52,16 +54,17 @@ class BuildDrawerState extends State<BuildDrawer> {
               backgroundColor: Colors.white,
               child: Icon(
                 Icons.perm_identity_sharp,
-                size: 40,
+                size: screenWidth * 0.1,
                 color: Colors.pinkAccent.shade200,
               ),
             ),
           ),
           ListTile(
-            leading:
-                Icon(Icons.request_page, color: Colors.pinkAccent.shade200,
-                  size: getFontSize(context, 25),
-                ),
+            leading: Icon(
+              Icons.request_page,
+              color: Colors.pinkAccent.shade200,
+              size: screenWidth * 0.07,
+            ),
             title: Text(
               "User Requests",
               style: GoogleFonts.poppins(
@@ -75,10 +78,11 @@ class BuildDrawerState extends State<BuildDrawer> {
             },
           ),
           ListTile(
-            leading:
-                Icon(Icons.receipt_long, color: Colors.pinkAccent.shade200,
-                  size: getFontSize(context, 25),
-                ),
+            leading: Icon(
+              Icons.receipt_long,
+              color: Colors.pinkAccent.shade200,
+              size: screenWidth * 0.07,
+            ),
             title: Text(
               "Set Maintenance Bills",
               style: GoogleFonts.poppins(
@@ -87,18 +91,18 @@ class BuildDrawerState extends State<BuildDrawer> {
               ),
             ),
             onTap: () async {
-
               var apartmentcode = widget.userdetails!.apartmentCode;
 
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => MaintainceBill(
-                         apartcode: apartmentcode,
-                      userid: widget.userid)));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => MaintainceBill(
+                      apartcode: apartmentcode, userid: widget.userid)));
             },
           ),
           ListTile(
-            leading: Icon(Icons.group_add, color: Colors.pinkAccent.shade200,
-             size: getFontSize(context, 25),
+            leading: Icon(
+              Icons.group_add,
+              color: Colors.pinkAccent.shade200,
+              size: screenWidth * 0.07,
             ),
             title: Text(
               "Add Co-Admin",
@@ -113,43 +117,50 @@ class BuildDrawerState extends State<BuildDrawer> {
                       CoRegistration(adminId: widget.userid, admin: admin)));
             },
           ),
-          const SizedBox(height: 20,),
+          const SizedBox(height: 20),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context)=>const Login()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        maximumSize: const Size(150, 100),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(19), // Rounded corners
-                        ),
-                        elevation: 7, // Elevation
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const Login()));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      maximumSize: const Size(150, 100),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.circular(19), // Rounded corners
                       ),
-                      child:  Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.logout, color: Colors.red, size: getFontSize(context, 24)), // Prefix icon
-                          const SizedBox(width: 10), // Space between icon and text
-                          Text(
-                            "Logout",
-                            style: TextStyle(fontSize: getFontSize(context, 20), color: Colors.red),
-                          ),
-                        ],
-                      ),
+                      elevation: 7, // Elevation
                     ),
-
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.logout,
+                          color: Colors.red,
+                          size: getFontSize(context, 24),
+                        ), // Prefix icon
+                        const SizedBox(
+                            width: 10), // Space between icon and text
+                        Text(
+                          "Logout",
+                          style: TextStyle(
+                              fontSize: getFontSize(context, 20),
+                              color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
-          )        
+          )
         ],
       ),
     );
