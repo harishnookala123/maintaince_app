@@ -79,7 +79,7 @@ class BackGroundImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(children: [
       Image.asset(
-        'assets/Images/apartment.png', // Replace with your image URL
+        'assets/Images/splash_image.png', // Replace with your image URL
         fit: BoxFit.cover,
         width: double.infinity,
         height: double.infinity,
