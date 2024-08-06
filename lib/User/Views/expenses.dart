@@ -1,12 +1,13 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
 import 'package:maintaince_app/User/Views/homescreen.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
-
+import 'package:path/path.dart';
 import '../../Admin/Model/usermodel.dart';
 
 class Expenses extends StatefulWidget {
@@ -207,7 +208,8 @@ class ExpensesState extends State<Expenses> {
                         ),
                       ),
                     ):SizedBox(
-                      height: 340,
+                     // height: 280,
+                      width: 250,
                       child: Image.file(_image!),
                     ),
                     const SizedBox(height: 20,),
@@ -222,9 +224,9 @@ class ExpensesState extends State<Expenses> {
                           ),
                         ),
                         onPressed: () {
-                          if (formKey.currentState!.validate()) {
+                          if (formKey.currentState!.validate()&&_image!=null) {
                             setState(() {
-                              getPostexpenses(widget.user!.uid);
+                              getPostexpenses(widget.user!.uid,context);
                             });
                           }
                         },
@@ -248,8 +250,8 @@ class ExpensesState extends State<Expenses> {
     );
   }
 
-  getPostexpenses(String? uid) async {
-    Map<String, dynamic> data = {
+  getPostexpenses(String? uid, BuildContext context) async {
+     var data = {
       'expense_date': DateTime.now().toString(),
       'expense_type': selectedExpense,
       'description': otherExpenseController.text,
@@ -258,15 +260,14 @@ class ExpensesState extends State<Expenses> {
       'status': "Pending",
       'remarks': "",
       'appartment_code': widget.user!.apartment_code,
-      "userid": uid,
-      "block_name": widget.user!.block_name,
-      "confirm": "no"
+      'userid': uid,
+      'block_name': widget.user!.block_name,
+      'confirm': "no",
     };
-    status = await ApiService().postexpenses(uid, data);
-    if (status == "Expense inserted successfully") {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-          UserHomeScreen(user: widget.user)
-      ));
+
+     status = await ApiService().postExpenses(uid, _image ,data);
+    if (status == "Expense added successfully") {
+       Navigator.pop(context);
     }
   }
 

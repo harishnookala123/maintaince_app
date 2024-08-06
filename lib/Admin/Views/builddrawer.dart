@@ -36,12 +36,15 @@ class BuildDrawerState extends State<BuildDrawer> {
             decoration: const BoxDecoration(
               color: Color(0xFF003366),
             ),
-            accountName: Text(
-              "${admin?.firstName ?? ''} ${admin?.lastName ?? ''}",
-              style: GoogleFonts.poppins(
-                fontSize: getFontSize(context, 20),
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+            accountName: Container(
+              margin: const EdgeInsets.only(top: 2.3),
+              child: Text(
+                "${admin?.firstName ?? ''} ${admin?.lastName ?? ''}",
+                style: GoogleFonts.poppins(
+                  fontSize: getFontSize(context, 20),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
             accountEmail: Text(
@@ -62,7 +65,7 @@ class BuildDrawerState extends State<BuildDrawer> {
           ),
           ListTile(
             leading: Icon(
-              Icons.request_page,
+              Icons.supervisor_account_outlined,
               color: Colors.pinkAccent.shade200,
               size: screenWidth * 0.07,
             ),

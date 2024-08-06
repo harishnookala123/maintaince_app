@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -11,13 +12,14 @@ import '../Model/complaints.dart';
 import '../Model/expenserequest.dart';
 import '../Model/usermodel.dart';
 import '../Model/blocks.dart';
+import 'package:path/path.dart';
  const String baseUrl = 'http://maintenanceapplication.ap-south-1.elasticbeanstalk.com';
 
 
 
 class ApiService {
   var dio = Dio();
-   String baseUrl1 = 'http://192.168.29.92:3000';
+   String baseUrl1 = 'http://192.168.29.231:3000';
   Future<Admin?> getAdminById(String id) async {
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
@@ -419,7 +421,52 @@ class ApiService {
         return Bills.fromJson(data);
       }
     }
-    return null;    }
+    return null;
+
+
+  }
+  uploadImage(File imageFile) async {
+    Dio dio = Dio();
+
+    String fileName = basename(imageFile.path);
+    FormData formData = FormData.fromMap({
+      "image": await MultipartFile.fromFile(imageFile.path, filename: fileName),
+    });
+    try {
+      Response response = await dio.post(
+          '$baseUrl1/upload', data: formData);
+      if (response.statusCode == 200) {
+        print('Image uploaded successfully: ${response.data['url']}');
+      } else {
+        print('Image upload failed: ${response.statusMessage}');
+      }
+    }catch(e){
+
+    }
+
+  }
+
+  postExpenses(String? userid, File? image, Map<String, String?> data) async {
+    try {
+      FormData formData = FormData.fromMap({
+        'data': data,
+        if (image != null) 'image': await MultipartFile.fromFile(image.path),
+      });
+
+      Response response = await Dio().post(
+        '$baseUrl1/expenses/$userid',
+        data: formData,
+        options: Options(
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        ),
+      );
+      return response.data["message"];
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 }
 
 
