@@ -13,8 +13,8 @@ import 'maintaince_bill.dart';
 class BuildDrawer extends StatefulWidget {
   final Admin? userdetails;
   final String? userid;
-
-  const BuildDrawer({super.key, this.userdetails, this.userid});
+   final String? usertype;
+  const BuildDrawer({super.key, this.userdetails, this.userid, this.usertype});
 
   @override
   State<BuildDrawer> createState() => BuildDrawerState();
@@ -23,6 +23,7 @@ class BuildDrawer extends StatefulWidget {
 class BuildDrawerState extends State<BuildDrawer> {
   @override
   Widget build(BuildContext context) {
+    print(widget.usertype.toString() + "Homepage");
     Admin? admin = widget.userdetails;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -33,7 +34,7 @@ class BuildDrawerState extends State<BuildDrawer> {
         children: [
           UserAccountsDrawerHeader(
             decoration: const BoxDecoration(
-              color: Color(0xFF0099CC),
+              color: Color(0xFF003366),
             ),
             accountName: Text(
               "${admin?.firstName ?? ''} ${admin?.lastName ?? ''}",
@@ -77,7 +78,7 @@ class BuildDrawerState extends State<BuildDrawer> {
                   builder: (context) => UserDetails(userid: widget.userid)));
             },
           ),
-          ListTile(
+         widget.usertype!="Co-admin"? ListTile(
             leading: Icon(
               Icons.receipt_long,
               color: Colors.pinkAccent.shade200,
@@ -97,8 +98,8 @@ class BuildDrawerState extends State<BuildDrawer> {
                   builder: (context) => MaintainceBill(
                       apartcode: apartmentcode, userid: widget.userid)));
             },
-          ),
-          ListTile(
+          ): Container(),
+          widget.usertype!="Co-admin"? ListTile(
             leading: Icon(
               Icons.group_add,
               color: Colors.pinkAccent.shade200,
@@ -116,7 +117,7 @@ class BuildDrawerState extends State<BuildDrawer> {
                   builder: (context) =>
                       CoRegistration(adminId: widget.userid, admin: admin)));
             },
-          ),
+          ): Container(),
           const SizedBox(height: 20),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:maintaince_app/Admin/Model/coadmin.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
+
 import 'package:maintaince_app/User/Views/userscreen.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
 import 'package:provider/provider.dart';
@@ -109,11 +111,14 @@ class _LoginState extends State<Login> {
                                 ),
                                 onPressed: _toggleObscureText,
                               ),
+                              isDense: true,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               hintText: 'Password',
                             ),
+                            minLines: 1,
+                            maxLines: 1,
                           ),
                           const SizedBox(height: 15),
                           SizedBox(
@@ -145,6 +150,7 @@ class _LoginState extends State<Login> {
                           status != null
                               ? getText()
                               : Container(
+                            margin: const EdgeInsets.only(top: 4.3),
                           ),
                           Container(
                             margin: const EdgeInsets.only(top: 10.5),
@@ -221,7 +227,7 @@ class _LoginState extends State<Login> {
         Map<String, dynamic> res = response.data;
         var userid = res["userid"];
         status = res["status"];
-
+        print(res);
         if (status == "Login Successful") {
           emailController.clear();
           passwordController.clear();
@@ -246,15 +252,22 @@ class _LoginState extends State<Login> {
                 );
               }
             });
-          } else if (usertype == "admin") {
+          } else if (usertype == "admin" || usertype =="Co-admin") {
+            if (usertype== "admin" ){
              Admin?admin = await ApiService().getAdminById(userid);
-              getNavigate(admin, userid);
+              getNavigate(admin, userid,usertype);
+            } else{
+              Admin? coAdmin = await ApiService().coAdminById(userid);
+              getNavigate(coAdmin, userid, usertype);
+            }
           }
         }
       } else {
         print("Login failed");
         status = response.data["status"];
+
       }
+
     });
   }
 
@@ -274,7 +287,7 @@ class _LoginState extends State<Login> {
     });
   }
 
-  getNavigate(Admin? admin, userid) {
+  getNavigate(Admin? admin, userid, usertype) {
     // print(admin!.ad.toString() + "Harish is login");
      Navigator.pushReplacement(
       context,
@@ -282,6 +295,7 @@ class _LoginState extends State<Login> {
         builder: (context) => HomePage(
           userid: userid,
           admin: admin,
+          usertype:usertype,
         ),
       ),
     );

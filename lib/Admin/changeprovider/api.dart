@@ -17,7 +17,7 @@ import '../Model/blocks.dart';
 
 class ApiService {
   var dio = Dio();
-   String baseUrl1 = 'http://192.168.29.231:3000';
+   String baseUrl1 = 'http://192.168.29.92:3000';
   Future<Admin?> getAdminById(String id) async {
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
@@ -27,6 +27,15 @@ class ApiService {
       return null;
     }
   }
+  Future<Admin?>coAdminById (String id) async {
+    final response = await http.get(Uri.parse('$baseUrl1/co-admin/$id'));
+    if (response.statusCode==200){
+      print(response.body);
+      var value = Admin.fromJson(json.decode(response.body));
+      return value;
+  }
+    return null;
+    }
   Future<List<ApartmentDetails>?> getApartmentDetails(String? apartmentCode) async {
     var headers = {'Content-Type': 'application/json'};
     var dio = Dio();

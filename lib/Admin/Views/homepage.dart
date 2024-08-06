@@ -14,7 +14,8 @@ import 'flatlist.dart';
 class HomePage extends StatefulWidget {
   final String? userid;
   final Admin? admin;
-  HomePage({super.key, this.userid, this.admin});
+  String?usertype;
+  HomePage({super.key, this.userid, this.admin, this.usertype});
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -80,10 +81,9 @@ class _HomePageState extends State<HomePage> {
           ),
           centerTitle: true,
         ),
-        drawer: SizedBox(
-          width: MediaQuery.of(context).size.width/1.35,
-          child: Drawer(
-            child: BuildDrawer(userdetails: admin, userid: widget.userid),
+        drawer: Drawer(
+          child: BuildDrawer(userdetails: admin,
+              userid: widget.userid,usertype:widget.usertype,
           ),
         ),
         body: Container(
