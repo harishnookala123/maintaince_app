@@ -8,6 +8,7 @@ class ExpenseRequest {
   String? user_id;
   String? status;
   bool?ispressed;
+  String?attachment;
   ExpenseRequest(
       {
         this.id,
@@ -19,6 +20,7 @@ class ExpenseRequest {
         this.user_id,
         this.status,
         this.ispressed,
+        this.attachment,
       });
 
   ExpenseRequest.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class ExpenseRequest {
     user_id = json['user_id'];
     status = json['status'];
     ispressed = false;
+    attachment = json["attachment"];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +46,7 @@ class ExpenseRequest {
     data['apartment_code'] = apartmentCode;
     data['user_id'] = user_id;
     data['status'] = status;
+    data["attachment"] = attachment;
     return data;
   }
 }

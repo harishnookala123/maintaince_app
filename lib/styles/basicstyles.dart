@@ -79,20 +79,20 @@ class BackGroundImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(children: [
       Image.asset(
-        'assets/Images/splash_image.png', // Replace with your image URL
+        'assets/Images/apart.png', // Replace with your image URL
         fit: BoxFit.cover,
         width: double.infinity,
         height: double.infinity,
       ),
       BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 0.3, sigmaY: 0.3),
+        filter: ImageFilter.blur(sigmaX: 1.8, sigmaY: 1.8),
         child: Center(
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: SizedBox(
               width: MediaQuery.of(context).size.width / 1.05,
               child: Card(
-                //color: Colors.white.withOpacity(0.9),
+               // color: Colors.white.withOpacity(0.6),
                 elevation: 15.0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16.5),

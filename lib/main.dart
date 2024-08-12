@@ -14,8 +14,7 @@ void main() {
       ChangeNotifierProvider(create: (context)=> Userregistration())
     ],
      child: const MyApp(),
-  ),
-  );
+  ),);
 }
 
 class MyApp extends StatelessWidget {

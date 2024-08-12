@@ -1,6 +1,8 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:maintaince_app/Admin/Model/usermodel.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
 
@@ -17,7 +19,9 @@ class UserComplaints extends StatefulWidget {
 class ComplaintsState extends State<UserComplaints> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController descriptionController = TextEditingController();
+  File? _image;
 
+  final ImagePicker _picker = ImagePicker();
   String? selectedComplaint;
 
   @override
@@ -55,21 +59,13 @@ class ComplaintsState extends State<UserComplaints> {
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(15.0),
             child: Form(
               key: formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Submit Your Complaint',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   SizedBox(
                     width: width,
                     child: DropdownButtonFormField<String>(
@@ -93,7 +89,7 @@ class ComplaintsState extends State<UserComplaints> {
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.1),
                       ),
-                      dropdownColor:const Color(0xFF6396F3),
+                      dropdownColor: const Color(0xFF6396F3),
                       icon: const Icon(
                         Icons.arrow_drop_down,
                         color: Colors.white,
@@ -163,23 +159,72 @@ class ComplaintsState extends State<UserComplaints> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 10,),
+                  _image == null
+                      ? Container(
+                          margin: const EdgeInsets.only(left: 12.3, top: 12.4),
+                          child: GestureDetector(
+                            onTap: () {
+                              _pickImage();
+                            },
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Icon(
+                                  Icons.attach_file_sharp,
+                                  size: 25,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  " Please Attach a File",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 19),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            SizedBox(
+                              width: 250,
+                              child: Center(child: Image.file(_image!)),
+                            ),
+                            IconButton(
+                              style: IconButton.styleFrom(
+                                backgroundColor: Colors.white,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _image = null;
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.close,
+                                color: Colors.black,
+                                size: 20,
+                              ),
+                              color: Colors.white,
+                              padding: const EdgeInsets.all(8.0),
+                              constraints: const BoxConstraints(),
+                            ),
+                          ],
+                        ),
+                  const SizedBox(height: 20,),
                   Center(
                     child: ElevatedButton(
                       onPressed: () async {
-                        var value = await ApiService().postComplaint(
-                          widget.user!.uid!,
-                          descriptionController.text,
-                          selectedComplaint,
-                          widget.user!.apartment_code,
-                        );
-                        if (value != null) {
-                          Navigator.pop(context);
-                        }
+                       setState(() {
+                         if(formKey.currentState!.validate()){
+                            postComplaint(widget.user!.uid,context);
+                         }
+                       });
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 15),
                         textStyle: const TextStyle(
                           fontSize: 17,
                           color: Colors.green,
@@ -188,14 +233,11 @@ class ComplaintsState extends State<UserComplaints> {
                           borderRadius: BorderRadius.circular(25),
                         ),
                       ),
-                      child:  Text(
-                        'Submit',
-                        style: GoogleFonts.poppins(
-                          fontSize: 17,
-                          color: const Color(0xFF0099CC),
-                          fontWeight: FontWeight.w500
-                        )
-                      ),
+                      child: Text('Submit',
+                          style: GoogleFonts.poppins(
+                              fontSize: 17,
+                              color: const Color(0xFF0099CC),
+                              fontWeight: FontWeight.w500)),
                     ),
                   ),
                 ],
@@ -206,4 +248,30 @@ class ComplaintsState extends State<UserComplaints> {
       ),
     );
   }
+
+  Future<void> _pickImage() async {
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
+   postComplaint(String? uid, BuildContext context) async {
+    var data = {
+      "user_id": uid,
+      "complaint_type": selectedComplaint,
+      "description": descriptionController.text,
+      "apartment_code" : widget.user!.apartment_code,
+      "status" : "Pending"
+    };
+    var status = await ApiService().postComplaint(data,_image);
+
+    if (status == "Complaint submitted successfully") {
+       Navigator.pop(context);
+    }
+   }
 }

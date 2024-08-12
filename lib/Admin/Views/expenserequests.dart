@@ -1,12 +1,15 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:maintaince_app/Admin/Model/expenserequest.dart';
+import 'package:photo_view/photo_view.dart';
 import '../../styles/basicstyles.dart';
 import '../Model/usermodel.dart';
 import '../changeprovider/api.dart';
+import 'complaints_pending.dart';
 
 class Expenserequests extends StatefulWidget {
   String? apartid;
@@ -358,6 +361,23 @@ class _ExpenserequestsState extends State<Expenserequests> {
                 Container(
                   margin: const EdgeInsets.only(top: 4.3, bottom: 12.3),
                 ),
+                expenses[index].attachment!=null?Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () => _showImageDialog(context, expenses[index].attachment!),
+                      child: CachedNetworkImage(
+                        cacheManager: CustomCacheManager.instance,
+                        imageUrl: expenses[index].attachment!,
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        fit: BoxFit.fitWidth,
+                        width: 300,
+                        height: 260,
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                  ],
+                ):Container(),
+
                 buildbuttons(expenses, index),
                 const SizedBox(height: 10),
               ],
@@ -581,4 +601,19 @@ class _ExpenserequestsState extends State<Expenserequests> {
       },
     );
   }
+  void _showImageDialog(BuildContext context, String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: PhotoView(
+            imageProvider: NetworkImage(imageUrl),
+            minScale: PhotoViewComputedScale.contained,
+            maxScale: PhotoViewComputedScale.covered * 2,
+          ),
+        );
+      },
+    );
+  }
+
 }

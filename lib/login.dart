@@ -1,20 +1,11 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:maintaince_app/Admin/Model/coadmin.dart';
 import 'package:maintaince_app/Admin/changeprovider/api.dart';
-
 import 'package:maintaince_app/User/Views/userscreen.dart';
 import 'package:maintaince_app/styles/basicstyles.dart';
-import 'package:provider/provider.dart';
 import 'Admin/Model/adminRegistartion.dart';
-import 'Admin/Model/usermodel.dart';
-import 'Admin/Views/adminscreen.dart';
-import 'Admin/Views/apart_details.dart';
 import 'Admin/Views/homepage.dart';
-import 'Admin/Views/registrationsecondpage.dart';
-import 'Admin/Views/userdetails.dart';
-import 'Co_admin/Views/registration.dart';
 import 'User/Views/homescreen.dart';
 import 'mainScreen.dart';
 
@@ -222,21 +213,16 @@ class _LoginState extends State<Login> {
       data: data,
     );
 
-    setState(() async {
+    setState(()  async {
       if (response.statusCode == 200) {
         Map<String, dynamic> res = response.data;
         var userid = res["userid"];
         status = res["status"];
-        print(res);
         if (status == "Login Successful") {
-          emailController.clear();
-          passwordController.clear();
           var usertype = res["usertype"];
-          print(usertype);
           if (usertype == "Owner" || usertype == "Tenant") {
             ApiService.userData(userid).then((users) {
-              print(users!.status.toString());
-              if(users.status == "Pending"){
+              if(users!.status == "Pending"){
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -263,9 +249,7 @@ class _LoginState extends State<Login> {
           }
         }
       } else {
-        print("Login failed");
         status = response.data["status"];
-
       }
 
     });

@@ -17,8 +17,6 @@ class _ComplaintsCompletedState extends State<ComplaintsCompleted> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-  // Darker blue color at the top
-
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -32,7 +30,7 @@ class _ComplaintsCompletedState extends State<ComplaintsCompleted> {
         ),
         child:  Column(
           children: [
-             FutureBuilder<List<Complaints>>(
+            Expanded(child: FutureBuilder<List<Complaints>>(
                 future: ApiService().getComplaint(widget.apartmentCode!, "Completed"),
                 builder: (context, snap) {
                   if (snap.connectionState == ConnectionState.waiting) {
@@ -46,6 +44,7 @@ class _ComplaintsCompletedState extends State<ComplaintsCompleted> {
                       margin: const EdgeInsets.all(12.3),
                       child: ListView.builder(
                         shrinkWrap: true,
+                        physics: ScrollPhysics(),
                         itemCount: snap.data!.length,
                         itemBuilder: (context, index) {
                           final complaint = snap.data;
@@ -144,12 +143,12 @@ class _ComplaintsCompletedState extends State<ComplaintsCompleted> {
                                   ),
                                   Center(
                                     child: Text("Completed",
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 16,
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 1.0
-                                    ),
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 16,
+                                          color: Colors.green,
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: 1.0
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -161,7 +160,7 @@ class _ComplaintsCompletedState extends State<ComplaintsCompleted> {
                     );
                   }
                 }),
-
+            )
           ],
         ),
       ),

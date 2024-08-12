@@ -74,7 +74,7 @@ class ExpensesState extends State<Expenses> {
                       width: width,
                       child: DropdownButtonFormField<String>(
                         icon: const Icon(Icons.arrow_drop_down_outlined,
-                        color: Colors.white,),
+                          color: Colors.white,),
                         decoration: InputDecoration(
                           labelText: 'Select Expense',
                           labelStyle: const TextStyle(color: Colors.white),
@@ -104,7 +104,7 @@ class ExpensesState extends State<Expenses> {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: BasicText(title:value,
-                            color: Colors.white),
+                                color: Colors.white),
                           );
                         }).toList(),
                         onChanged: (String? newValue) {
@@ -186,58 +186,81 @@ class ExpensesState extends State<Expenses> {
                       ),
                     ),
                     const SizedBox(height: 20.0),
-                    _image==null?Container(
-                      margin: const EdgeInsets.only(left: 12.3,top: 12.4),
+                    _image == null
+                        ? Container(
+                      margin: const EdgeInsets.only(left: 12.3, top: 12.4),
                       child: InkWell(
-                        onTap: (){
+                        onTap: () {
                           _pickImage();
                         },
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Icon(Icons.attach_file_sharp,
-                             size: 25,
+                            Icon(
+                              Icons.attach_file_sharp,
+                              size: 25,
                               color: Colors.white,
                             ),
-                            Text("Attach a File",
-                            style: TextStyle(color: Colors.white,
-                             fontSize: 19
-                            ),
+                            Text(
+                              "Please Attach a File",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 19),
                             ),
                           ],
                         ),
                       ),
-                    ):SizedBox(
-                     // height: 280,
-                      width: 250,
-                      child: Image.file(_image!),
+                    )
+                        : Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        SizedBox(
+                          width: 250,
+                          child: Image.file(_image!),
+                        ),
+                        IconButton(
+                          style: IconButton.styleFrom(
+                            backgroundColor: Colors.white,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _image = null;
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.close,
+                            color: Colors.black,
+                            size: 20,
+                          ),
+                          color: Colors.white,
+                          padding: const EdgeInsets.all(8.0),
+                          constraints: const BoxConstraints(),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 20,),
+                    const SizedBox(height: 20),
                     SizedBox(
                       width: 160,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 15),
                           textStyle: const TextStyle(fontSize: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25),
                           ),
                         ),
                         onPressed: () {
-                          if (formKey.currentState!.validate()&&_image!=null) {
+                          if (formKey.currentState!.validate() && _image != null) {
                             setState(() {
-                              getPostexpenses(widget.user!.uid,context);
+                              getPostexpenses(widget.user!.uid, context);
                             });
                           }
                         },
-                        child:  Text(
-                          'Submit',
-                          style: GoogleFonts.poppins(
-                            color: const Color(0xFF003366),
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500
-                          )
-                        ),
+                        child: Text('Submit',
+                            style: GoogleFonts.poppins(
+                                color: const Color(0xFF003366),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500)),
                       ),
                     ),
                   ],
@@ -251,7 +274,7 @@ class ExpensesState extends State<Expenses> {
   }
 
   getPostexpenses(String? uid, BuildContext context) async {
-     var data = {
+    var data = {
       'expense_date': DateTime.now().toString(),
       'expense_type': selectedExpense,
       'description': otherExpenseController.text,
@@ -265,14 +288,16 @@ class ExpensesState extends State<Expenses> {
       'confirm': "no",
     };
 
-     status = await ApiService().postExpenses(uid, _image ,data);
+    status = await ApiService().postExpenses(uid, _image, data);
+    print(status);
     if (status == "Expense added successfully") {
-       Navigator.pop(context);
+      Navigator.pop(context);
     }
   }
 
   Future<void> _pickImage() async {
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile =
+    await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {

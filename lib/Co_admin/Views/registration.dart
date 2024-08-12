@@ -370,6 +370,7 @@ class CoRegistrationState extends State<CoRegistration> {
       data: data,
     );
     if (response.statusCode == 200) {
+
       setState(() {
         status = response.data["status"];
       });

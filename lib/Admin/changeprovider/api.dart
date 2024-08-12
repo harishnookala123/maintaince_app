@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintaince_app/Admin/Model/apartmentdetails.dart';
 import '../../User/Model/maintaince_bill.dart';
@@ -13,13 +12,12 @@ import '../Model/expenserequest.dart';
 import '../Model/usermodel.dart';
 import '../Model/blocks.dart';
 import 'package:path/path.dart';
- const String baseUrl = 'http://maintenanceapplication.ap-south-1.elasticbeanstalk.com';
 
-
+const String baseUrl = 'http://maintenance-application.ap-south-1.elasticbeanstalk.com';
+String baseUrl1 = 'http://192.168.29.231:3000';
 
 class ApiService {
   var dio = Dio();
-   String baseUrl1 = 'http://192.168.29.231:3000';
   Future<Admin?> getAdminById(String id) async {
     final response = await http.get(Uri.parse('$baseUrl/admin/$id'));
     if (response.statusCode == 200) {
@@ -30,7 +28,7 @@ class ApiService {
     }
   }
   Future<Admin?>coAdminById (String id) async {
-    final response = await http.get(Uri.parse('$baseUrl1/co-admin/$id'));
+    final response = await http.get(Uri.parse('$baseUrl/co-admin/$id'));
     if (response.statusCode==200){
       print(response.body);
       var value = Admin.fromJson(json.decode(response.body));
@@ -269,6 +267,7 @@ class ApiService {
         data: {"apartment_code" : apartment_code, "status":status,"block_name":block_name}
     );
     if(response.statusCode==200){
+      print(response.data);
       List status = response.data['expenses'];
       return status.map((e) => ExpenseRequest.fromJson(e)).toList();
     }
@@ -324,26 +323,11 @@ class ApiService {
     }
     return null;
   }
-  postComplaint(String uid, String description, String? selectedComplaint, String? apartment_code) async {
-    var dio = Dio();
-    try {
-      final response = await dio.post(
-        '$baseUrl/complaint/$uid/$description/$selectedComplaint/$apartment_code',
-      );
-      if (response.statusCode == 200) {
-        return response.data["message"];
-      } else {
-        print('Error: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Exception: $e');
-    }
-  }
 
   Future<List<Complaints>> getComplaint( String apartmentCode,String status) async {
     var dio = Dio();
     try {
-      final response = await dio.get('$baseUrl1/getComplaints/$apartmentCode/$status');
+      final response = await dio.get('$baseUrl/getComplaints/$apartmentCode/$status');
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['results'];
         return data.map((json) => Complaints.fromJson(json)).toList();
@@ -357,10 +341,10 @@ class ApiService {
   }
 
 
-   approveComplaint(String userId, String status) async {
+   approveComplaint(int id, String status) async {
     final dio = Dio();
-    final String url = '$baseUrl1/approvecomplaint/$userId/$status';
-
+    final String url = '$baseUrl/approvecomplaint/$id/$status';
+    print(id);
     try {
       final response = await dio.put(url);
       if (response.statusCode == 200) {
@@ -434,7 +418,7 @@ class ApiService {
     });
     try {
       Response response = await dio.post(
-          '$baseUrl1/upload', data: formData);
+          '$baseUrl/upload', data: formData);
       if (response.statusCode == 200) {
         print('Image uploaded successfully: ${response.data['url']}');
       } else {
@@ -454,7 +438,7 @@ class ApiService {
       });
 
       Response response = await Dio().post(
-        '$baseUrl1/expenses/$userid',
+        '$baseUrl/expenses/$userid',
         data: formData,
         options: Options(
           headers: {
@@ -462,6 +446,29 @@ class ApiService {
           },
         ),
       );
+      return response.data["message"];
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  postComplaint(Map<String, String?> data, File? image) async {
+    try {
+      FormData formData = FormData.fromMap({
+        'data': data,
+        if (image != null) 'image': await MultipartFile.fromFile(image.path),
+      });
+
+      Response response = await Dio().post(
+        '$baseUrl/complaint',
+        data: formData,
+        options: Options(
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        ),
+      );
+      print(response.data);
       return response.data["message"];
     } catch (e) {
       print('Error: $e');

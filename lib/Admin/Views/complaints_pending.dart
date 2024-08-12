@@ -1,5 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import '../Model/complaints.dart';
 import '../Model/usermodel.dart';
 import '../changeprovider/api.dart';
@@ -14,6 +18,14 @@ class ComplaintsPending extends StatefulWidget {
 }
 
 class _ComplaintsPendingState extends State<ComplaintsPending> {
+  Future<List<Complaints>?>? complaint;
+
+  @override
+  void initState() {
+    super.initState();
+    complaint = ApiService().getComplaint(widget.apartmentCode!, "Pending");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +40,7 @@ class _ComplaintsPendingState extends State<ComplaintsPending> {
             ],
           ),
         ),
-        child: FutureBuilder<List<Complaints>>(
+        child: FutureBuilder<List<Complaints>?>(
             future: ApiService().getComplaint(widget.apartmentCode!, "Pending"),
             builder: (context, snap) {
               if (snap.connectionState == ConnectionState.waiting) {
@@ -36,16 +48,15 @@ class _ComplaintsPendingState extends State<ComplaintsPending> {
               } else if (snap.hasError) {
                 return Center(child: Text('Error: ${snap.error}'));
               } else if (!snap.hasData || snap.data!.isEmpty) {
-                return Center(child: Text('No Complaints found.',
-                 style: GoogleFonts.poppins(
-                   color: Colors.white,
-                   fontSize: 16.5,
-                   letterSpacing: 0.6),
-                ));
+                return Center(
+                    child: Text(
+                      'No Complaints found.',
+                      style: GoogleFonts.poppins(
+                          color: Colors.white, fontSize: 16.5, letterSpacing: 0.6),
+                    ));
               } else {
                 return Container(
                   margin: const EdgeInsets.all(12.3),
-
                   child: ListView.builder(
                     itemCount: snap.data!.length,
                     itemBuilder: (context, index) {
@@ -71,7 +82,8 @@ class _ComplaintsPendingState extends State<ComplaintsPending> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               FutureBuilder<Users?>(
-                                future: ApiService.userData(complaint![index].user_id!),
+                                future: ApiService.userData(
+                                    complaint![index].user_id!),
                                 builder: (context, snap) {
                                   if (snap.connectionState ==
                                       ConnectionState.waiting) {
@@ -143,24 +155,46 @@ class _ComplaintsPendingState extends State<ComplaintsPending> {
                                   ),
                                 ),
                               ),
+                              const SizedBox(height: 10),
+                              complaint[index].image!=null?Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => _showImageDialog(context, complaint[index].image!),
+                                    child: CachedNetworkImage(
+                                      cacheManager: CustomCacheManager.instance,
+                                      imageUrl: complaint[index].image!,
+                                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                                      fit: BoxFit.fitWidth,
+                                      width: 300,
+                                      height: 260,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 15),
+                                ],
+                              ):Container(),
                               Center(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                   // backgroundColor: Colors.green
+                                    minimumSize: const Size(150, 50)
+                                    // backgroundColor: Colors.green
                                   ),
-                                  onPressed: (){
-                                    setState(() {
-
-                                     ApiService().approveComplaint(complaint[index].user_id!, "Completed");
-                                    });
-
+                                  onPressed: () {
+                                      complaint[index].pressed = !complaint[index].pressed!;
+                                      if(complaint[index].pressed!){
+                                        setState(() {
+                                          ApiService().approveComplaint(
+                                              complaint[index].id!,
+                                              "Completed");
+                                        });
+                                      }
 
                                   },
-                                  child:  Text("Pending",
-                                  style: GoogleFonts.acme(
-                                    color: Colors.red,
-                                    fontSize: 16.5,
-                                  ),
+                                  child: Text(
+                                    "Completed",
+                                    style: GoogleFonts.acme(
+                                      color: Colors.red,
+                                      fontSize: 16.5,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -176,4 +210,29 @@ class _ComplaintsPendingState extends State<ComplaintsPending> {
       ),
     );
   }
+
+  void _showImageDialog(BuildContext context, String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: PhotoView(
+            imageProvider: NetworkImage(imageUrl),
+            minScale: PhotoViewComputedScale.contained,
+            maxScale: PhotoViewComputedScale.covered * 2,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class CustomCacheManager {
+  static CacheManager instance = CacheManager(
+    Config(
+      'customCacheKey',
+      stalePeriod: const Duration(days: 7), // Adjust cache duration as needed
+      maxNrOfCacheObjects: 100,
+    ),
+  );
 }
