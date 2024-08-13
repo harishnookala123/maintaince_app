@@ -14,7 +14,7 @@ import '../Model/blocks.dart';
 import 'package:path/path.dart';
 
 const String baseUrl = 'http://maintenance-application.ap-south-1.elasticbeanstalk.com';
-String baseUrl1 = 'http://192.168.29.231:3000';
+String baseUrl1 = 'http://192.168.29.92:3000';
 
 class ApiService {
   var dio = Dio();
@@ -473,6 +473,19 @@ class ApiService {
     } catch (e) {
       print('Error: $e');
     }
+  }
+
+  editprofile(Map<String, String?> data, String? id) async {
+
+    Response response = await Dio().put(
+      '$baseUrl1/user/$id',
+      data: data,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
   }
 }
 

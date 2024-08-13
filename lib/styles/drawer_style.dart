@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintaince_app/User/Views/management_info.dart';
-import 'package:maintaince_app/styles/basicstyles.dart';
 import '../Admin/Model/usermodel.dart';
+import '../User/Views/edit_profile.dart';
 import '../User/Views/user_infoscreen.dart';
 import '../login.dart';
 
@@ -32,7 +32,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             Center(
               child: UserAccountsDrawerHeader(
                 decoration: const BoxDecoration(
-                  color: Color(0xFF0099CC),
+                  color: Color(0xFF003366),
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(30),
                   ),
@@ -79,9 +79,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                     ),
                     onTap: () {
-                      // Handle navigation to Edit Profile
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditProfileScreen(user: widget.user!),
+                        ),
+                      );
                     },
                   ),
+
                   const Divider(),
                   ListTile(
                     leading: Icon(Icons.info, color: Colors.blue.shade400),
